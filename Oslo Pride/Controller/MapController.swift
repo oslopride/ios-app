@@ -34,8 +34,8 @@ class MapController: UIViewController, MKMapViewDelegate {
         mapView.register(MKPinAnnotationView.self, forAnnotationViewWithReuseIdentifier: "id")
         mapView.userTrackingMode = .followWithHeading
         mapView.showsUserLocation = true
-        mapView.showsBuildings = true
-        mapView.showsTraffic = true
+        mapView.showsBuildings = false
+        mapView.showsTraffic = false
         mapView.showsScale = true
         mapView.showsPointsOfInterest = false
         
@@ -45,7 +45,7 @@ class MapController: UIViewController, MKMapViewDelegate {
             let location = locationService.getCoordinates()
             let coordinate = CLLocationCoordinate2D(latitude: location.0 ?? 0, longitude: location.1 ?? 0)
             let mapCamera = MKMapCamera(lookingAtCenter: coordinate, fromDistance: 10000, pitch: 0, heading: 0)
-            self.mapView.setCamera(mapCamera, animated: true)
+            //self.mapView.setCamera(mapCamera, animated: true)
         }
         
         let osloDowntown = CLLocationCoordinate2D(latitude: 59.913868, longitude: 10.752245)
@@ -76,8 +76,6 @@ class MapController: UIViewController, MKMapViewDelegate {
             let lineView = MKPolylineRenderer(overlay: overlay)
             lineView.strokeColor = .prideRed
             lineView.lineWidth = 5
-            
-            
             return lineView
         }
         
@@ -88,7 +86,8 @@ class MapController: UIViewController, MKMapViewDelegate {
         guard let annotation = annotation as? PrideAnnotation else { return nil }
         //let view = mapView.dequeueReusableAnnotationView(withIdentifier: "id", for: annotation) as! MKPinAnnotationView
         let view = MKAnnotationView(annotation: annotation, reuseIdentifier: "id")
-        view.image = UIImage(named: "map")
+        
+        
         view.tintColor = .hotPink
         view.canShowCallout = true
         let calloutView = AnnotationCalloutView()
@@ -106,7 +105,9 @@ class MapController: UIViewController, MKMapViewDelegate {
                 NSAttributedString.Key.font : UIFont.systemFont(ofSize: 14),
                 NSAttributedString.Key.foregroundColor : UIColor.kindaBlack
                 ]))
-            
+            let img = UIImage(named: "pridepark")
+            view.image = img
+
             calloutView.titleLabel.attributedText = attrText
         } else if annotation == prideHouseArtAnnotaion {
             let attrText = NSMutableAttributedString()
@@ -127,6 +128,10 @@ class MapController: UIViewController, MKMapViewDelegate {
                 NSAttributedString.Key.font : UIFont.systemFont(ofSize: 14),
                 NSAttributedString.Key.foregroundColor : UIColor.kindaBlack
                 ]))
+            
+            let img = UIImage(named: "pride_art")
+            view.image = img
+            view.contentScaleFactor = 0
             
             calloutView.titleLabel.attributedText = attrText
         }

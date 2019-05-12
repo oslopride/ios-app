@@ -18,8 +18,8 @@ class TabBarController: UITabBarController {
         let mapController = MapController()
         mapController.tabBarItem = UITabBarItem(title: "Kart", image: UIImage(named: "map_twotone"), tag: 1)
         
-        tabBar.tintColor = .hotRed
-    
+        tabBar.tintColor = .prideRed
+        
         viewControllers = [
             UINavigationController(rootViewController: viewController),
             mapController

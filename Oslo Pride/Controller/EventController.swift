@@ -14,10 +14,10 @@ class EventController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        view.backgroundColor = .white
+
         let webView = WKWebView()
         webView.translatesAutoresizingMaskIntoConstraints = false
-        
         
         guard let url = URL(string: "https://2018.oslopride.no/arrangementer/fredagen-girls-club-og-dramaqueen/") else { return }
         let req = URLRequest(url: url)
