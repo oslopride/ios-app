@@ -13,10 +13,19 @@ class TabBarController: UITabBarController {
         super.viewDidLoad()
         
         let viewController = ViewController()
+        viewController.tabBarItem = UITabBarItem(title: "Events", image: UIImage(named: "event_twotone"), tag: 0)
+        
+        let mapController = MapController()
+        mapController.tabBarItem = UITabBarItem(title: "Kart", image: UIImage(named: "map_twotone"), tag: 1)
+        
+        tabBar.tintColor = .hotRed
+    
+        
+        
         
         viewControllers = [
             UINavigationController(rootViewController: viewController),
-            MapController()
+            mapController
         ]
         
     }

@@ -72,6 +72,9 @@ class EventCell: UITableViewCell {
     
     fileprivate func setupUI() {
         eventTitleLabel.text = event?.title ?? ""
+        if event?.imageURL == nil {
+            eventImageView.image = nil
+        }
     }
     
     required init?(coder aDecoder: NSCoder) {

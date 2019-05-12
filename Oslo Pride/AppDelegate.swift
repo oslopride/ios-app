@@ -21,7 +21,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow()
         window?.makeKeyAndVisible()
         window?.rootViewController = TabBarController()
-
+        
+        UINavigationBar.appearance().tintColor = .hotPurple
+        UINavigationBar.appearance().isTranslucent = false
+        UINavigationBar.appearance().shadowImage = UIImage()
+        
+        
         return true
     }
 

@@ -26,6 +26,13 @@ class ViewController: UITableViewController {
         navigationController?.navigationBar.prefersLargeTitles = true
         title = "Events"
         
+        navigationController?.navigationBar.largeTitleTextAttributes = [
+            NSAttributedString.Key.foregroundColor : UIColor.hotPurple
+        ]
+        navigationController?.navigationBar.titleTextAttributes = [
+            NSAttributedString.Key.foregroundColor : UIColor.hotPurple
+        ]
+        
         fetchEvents()
     }
 
