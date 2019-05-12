@@ -58,13 +58,32 @@ class MapController: UIViewController, MKMapViewDelegate {
             prideParkAnnotation
             ])
         
+        
         let paradeCoordinates = [
-            CLLocationCoordinate2D(latitude: 59.913144, longitude: 10.736491),
-            CLLocationCoordinate2D(latitude: 59.913451, longitude: 10.736775),
-            CLLocationCoordinate2D(latitude: 59.913793, longitude: 10.735402),
-            CLLocationCoordinate2D(latitude: 59.917133, longitude: 10.739152),
-            CLLocationCoordinate2D(latitude: 59.917483, longitude: 10.739613),
-            CLLocationCoordinate2D(latitude: 59.917947, longitude: 10.740106)
+            CLLocationCoordinate2D(latitude: 59.911959, longitude: 10.766269),
+            CLLocationCoordinate2D(latitude: 59.912717, longitude: 10.762831),
+            CLLocationCoordinate2D(latitude: 59.913728, longitude: 10.756480),
+            CLLocationCoordinate2D(latitude: 59.913269, longitude: 10.753398),
+            CLLocationCoordinate2D(latitude: 59.912731, longitude: 10.751032),
+            
+            // Jernbanetorget
+            CLLocationCoordinate2D(latitude: 59.912290, longitude: 10.750702),
+            CLLocationCoordinate2D(latitude: 59.912319, longitude: 10.749284),
+            CLLocationCoordinate2D(latitude: 59.912493, longitude: 10.748354),
+            
+            // Kirkeristen
+            CLLocationCoordinate2D(latitude: 59.912824, longitude: 10.747845),
+            CLLocationCoordinate2D(latitude: 59.912977, longitude: 10.746627),
+            
+            // Grensen
+            CLLocationCoordinate2D(latitude: 59.912781, longitude: 10.746136),
+            CLLocationCoordinate2D(latitude: 59.914920, longitude: 10.740041),
+            CLLocationCoordinate2D(latitude: 59.915684, longitude: 10.737576),
+            
+            // Karl Johan
+            CLLocationCoordinate2D(latitude: 59.914562, longitude: 10.736250),
+            CLLocationCoordinate2D(latitude: 59.913780, longitude: 10.738823),
+            CLLocationCoordinate2D(latitude: 59.913132, longitude: 10.738024)
         ]
         let paradePolyLine = MKPolyline(coordinates: paradeCoordinates, count: paradeCoordinates.count)
         
