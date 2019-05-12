@@ -15,6 +15,9 @@ class MapController: UIViewController, MKMapViewDelegate {
     let spikersuppa = CLLocationCoordinate2D(latitude: 59.914518, longitude: 10.734388)
     let youngstroget = CLLocationCoordinate2D(latitude: 59.914809, longitude: 10.749099)
     
+    let prideParkAnnotation = PrideAnnotation(title: "Pride Park", lat: 59.914518, long: 10.734388)
+    let prideHouseArtAnnotaion = PrideAnnotation(title: "Pride House & Art", lat: 59.914809, long: 10.749099)
+
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
@@ -51,8 +54,8 @@ class MapController: UIViewController, MKMapViewDelegate {
         
         
         mapView.addAnnotations([
-            PrideAnnotation(title: "Pride Park", lat: spikersuppa.latitude, long: spikersuppa.longitude),
-            PrideAnnotation(title: "Pride House & Art", lat: youngstroget.latitude, long: youngstroget.longitude)
+            prideHouseArtAnnotaion,
+            prideParkAnnotation
             ])
         
         let paradeCoordinates = [
@@ -71,7 +74,7 @@ class MapController: UIViewController, MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         if overlay is MKPolyline {
             let lineView = MKPolylineRenderer(overlay: overlay)
-            lineView.strokeColor = .hotPink
+            lineView.strokeColor = .prideRed
             lineView.lineWidth = 5
             
             
@@ -82,21 +85,88 @@ class MapController: UIViewController, MKMapViewDelegate {
     }
     
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-        if annotation.title == "My Location" { return nil }
+        guard let annotation = annotation as? PrideAnnotation else { return nil }
         //let view = mapView.dequeueReusableAnnotationView(withIdentifier: "id", for: annotation) as! MKPinAnnotationView
         let view = MKAnnotationView(annotation: annotation, reuseIdentifier: "id")
         view.image = UIImage(named: "map")
         view.tintColor = .hotPink
         view.canShowCallout = true
-        let calloutView = UILabel()
-        calloutView.numberOfLines = 0
-        calloutView.text = "ehaii \n \n wiii   👸"
+        let calloutView = AnnotationCalloutView()
         
         
+        
+        if annotation == prideParkAnnotation {
+            let attrText = NSMutableAttributedString()
+            attrText.append(NSAttributedString(string: "Pride Park\n", attributes: [
+                NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 14),
+                NSAttributedString.Key.foregroundColor : UIColor.prideGreen
+                ]))
+            
+            attrText.append(NSAttributedString(string: "Onsdag 19. juni til lørdag 22. juni", attributes: [
+                NSAttributedString.Key.font : UIFont.systemFont(ofSize: 14),
+                NSAttributedString.Key.foregroundColor : UIColor.kindaBlack
+                ]))
+            
+            calloutView.titleLabel.attributedText = attrText
+        } else if annotation == prideHouseArtAnnotaion {
+            let attrText = NSMutableAttributedString()
+            attrText.append(NSAttributedString(string: "Pride House\n", attributes: [
+                NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 14),
+                NSAttributedString.Key.foregroundColor : UIColor.prideBlue
+                ]))
+            attrText.append(NSAttributedString(string: "Lørdag 15. juni til fredag 21. juni\n\n", attributes: [
+                NSAttributedString.Key.font : UIFont.systemFont(ofSize: 14),
+                NSAttributedString.Key.foregroundColor : UIColor.kindaBlack
+                ]))
+            
+            attrText.append(NSAttributedString(string: "Pride Art\n", attributes: [
+                NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 14),
+                NSAttributedString.Key.foregroundColor : UIColor.pridePurple
+                ]))
+            attrText.append(NSAttributedString(string: "Fredag 14. juni til søndag 23. juni", attributes: [
+                NSAttributedString.Key.font : UIFont.systemFont(ofSize: 14),
+                NSAttributedString.Key.foregroundColor : UIColor.kindaBlack
+                ]))
+            
+            calloutView.titleLabel.attributedText = attrText
+        }
         
         view.detailCalloutAccessoryView = calloutView
         
         return view
+    }
+    
+}
+
+
+class AnnotationCalloutView: UIView {
+    
+    let titleLabel: UILabel = {
+        let lbl = UILabel()
+        lbl.translatesAutoresizingMaskIntoConstraints = false
+        lbl.font = UIFont.boldSystemFont(ofSize: 14)
+        lbl.numberOfLines = 0
+        return lbl
+        
+    }()
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        
+        addSubview(titleLabel)
+        [
+            titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: 0),
+            titleLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
+            titleLabel.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor, constant: -10),
+            titleLabel.leftAnchor.constraint(equalTo: leftAnchor, constant: 3),
+            titleLabel.rightAnchor.constraint(equalTo: rightAnchor, constant: -3)
+            ].forEach { $0.isActive = true }
+        
+        
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
 }
@@ -112,7 +182,7 @@ class PrideAnnotation: NSObject, MKAnnotation {
         return CLLocationCoordinate2D(latitude: lat, longitude: long)
     }
     
-    lazy var title: String? = NSLocalizedString(self.titleText, comment: "PRIDE")
+    //lazy var title: String? = NSLocalizedString(self.titleText, comment: "PRIDE")
     
     var subtitle: String? = ""
     

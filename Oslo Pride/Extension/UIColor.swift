@@ -18,4 +18,9 @@ extension UIColor {
     static let kindaBlack = UIColor(red:0.14, green:0.16, blue:0.18, alpha:1.00)
     static let graySuit = UIColor(red:0.57, green:0.60, blue:0.64, alpha:1.00)
     
+    
+    static let prideBlue = UIColor(red:0.65, green:0.76, blue:0.96, alpha:1.0)
+    static let prideGreen = UIColor(red:0.45, green:0.75, blue:0.58, alpha:1.0)
+    static let prideRed = UIColor(red:0.90, green:0.45, blue:0.51, alpha:1.0)
+    static let pridePurple = UIColor(red:0.67, green:0.60, blue:0.89, alpha:1.0)
 }
