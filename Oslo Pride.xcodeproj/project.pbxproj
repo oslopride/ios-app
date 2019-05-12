@@ -18,6 +18,7 @@
 		3AEE589B2288740F00891790 /* MapController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AEE589A2288740F00891790 /* MapController.swift */; };
 		3AEE589D2288750900891790 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AEE589C2288750900891790 /* Location.swift */; };
 		3AEE58A022887E4C00891790 /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AEE589F22887E4C00891790 /* UIColor.swift */; };
+		3AEE58A2228882F900891790 /* EventController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AEE58A1228882F900891790 /* EventController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +35,7 @@
 		3AEE589A2288740F00891790 /* MapController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapController.swift; sourceTree = "<group>"; };
 		3AEE589C2288750900891790 /* Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
 		3AEE589F22887E4C00891790 /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
+		3AEE58A1228882F900891790 /* EventController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -110,6 +112,7 @@
 				3AECE97F22760D9700F9DEF0 /* ViewController.swift */,
 				3AEE58982288739000891790 /* TabBarController.swift */,
 				3AEE589A2288740F00891790 /* MapController.swift */,
+				3AEE58A1228882F900891790 /* EventController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -194,6 +197,7 @@
 			files = (
 				3AEE589322884A6F00891790 /* Event.swift in Sources */,
 				3AEE589B2288740F00891790 /* MapController.swift in Sources */,
+				3AEE58A2228882F900891790 /* EventController.swift in Sources */,
 				3AEE589D2288750900891790 /* Location.swift in Sources */,
 				3AECE98022760D9700F9DEF0 /* ViewController.swift in Sources */,
 				3AEE58A022887E4C00891790 /* UIColor.swift in Sources */,

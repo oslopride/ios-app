@@ -55,7 +55,8 @@ extension ViewController {
         return events?.count ?? 0
     }
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: cellID, for: indexPath) as! EventCell
+        //let cell = tableView.dequeueReusableCell(withIdentifier: cellID, for: indexPath) as! EventCell
+        let cell = EventCell()
         guard let event = events?[indexPath.row] else { return cell }
         
         if let imgURL = event.imageURL, let imgData = NetworkAPI.shared.imageCache[imgURL] {
@@ -64,6 +65,12 @@ extension ViewController {
         
         cell.event = event
         return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let c = EventController()
+        c.title = events?[indexPath.row].title ?? ""
+        navigationController?.pushViewController(c, animated: true)
     }
     
 }
