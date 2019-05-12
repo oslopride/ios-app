@@ -20,8 +20,11 @@ class TabBarController: UITabBarController {
         
         tabBar.tintColor = .prideRed
         
+        let navViewController = UINavigationController(rootViewController: viewController)
+        navViewController.view.backgroundColor = .white
+        
         viewControllers = [
-            UINavigationController(rootViewController: viewController),
+            navViewController,
             mapController
         ]
         

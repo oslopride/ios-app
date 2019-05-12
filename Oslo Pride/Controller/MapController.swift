@@ -15,8 +15,10 @@ class MapController: UIViewController, MKMapViewDelegate {
     let spikersuppa = CLLocationCoordinate2D(latitude: 59.914518, longitude: 10.734388)
     let youngstroget = CLLocationCoordinate2D(latitude: 59.914809, longitude: 10.749099)
     
-    let prideParkAnnotation = PrideAnnotation(title: "Pride Park", lat: 59.914518, long: 10.734388)
-    let prideHouseArtAnnotaion = PrideAnnotation(title: "Pride House & Art", lat: 59.914809, long: 10.749099)
+    let prideParkAnnotation = PrideAnnotation(title: nil, lat: 59.914518, long: 10.734388)
+    let prideHouseArtAnnotaion = PrideAnnotation(title: nil, lat: 59.914809, long: 10.749099)
+    let prideParadeStartAnnotation = PrideAnnotation(title: nil, lat: 59.911959, long: 10.766269)
+    let prideParadeEndAnnotation = PrideAnnotation(title: nil, lat: 59.913132, long: 10.738024)
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -55,9 +57,13 @@ class MapController: UIViewController, MKMapViewDelegate {
         
         mapView.addAnnotations([
             prideHouseArtAnnotaion,
-            prideParkAnnotation
+            prideParkAnnotation,
+            prideParadeStartAnnotation,
+            prideParadeEndAnnotation
             ])
         
+        //mapView.isZoomEnabled = false
+        mapView.isPitchEnabled = false
         
         let paradeCoordinates = [
             CLLocationCoordinate2D(latitude: 59.911959, longitude: 10.766269),
@@ -94,7 +100,7 @@ class MapController: UIViewController, MKMapViewDelegate {
         if overlay is MKPolyline {
             let lineView = MKPolylineRenderer(overlay: overlay)
             lineView.strokeColor = .prideRed
-            lineView.lineWidth = 5
+            lineView.lineWidth = 4            
             return lineView
         }
         
@@ -150,7 +156,36 @@ class MapController: UIViewController, MKMapViewDelegate {
             
             let img = UIImage(named: "pride_art")
             view.image = img
-            view.contentScaleFactor = 0
+            
+            calloutView.titleLabel.attributedText = attrText
+            
+        } else if annotation == prideParadeStartAnnotation {
+            let img = UIImage(named: "trip")?.withRenderingMode(.alwaysTemplate)
+            view.image = img
+            let attrText = NSMutableAttributedString()
+            attrText.append(NSAttributedString(string: "Parade Start\n", attributes: [
+                NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 14),
+                NSAttributedString.Key.foregroundColor : UIColor.prideRed
+                ]))
+            attrText.append(NSAttributedString(string: "Lørdag 22. juni", attributes: [
+                NSAttributedString.Key.font : UIFont.systemFont(ofSize: 14),
+                NSAttributedString.Key.foregroundColor : UIColor.kindaBlack
+                ]))
+            calloutView.titleLabel.attributedText = attrText
+
+        } else if annotation == prideParadeEndAnnotation {
+            let img = UIImage(named: "trip")?.withRenderingMode(.alwaysTemplate)
+            view.image = img
+            
+            let attrText = NSMutableAttributedString()
+            attrText.append(NSAttributedString(string: "Parade Slutt\n", attributes: [
+                NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 14),
+                NSAttributedString.Key.foregroundColor : UIColor.prideRed
+                ]))
+            attrText.append(NSAttributedString(string: "Lørdag 22. juni", attributes: [
+                NSAttributedString.Key.font : UIFont.systemFont(ofSize: 14),
+                NSAttributedString.Key.foregroundColor : UIColor.kindaBlack
+                ]))
             
             calloutView.titleLabel.attributedText = attrText
         }
@@ -200,20 +235,22 @@ class PrideAnnotation: NSObject, MKAnnotation {
     
     var lat: Double
     var long: Double
-    var titleText: String
     
     var coordinate: CLLocationCoordinate2D {
         return CLLocationCoordinate2D(latitude: lat, longitude: long)
     }
     
-    //lazy var title: String? = NSLocalizedString(self.titleText, comment: "PRIDE")
+    var title: String?
     
     var subtitle: String? = ""
     
-    init(title: String, lat: Double, long: Double) {
+    init(title: String?, lat: Double, long: Double) {
         self.lat = lat
         self.long = long
-        self.titleText = title
+        
+        if let title = title {
+            self.title = NSLocalizedString(title, comment: "PRIDE")
+        }
         //self.subtitle = ""
     }
     
