@@ -20,8 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // This setup bypasses need for Storyboards
         window = UIWindow()
         window?.makeKeyAndVisible()
-        let rootController = ViewController()
-        window?.rootViewController = UINavigationController(rootViewController: rootController)
+        window?.rootViewController = TabBarController()
 
         return true
     }

@@ -50,10 +50,7 @@ class EventCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
-
         setupLayout()
-        
     }
     
     fileprivate func setupLayout() {
