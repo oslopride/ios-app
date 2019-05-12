@@ -13,6 +13,7 @@
 		3AECE98822760D9900F9DEF0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3AECE98622760D9900F9DEF0 /* LaunchScreen.storyboard */; };
 		3AEE589022884A1C00891790 /* NetworkAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AEE588F22884A1C00891790 /* NetworkAPI.swift */; };
 		3AEE589322884A6F00891790 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AEE589222884A6F00891790 /* Event.swift */; };
+		3AEE58962288532000891790 /* EventCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AEE58952288532000891790 /* EventCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		3AECE98922760D9900F9DEF0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3AEE588F22884A1C00891790 /* NetworkAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkAPI.swift; sourceTree = "<group>"; };
 		3AEE589222884A6F00891790 /* Event.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
+		3AEE58952288532000891790 /* EventCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +58,7 @@
 		3AECE97C22760D9700F9DEF0 /* Oslo Pride */ = {
 			isa = PBXGroup;
 			children = (
+				3AEE58942288531100891790 /* View */,
 				3AEE589122884A6600891790 /* Model */,
 				3AEE588E22884A1000891790 /* Service */,
 				3AECE97D22760D9700F9DEF0 /* AppDelegate.swift */,
@@ -81,6 +84,14 @@
 				3AEE589222884A6F00891790 /* Event.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		3AEE58942288531100891790 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				3AEE58952288532000891790 /* EventCell.swift */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -155,6 +166,7 @@
 			files = (
 				3AEE589322884A6F00891790 /* Event.swift in Sources */,
 				3AECE98022760D9700F9DEF0 /* ViewController.swift in Sources */,
+				3AEE58962288532000891790 /* EventCell.swift in Sources */,
 				3AECE97E22760D9700F9DEF0 /* AppDelegate.swift in Sources */,
 				3AEE589022884A1C00891790 /* NetworkAPI.swift in Sources */,
 			);

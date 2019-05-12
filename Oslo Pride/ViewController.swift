@@ -15,11 +15,14 @@ class ViewController: UITableViewController {
             tableView.reloadData()
         }
     }
+    
+    var imageCache = [String : UIImage]()
+    
     let cellID = "cellID"
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellID)
+        tableView.register(EventCell.self, forCellReuseIdentifier: cellID)
         navigationController?.navigationBar.prefersLargeTitles = true
         title = "Events"
         
@@ -45,9 +48,21 @@ extension ViewController {
         return events?.count ?? 0
     }
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: cellID, for: indexPath)
-        cell.textLabel?.text = events?[indexPath.row].title ?? ""
+        let cell = tableView.dequeueReusableCell(withIdentifier: cellID, for: indexPath) as! EventCell
+        guard let event = events?[indexPath.row] else { return cell }
+        
+        if let imgURL = event.imageURL, let imgData = NetworkAPI.shared.imageCache[imgURL] {
+            cell.eventImageView.image = UIImage(data: imgData)
+        }
+        
+        cell.event = event
         return cell
     }
+    
+}
+
+extension ViewController {
+    
+    
     
 }
