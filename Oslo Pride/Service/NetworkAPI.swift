@@ -10,7 +10,9 @@ import Foundation
 
 class NetworkAPI {
     static let shared = NetworkAPI()
-    let host = "http://localhost:3010/api/v1"
+    //let host = "http://localhost:3010/api/v1"
+    let host = "http://10.0.1.100:3010/api/v1"
+
     
     var imageCache = [String : Data]()
 }

@@ -20,9 +20,6 @@ class TabBarController: UITabBarController {
         
         tabBar.tintColor = .hotRed
     
-        
-        
-        
         viewControllers = [
             UINavigationController(rootViewController: viewController),
             mapController

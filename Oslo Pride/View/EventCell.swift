@@ -30,8 +30,18 @@ class EventCell: UITableViewCell {
     let eventTitleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = UIFont.boldSystemFont(ofSize: 18)
+        label.numberOfLines = 0
+        return label
+    }()
+    
+    let eventOrganizerLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.boldSystemFont(ofSize: 16)
         label.numberOfLines = 0
+        label.textColor = .graySuit
+        
         return label
     }()
     
@@ -39,8 +49,10 @@ class EventCell: UITableViewCell {
         if eventImageView.image == nil {
             guard let url = URL(string: event?.imageURL ?? "") else { return }
             NetworkAPI.shared.fetchImage(from: url) { (imgData) in
-                DispatchQueue.main.async {
-                    self.eventImageView.image = UIImage(data: imgData)
+                if url.absoluteString == self.event?.imageURL {
+                    DispatchQueue.main.async {
+                        self.eventImageView.image = UIImage(data: imgData)
+                    }
                 }
             }
         } else {
@@ -68,10 +80,18 @@ class EventCell: UITableViewCell {
         eventTitleLabel.leftAnchor.constraint(equalTo: eventImageView.rightAnchor, constant: 10).isActive = true
         eventTitleLabel.rightAnchor.constraint(equalTo: rightAnchor, constant: -10).isActive = true
         eventTitleLabel.topAnchor.constraint(equalTo: eventImageView.topAnchor).isActive = true
+        
+        addSubview(eventOrganizerLabel)
+        [
+            eventOrganizerLabel.leftAnchor.constraint(equalTo: eventTitleLabel.leftAnchor),
+            eventOrganizerLabel.rightAnchor.constraint(equalTo: eventTitleLabel.rightAnchor),
+            eventOrganizerLabel.topAnchor.constraint(equalTo: eventTitleLabel.bottomAnchor, constant: 5)
+            ].forEach { $0.isActive = true }
     }
     
     fileprivate func setupUI() {
         eventTitleLabel.text = event?.title ?? ""
+        eventOrganizerLabel.text = event?.organizer ?? ""
         if event?.imageURL == nil {
             eventImageView.image = nil
         }

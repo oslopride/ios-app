@@ -27,7 +27,8 @@ class Location: NSObject {
     func askPermission(handler: @escaping (Bool) -> ()) {
         manager.delegate = self
         permissionHandler = handler
-        manager.requestWhenInUseAuthorization()
+        manager.requestAlwaysAuthorization()
+        
     }
 }
 

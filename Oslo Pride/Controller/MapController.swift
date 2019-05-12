@@ -42,7 +42,7 @@ class MapController: UIViewController, MKMapViewDelegate {
             let location = locationService.getCoordinates()
             let coordinate = CLLocationCoordinate2D(latitude: location.0 ?? 0, longitude: location.1 ?? 0)
             let mapCamera = MKMapCamera(lookingAtCenter: coordinate, fromDistance: 10000, pitch: 0, heading: 0)
-            //self.mapView.setCamera(mapCamera, animated: true)
+            self.mapView.setCamera(mapCamera, animated: true)
         }
         
         let osloDowntown = CLLocationCoordinate2D(latitude: 59.913868, longitude: 10.752245)
@@ -54,6 +54,31 @@ class MapController: UIViewController, MKMapViewDelegate {
             PrideAnnotation(title: "Pride Park", lat: spikersuppa.latitude, long: spikersuppa.longitude),
             PrideAnnotation(title: "Pride House & Art", lat: youngstroget.latitude, long: youngstroget.longitude)
             ])
+        
+        let paradeCoordinates = [
+            CLLocationCoordinate2D(latitude: 59.913144, longitude: 10.736491),
+            CLLocationCoordinate2D(latitude: 59.913451, longitude: 10.736775),
+            CLLocationCoordinate2D(latitude: 59.913793, longitude: 10.735402),
+            CLLocationCoordinate2D(latitude: 59.917133, longitude: 10.739152),
+            CLLocationCoordinate2D(latitude: 59.917483, longitude: 10.739613),
+            CLLocationCoordinate2D(latitude: 59.917947, longitude: 10.740106)
+        ]
+        let paradePolyLine = MKPolyline(coordinates: paradeCoordinates, count: paradeCoordinates.count)
+        
+        mapView.addOverlay(paradePolyLine)
+    }
+    
+    func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
+        if overlay is MKPolyline {
+            let lineView = MKPolylineRenderer(overlay: overlay)
+            lineView.strokeColor = .hotPink
+            lineView.lineWidth = 5
+            
+            
+            return lineView
+        }
+        
+        return MKOverlayRenderer()
     }
     
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
@@ -63,6 +88,14 @@ class MapController: UIViewController, MKMapViewDelegate {
         view.image = UIImage(named: "map")
         view.tintColor = .hotPink
         view.canShowCallout = true
+        let calloutView = UILabel()
+        calloutView.numberOfLines = 0
+        calloutView.text = "ehaii \n \n wiii   👸"
+        
+        
+        
+        view.detailCalloutAccessoryView = calloutView
+        
         return view
     }
     

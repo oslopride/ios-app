@@ -11,6 +11,7 @@ import Foundation
 struct Event: Decodable {
     var title: String?
     var imageURL: String?
+    var organizer: String?
 }
 
 struct SanityImage: Decodable {
