@@ -10,7 +10,7 @@ import UIKit
 
 class ViewController: UITableViewController {
 
-    var events: [Event]? {
+    var events: [SanityEvent]? {
         didSet {
             tableView.reloadData()
         }
@@ -38,9 +38,10 @@ class ViewController: UITableViewController {
 
     fileprivate func fetchEvents() {
         NetworkAPI.shared.fetchEvents { (events) in
-            DispatchQueue.main.async {
-                self.events = events
-            }
+            events.forEach({ (event) in
+                print(event.description)
+                print("-------------")
+            })
         }
     }
 

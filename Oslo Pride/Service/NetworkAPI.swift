@@ -10,15 +10,14 @@ import Foundation
 
 class NetworkAPI {
     static let shared = NetworkAPI()
-    //let host = "http://localhost:3010/api/v1"
-    let host = "http://10.0.1.100:3010/api/v1"
-
+    let host = "http://localhost:3010/api/v1"
+    //let host = "http://10.0.1.100:3010/api/v1"
     
     var imageCache = [String : Data]()
 }
 
 extension NetworkAPI {
-    func fetchEvents(completion: @escaping ([Event]) -> ()) {
+    func fetchEvents(completion: @escaping ([SanityEvent]) -> ()) {
         guard let url = URL(string: "\(host)/published-events") else { return }
         let req = URLRequest(url: url, cachePolicy: .useProtocolCachePolicy, timeoutInterval: 30)
         URLSession.shared.dataTask(with: req) { (data, response, err) in
@@ -32,7 +31,7 @@ extension NetworkAPI {
             do {
                 let decoder = JSONDecoder()
                 decoder.keyDecodingStrategy = .convertFromSnakeCase
-                let decodedEvents = try decoder.decode([Event].self, from: data)
+                let decodedEvents = try decoder.decode([SanityEvent].self, from: data)
                 completion(decodedEvents)
             } catch let err {
                 print("failed to fetch events: ", err)

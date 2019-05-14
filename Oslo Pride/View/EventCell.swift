@@ -10,7 +10,7 @@ import UIKit
 
 class EventCell: UITableViewCell {
     
-    var event: Event? {
+    var event: SanityEvent? {
         didSet {
             loadImageIfAbsent()
             setupUI()
