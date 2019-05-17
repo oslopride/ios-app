@@ -101,11 +101,15 @@ class CoreDataManager {
     // MARK:- Delete
     func delete(event: Event) {
         pc.viewContext.delete(event)
+        let semaphore = DispatchSemaphore(value: 0)
         do {
             try pc.viewContext.save()
+            semaphore.signal()
         } catch let err {
             print("failed to delete event: ", err)
+            semaphore.signal()
         }
+        semaphore.wait()
     }
     
     func delete(events: [Event]) {

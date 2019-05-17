@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3A04D3C2228EE44400AAD8BB /* DownloadController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A04D3C1228EE44400AAD8BB /* DownloadController.swift */; };
 		3AB6CC74228B26EB0039868E /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB6CC73228B26EB0039868E /* CoreDataManager.swift */; };
 		3AB6CC77228B27880039868E /* PrideDataModels.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 3AB6CC75228B27880039868E /* PrideDataModels.xcdatamodeld */; };
 		3AECE97E22760D9700F9DEF0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AECE97D22760D9700F9DEF0 /* AppDelegate.swift */; };
@@ -24,6 +25,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3A04D3C1228EE44400AAD8BB /* DownloadController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadController.swift; sourceTree = "<group>"; };
 		3AB6CC73228B26EB0039868E /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		3AB6CC76228B27880039868E /* PrideDataModels.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = PrideDataModels.xcdatamodel; sourceTree = "<group>"; };
 		3AECE97A22760D9700F9DEF0 /* Oslo Pride.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Oslo Pride.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -119,6 +121,7 @@
 				3AEE58982288739000891790 /* TabBarController.swift */,
 				3AEE589A2288740F00891790 /* MapController.swift */,
 				3AEE58A1228882F900891790 /* EventController.swift */,
+				3A04D3C1228EE44400AAD8BB /* DownloadController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -208,6 +211,7 @@
 				3AEE589D2288750900891790 /* Location.swift in Sources */,
 				3AECE98022760D9700F9DEF0 /* ViewController.swift in Sources */,
 				3AEE58A022887E4C00891790 /* UIColor.swift in Sources */,
+				3A04D3C2228EE44400AAD8BB /* DownloadController.swift in Sources */,
 				3AEE58962288532000891790 /* EventCell.swift in Sources */,
 				3AEE58992288739000891790 /* TabBarController.swift in Sources */,
 				3AECE97E22760D9700F9DEF0 /* AppDelegate.swift in Sources */,

@@ -10,12 +10,6 @@ import UIKit
 
 class EventCell: UITableViewCell {
     
-    var event: Event? {
-        didSet {
-            setupUI()
-        }
-    }
-    
     let eventImageView: UIImageView = {
         let imv = UIImageView()
         imv.translatesAutoresizingMaskIntoConstraints = false
@@ -46,6 +40,7 @@ class EventCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        eventImageView.image = nil
         setupLayout()
     }
     
@@ -73,20 +68,12 @@ class EventCell: UITableViewCell {
             ].forEach { $0.isActive = true }
     }
     
-    fileprivate func setupUI() {
-        eventTitleLabel.text = event?.title ?? ""
-        eventOrganizerLabel.text = event?.organizer ?? ""
-        if event?.imageURL == nil {
-            eventImageView.image = nil
-        }
-        
-        if let image = event?.image {
-            eventImageView.image = UIImage(data: image, scale: 0.5)
-        }
-    }
-    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    deinit {
+        print("cell deinit")
     }
     
 }
