@@ -16,7 +16,8 @@ class EventCell: UITableViewCell {
         imv.contentMode = .scaleAspectFill
         imv.clipsToBounds = true
         imv.layer.cornerRadius = 5
-        
+        //imv.backgroundColor = .hotYellow //UIColor(white: 0, alpha: 0.2)
+        imv.tintColor = .hotYellow
         return imv
     }()
     
@@ -64,7 +65,8 @@ class EventCell: UITableViewCell {
         [
             eventOrganizerLabel.leftAnchor.constraint(equalTo: eventTitleLabel.leftAnchor),
             eventOrganizerLabel.rightAnchor.constraint(equalTo: eventTitleLabel.rightAnchor),
-            eventOrganizerLabel.topAnchor.constraint(equalTo: eventTitleLabel.bottomAnchor, constant: 5)
+            eventOrganizerLabel.topAnchor.constraint(equalTo: eventTitleLabel.bottomAnchor, constant: 5),
+            eventOrganizerLabel.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor, constant: -10)
             ].forEach { $0.isActive = true }
     }
     

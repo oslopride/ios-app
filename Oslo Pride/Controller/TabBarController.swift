@@ -18,15 +18,18 @@ class TabBarController: UITabBarController {
         let mapController = MapController()
         mapController.tabBarItem = UITabBarItem(title: "Kart", image: UIImage(named: "map_twotone"), tag: 1)
         
+        let favouriteController = FavouriteController()
+        favouriteController.tabBarItem = UITabBarItem(title: "Favoritter", image: UIImage(named: "star_twotone"), tag: 2)
+        
         tabBar.tintColor = .prideRed
         
         let navViewController = UINavigationController(rootViewController: viewController)
         navViewController.view.backgroundColor = .white
         
         viewControllers = [
+            favouriteController,
             navViewController,
             mapController
         ]
-        
     }
 }

@@ -73,7 +73,7 @@ struct SanityEvent: Decodable {
                 block.children?.forEach({ (b) in
                     description += b.text ?? ""
                 })
-                description += "\n"
+                description += "\n\n"
             })
             self.description = description
             

@@ -24,7 +24,7 @@ class ViewController: UITableViewController {
         tableView.register(EventCell.self, forCellReuseIdentifier: cellID)
         
         tableView.register(UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: "headerfooter")
-        navigationController?.navigationBar.prefersLargeTitles = true
+        //navigationController?.navigationBar.prefersLargeTitles = true
         setupNavItems()
         navigationController?.navigationBar.largeTitleTextAttributes = [
             NSAttributedString.Key.foregroundColor : UIColor.pridePurple
@@ -108,6 +108,9 @@ extension ViewController {
         if let imageData = event.image {
             cell.eventImageView.image = UIImage(data: imageData)
         }
+        
+        cell.eventOrganizerLabel.text = event.organizer
+        
         return cell
     }
     
@@ -129,6 +132,7 @@ extension ViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let c = EventController()
         //c.title = events?[indexPath.row].title ?? ""
+        c.event = days?[indexPath.section][indexPath.row]
         navigationController?.pushViewController(c, animated: true)
     }
     

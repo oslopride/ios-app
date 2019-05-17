@@ -84,6 +84,17 @@ class CoreDataManager {
         }
     }
     
+    func getFavourites(completion: @escaping ([Event]) -> ()) {
+        let fetchRequest = NSFetchRequest<Event>(entityName: "Event")
+        fetchRequest.predicate = NSPredicate(format: "isFavourite = true")
+        do {
+            let favourites = try pc.viewContext.fetch(fetchRequest)
+            completion(favourites)
+        } catch let err {
+            print("Failed to fetch favourites: ", err)
+        }
+    }
+    
     // MARK:- Update
     func updateEventImage(_ event: Event, image: Data, completion: @escaping (Error?) -> ()) {
         event.image = image
@@ -94,7 +105,16 @@ class CoreDataManager {
             completion(err)
         }
     }
-    // ...
+    
+    func toggleFavourite(event: Event, completion: @escaping (Error?) -> ()) {
+        event.isFavourite = !event.isFavourite
+        do {
+            try pc.viewContext.save()
+            completion(nil)
+        } catch let err {
+            completion(err)
+        }
+    }
     
     
     
