@@ -10,9 +10,8 @@ import UIKit
 
 class EventCell: UITableViewCell {
     
-    var event: SanityEvent? {
+    var event: Event? {
         didSet {
-            loadImageIfAbsent()
             setupUI()
         }
     }
@@ -44,21 +43,6 @@ class EventCell: UITableViewCell {
         
         return label
     }()
-    
-    fileprivate func loadImageIfAbsent() {
-        if eventImageView.image == nil {
-            guard let url = URL(string: event?.imageURL ?? "") else { return }
-            NetworkAPI.shared.fetchImage(from: url) { (imgData) in
-                if url.absoluteString == self.event?.imageURL {
-                    DispatchQueue.main.async {
-                        self.eventImageView.image = UIImage(data: imgData)
-                    }
-                }
-            }
-        } else {
-            print("got the image already")
-        }
-    }
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -94,6 +78,10 @@ class EventCell: UITableViewCell {
         eventOrganizerLabel.text = event?.organizer ?? ""
         if event?.imageURL == nil {
             eventImageView.image = nil
+        }
+        
+        if let image = event?.image {
+            eventImageView.image = UIImage(data: image, scale: 0.5)
         }
     }
     

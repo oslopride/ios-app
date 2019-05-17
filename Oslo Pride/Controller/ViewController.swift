@@ -10,7 +10,7 @@ import UIKit
 
 class ViewController: UITableViewController {
 
-    var events: [SanityEvent]? {
+    var events: [Event]? {
         didSet {
             tableView.reloadData()
         }
@@ -19,13 +19,16 @@ class ViewController: UITableViewController {
     var imageCache = [String : UIImage]()
     
     let cellID = "cellID"
+    
+    var refreshController = UIRefreshControl()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        title = "Events"
         view.backgroundColor = .white
         tableView.register(EventCell.self, forCellReuseIdentifier: cellID)
         navigationController?.navigationBar.prefersLargeTitles = true
-        title = "Events"
-        
+        setupNavItems()
         navigationController?.navigationBar.largeTitleTextAttributes = [
             NSAttributedString.Key.foregroundColor : UIColor.pridePurple
         ]
@@ -33,15 +36,64 @@ class ViewController: UITableViewController {
             NSAttributedString.Key.foregroundColor : UIColor.pridePurple
         ]
         
-        fetchEvents()
+        refreshController.addTarget(self, action: #selector(downloadEvents), for: .valueChanged)
+        tableView.refreshControl = refreshController
+        
+        displayEvents()
+    }
+    
+    fileprivate func setupNavItems() {
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Slett", style: .plain, target: self, action: #selector(reset))
+    }
+    
+    @objc fileprivate func reset() {
+        guard let events = events else { return }
+        CoreDataManager.shared.delete(events: events)
+        displayEvents()
     }
 
-    fileprivate func fetchEvents() {
-        NetworkAPI.shared.fetchEvents { (events) in
-            events.forEach({ (event) in
-                print(event.description)
-                print("-------------")
+    @objc fileprivate func downloadEvents() {
+        NetworkAPI.shared.fetchEvents { (sanityEvents) in
+            let group = DispatchGroup()
+            var events = [Event]()
+            sanityEvents.forEach({ (sanityEvent) in
+                var exists = false
+                let len = self.events?.count ?? 0
+                for i in 0..<len {
+                    if self.events?[i].id == sanityEvent.id {
+                        exists = true
+                        break
+                    }
+                }
+                group.enter()
+                if !exists {
+                    CoreDataManager.shared.save(event: sanityEvent, completion: { (event, err) in
+                        if let err = err {
+                            print("failed to add event to core data: ", err)
+                            return
+                        }
+                        guard let event = event else { return }
+                        events.append(event)
+                        group.leave()
+                    })
+                } else {
+                    group.leave()
+                    // Update current event
+                    
+                }
             })
+            group.notify(queue: .main, execute: {
+                self.refreshController.endRefreshing()
+                self.displayEvents()
+            })
+        }
+    }
+    
+    fileprivate func displayEvents() {
+        CoreDataManager.shared.getAllEvents { (events) in
+            DispatchQueue.main.async {
+                self.events = events
+            }
         }
     }
 
@@ -57,16 +109,7 @@ extension ViewController {
     }
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellID, for: indexPath) as! EventCell
-        //let cell = EventCell()
         guard let event = events?[indexPath.row] else { return cell }
-        
-        if let imgURL = event.imageURL, let imgData = NetworkAPI.shared.imageCache[imgURL] {
-            cell.eventImageView.image = UIImage(data: imgData, scale: 0.2)
-            
-        } else {
-            cell.eventImageView.image = nil
-        }
-        
         cell.event = event
         return cell
     }

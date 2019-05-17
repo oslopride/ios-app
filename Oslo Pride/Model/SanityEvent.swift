@@ -8,7 +8,8 @@
 
 import Foundation
 
-struct SanityEventRaw: Decodable {
+fileprivate struct SanityEventRaw: Decodable {
+    var _id: String
     var title: String
     var organizer: String
     var ingress: String?
@@ -24,15 +25,16 @@ struct SanityEventRaw: Decodable {
     
 }
 
-struct SanityBlockDescription: Decodable {
+fileprivate struct SanityBlockDescription: Decodable {
     var children: [SanityBlock]?
 }
 
-struct SanityBlock: Decodable {
+fileprivate struct SanityBlock: Decodable {
     var text: String?
 }
 
 struct SanityEvent: Decodable {
+    var id: String?
     var title: String?
     var organizer: String?
     var ingress: String?
@@ -48,7 +50,8 @@ struct SanityEvent: Decodable {
     
     init(from decoder: Decoder) {
         do {
-            let rawResponse = try  SanityEventRaw(from: decoder)
+            let rawResponse = try SanityEventRaw(from: decoder)
+            self.id = rawResponse._id
             self.title = rawResponse.title
             self.organizer = rawResponse.organizer
             self.ingress = rawResponse.ingress

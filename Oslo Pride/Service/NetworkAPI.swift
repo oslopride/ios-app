@@ -39,17 +39,27 @@ extension NetworkAPI {
         }.resume()
     }
     
-    func fetchImage(from url: URL, completion: @escaping (Data) -> ()) {
+    func fetchImage(from url: URL, completion: @escaping (Data?) -> ()) {
         let req = URLRequest(url: url, cachePolicy: .useProtocolCachePolicy, timeoutInterval: 60)
         URLSession.shared.dataTask(with: req) { (data, response, err) in
             if let err = err {
                 print("failed to fetch events: ", err)
+                completion(nil)
                 return
             }
-            guard let response = response as? HTTPURLResponse else { return }
-            guard response.statusCode == 200 else { return }
-            guard let data = data else { return }
-            self.imageCache[url.absoluteString] = data
+            guard let response = response as? HTTPURLResponse else {
+                completion(nil)
+                return
+            }
+            guard response.statusCode == 200 else {
+                completion(nil)
+                return
+            }
+            guard let data = data else {
+                completion(nil)
+                return
+            }
+            //self.imageCache[url.absoluteString] = data
             completion(data)
         }.resume()
     }
