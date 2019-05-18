@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import MapKit
 
 class FavouriteController: UICollectionViewController {
     
@@ -58,6 +59,13 @@ class FavouriteController: UICollectionViewController {
 }
 
 extension FavouriteController: FavouriteCellDelegate {
+    func presentDirections(_ event: Event) {
+        let address = event.locationAddress?.replacingOccurrences(of: " ", with: "")
+        guard let url = URL(string:"http://maps.apple.com/?address=\(address ?? "")") else { return }
+        print("yay")
+        UIApplication.shared.open(url)
+    }
+    
     func presentDeleteConfirmation(_ event: Event) {
         let confimationController = UIAlertController(title: "Fjern Event", message: "Dette fjerner eventet fra denne listen. Du kan fortsatt finne det i 'Events' tabben", preferredStyle: .actionSheet)
         confimationController.addAction(UIAlertAction(title: "Fjern", style: .destructive, handler: { (_) in

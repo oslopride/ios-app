@@ -132,6 +132,8 @@ class MapController: UIViewController, MKMapViewDelegate {
                 ]))
             let img = UIImage(named: "pridepark")
             view.image = img
+            calloutView.mapURL = URL(string:"http://maps.apple.com/?address=Karl+Johans+gate+24")
+
 
             calloutView.titleLabel.attributedText = attrText
         } else if annotation == prideHouseArtAnnotaion {
@@ -156,6 +158,7 @@ class MapController: UIViewController, MKMapViewDelegate {
             
             let img = UIImage(named: "pride_art")
             view.image = img
+            calloutView.mapURL = URL(string:"http://maps.apple.com/?address=youngstorget")
             
             calloutView.titleLabel.attributedText = attrText
             
@@ -172,6 +175,7 @@ class MapController: UIViewController, MKMapViewDelegate {
                 NSAttributedString.Key.foregroundColor : UIColor.kindaBlack
                 ]))
             calloutView.titleLabel.attributedText = attrText
+            calloutView.mapURL = URL(string:"http://maps.apple.com/?address=Gronlandsleiret+Platous+Gate+25")
 
         } else if annotation == prideParadeEndAnnotation {
             let img = UIImage(named: "trip")?.withRenderingMode(.alwaysTemplate)
@@ -188,6 +192,7 @@ class MapController: UIViewController, MKMapViewDelegate {
                 ]))
             
             calloutView.titleLabel.attributedText = attrText
+            calloutView.mapURL = URL(string:"http://maps.apple.com/?address=Karl+Johans+gate+24")
         }
         
         view.detailCalloutAccessoryView = calloutView
@@ -209,19 +214,51 @@ class AnnotationCalloutView: UIView {
         
     }()
     
+    let mapsButton: UIButton = {
+        let butt = UIButton(type: .system)
+        butt.translatesAutoresizingMaskIntoConstraints = false
+//        butt.setTitle("Kart", for: .normal)
+        butt.addTarget(self, action: #selector(presentMaps), for: .touchUpInside)
+        butt.setImage(UIImage(named: "directions"), for: .normal)
+        butt.tintColor = .prideBlue
+        
+        return butt
+    }()
+    
+    var mapURL: URL?
+    
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         addSubview(titleLabel)
+        addSubview(mapsButton)
+
         [
             titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: 0),
             titleLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
-            titleLabel.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor, constant: -10),
+            //titleLabel.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor, constant: -10),
             titleLabel.leftAnchor.constraint(equalTo: leftAnchor, constant: 3),
             titleLabel.rightAnchor.constraint(equalTo: rightAnchor, constant: -3)
             ].forEach { $0.isActive = true }
         
+        [
+            mapsButton.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 10),
+            mapsButton.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor, constant: -10),
+            mapsButton.leftAnchor.constraint(equalTo: leftAnchor, constant: 3),
+            mapsButton.heightAnchor.constraint(equalToConstant: 44),
+            mapsButton.widthAnchor.constraint(equalToConstant: 44)
+            ].forEach { $0.isActive = true }
         
+        
+    }
+    
+    @objc fileprivate func presentMaps() {
+        if let mapsURL = mapURL {
+            UIApplication.shared.open(mapsURL)
+        } else {
+            print("url is not valid")
+        }
     }
     
     required init?(coder aDecoder: NSCoder) {

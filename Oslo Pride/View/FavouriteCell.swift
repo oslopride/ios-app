@@ -10,6 +10,7 @@ import UIKit
 
 protocol FavouriteCellDelegate {
     func presentDeleteConfirmation(_ event: Event)
+    func presentDirections(_ event: Event)
 }
 
 class FavouriteCell: UICollectionViewCell {
@@ -66,10 +67,11 @@ class FavouriteCell: UICollectionViewCell {
         return butt
     }()
     
-    let directionsButton: UIButton = {
+    lazy var directionsButton: UIButton = {
         let butt = UIButton(type: .system)
         butt.setImage(UIImage(named: "directions"), for: .normal)
         butt.tintColor = UIColor.prideBlue
+        butt.addTarget(self, action: #selector(displayDirections), for: .touchUpInside)
         
         return butt
     }()
@@ -77,6 +79,11 @@ class FavouriteCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupLayout()
+    }
+    
+    @objc fileprivate func displayDirections() {
+        print("hai")
+        delegate?.presentDirections(event)
     }
     
     @objc fileprivate func displayDeleteConfirmation() {

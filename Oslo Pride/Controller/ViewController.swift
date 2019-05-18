@@ -26,12 +26,12 @@ class ViewController: UITableViewController {
         tableView.register(UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: "headerfooter")
         //navigationController?.navigationBar.prefersLargeTitles = true
         setupNavItems()
-        navigationController?.navigationBar.largeTitleTextAttributes = [
-            NSAttributedString.Key.foregroundColor : UIColor.pridePurple
-        ]
-        navigationController?.navigationBar.titleTextAttributes = [
-            NSAttributedString.Key.foregroundColor : UIColor.pridePurple
-        ]
+//        navigationController?.navigationBar.largeTitleTextAttributes = [
+//            NSAttributedString.Key.foregroundColor : UIColor.pridePurple
+//        ]
+//        navigationController?.navigationBar.titleTextAttributes = [
+//            NSAttributedString.Key.foregroundColor : UIColor.pridePurple
+//        ]
         
         refreshController.addTarget(self, action: #selector(displayEvents), for: .valueChanged)
         //tableView.refreshControl = refreshController
