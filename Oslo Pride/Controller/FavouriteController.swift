@@ -21,11 +21,11 @@ class FavouriteController: UICollectionViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        // Fetch saved favourites
-        print("fetching")
         CoreDataManager.shared.getFavourites { (fav) in
-            fav.forEach({ (f) in
-                print(f.title)
+            var fav = fav
+            fav.sort(by: { (e1, e2) -> Bool in
+                guard let t1 = e1.startingTime, let t2 = e2.startingTime else { return false }
+                return t1 < t2
             })
             DispatchQueue.main.async {
                 self.favourites = fav
