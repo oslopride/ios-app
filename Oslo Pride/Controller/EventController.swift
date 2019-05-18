@@ -87,26 +87,7 @@ class EventController: UIViewController {
         dateLabel.numberOfLines = 0
         
         guard let start = event?.startingTime, let end = event?.endingTime else { return }
-        let formatter = DateFormatter()
-        formatter.locale = Locale(identifier: "no_BM_POSIX")
-        formatter.dateFormat = "EEEE dd MMMM"
-        let dayString = formatter.string(from: start)
-        formatter.dateFormat = "HH:mm"
-        let startTime = formatter.string(from: start)
-        let endTime = formatter.string(from: end)
-        
-        
-        let attrText = NSMutableAttributedString()
-        attrText.append(NSAttributedString(string: (dayString.first?.uppercased() ?? "") + dayString.dropFirst().lowercased() + "\n", attributes: [
-            NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 16),
-            NSAttributedString.Key.foregroundColor : UIColor.graySuit
-            ]))
-        attrText.append(NSAttributedString(string: "\(startTime) - \(endTime)", attributes: [
-            NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 16),
-            NSAttributedString.Key.foregroundColor : UIColor.kindaBlack
-            ]))
-        dateLabel.attributedText = attrText
-        
+        dateLabel.setupEventDateLabel(start: start, end: end)
         stackView.addArrangedSubview(dateLabel)
         
         let toggleFavouriteButton = UIButton(type: .system)

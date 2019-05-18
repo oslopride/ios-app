@@ -24,7 +24,7 @@ class EventCell: UITableViewCell {
     let eventTitleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.boldSystemFont(ofSize: 18)
+        label.font = UIFont.boldSystemFont(ofSize: 16)
         label.numberOfLines = 0
         return label
     }()
@@ -72,10 +72,6 @@ class EventCell: UITableViewCell {
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    deinit {
-        print("cell deinit")
     }
     
 }

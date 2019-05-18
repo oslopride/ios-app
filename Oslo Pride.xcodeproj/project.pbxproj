@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		3A04D3C2228EE44400AAD8BB /* DownloadController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A04D3C1228EE44400AAD8BB /* DownloadController.swift */; };
 		3A04D3C4228F061700AAD8BB /* FavouriteController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A04D3C3228F061700AAD8BB /* FavouriteController.swift */; };
+		3A686CBF2290A2A300F48475 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A686CBE2290A2A300F48475 /* String.swift */; };
 		3A9F6045228F2AFD00AF937C /* FavouriteCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9F6044228F2AFD00AF937C /* FavouriteCell.swift */; };
 		3AB6CC74228B26EB0039868E /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB6CC73228B26EB0039868E /* CoreDataManager.swift */; };
 		3AB6CC77228B27880039868E /* PrideDataModels.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 3AB6CC75228B27880039868E /* PrideDataModels.xcdatamodeld */; };
@@ -29,6 +30,7 @@
 /* Begin PBXFileReference section */
 		3A04D3C1228EE44400AAD8BB /* DownloadController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadController.swift; sourceTree = "<group>"; };
 		3A04D3C3228F061700AAD8BB /* FavouriteController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavouriteController.swift; sourceTree = "<group>"; };
+		3A686CBE2290A2A300F48475 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		3A9F6044228F2AFD00AF937C /* FavouriteCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavouriteCell.swift; sourceTree = "<group>"; };
 		3AB6CC73228B26EB0039868E /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		3AB6CC76228B27880039868E /* PrideDataModels.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = PrideDataModels.xcdatamodel; sourceTree = "<group>"; };
@@ -125,8 +127,8 @@
 				3AECE97F22760D9700F9DEF0 /* ViewController.swift */,
 				3AEE58982288739000891790 /* TabBarController.swift */,
 				3AEE589A2288740F00891790 /* MapController.swift */,
-				3AEE58A1228882F900891790 /* EventController.swift */,
 				3A04D3C1228EE44400AAD8BB /* DownloadController.swift */,
+				3AEE58A1228882F900891790 /* EventController.swift */,
 				3A04D3C3228F061700AAD8BB /* FavouriteController.swift */,
 			);
 			path = Controller;
@@ -136,6 +138,7 @@
 			isa = PBXGroup;
 			children = (
 				3AEE589F22887E4C00891790 /* UIColor.swift */,
+				3A686CBE2290A2A300F48475 /* String.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -224,6 +227,7 @@
 				3AECE97E22760D9700F9DEF0 /* AppDelegate.swift in Sources */,
 				3AEE589022884A1C00891790 /* NetworkAPI.swift in Sources */,
 				3AB6CC74228B26EB0039868E /* CoreDataManager.swift in Sources */,
+				3A686CBF2290A2A300F48475 /* String.swift in Sources */,
 				3A04D3C4228F061700AAD8BB /* FavouriteController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
