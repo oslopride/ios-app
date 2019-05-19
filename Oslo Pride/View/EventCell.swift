@@ -39,10 +39,27 @@ class EventCell: UITableViewCell {
         return label
     }()
     
+    var event: Event? {
+        didSet {
+            setupUI()
+        }
+    }
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         eventImageView.image = nil
         setupLayout()
+    }
+    
+    fileprivate func setupUI() {
+        guard let event = event else { return }
+        
+        if let startingTime = event.startingTime, let endingTime = event.endingTime {
+            let formatter = DateFormatter()
+            formatter.dateFormat = "HH:mm"
+            eventOrganizerLabel.text = "\(formatter.string(from: startingTime)) - \(formatter.string(from: endingTime))"
+        }
+        
     }
     
     fileprivate func setupLayout() {

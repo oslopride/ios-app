@@ -108,8 +108,7 @@ extension ViewController {
         if let imageData = event.image {
             cell.eventImageView.image = UIImage(data: imageData)
         }
-        
-        cell.eventOrganizerLabel.text = event.organizer
+        cell.event = days?[indexPath.section][indexPath.row]
         
         return cell
     }
