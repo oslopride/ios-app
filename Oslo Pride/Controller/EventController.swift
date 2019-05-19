@@ -8,6 +8,7 @@
 
 import UIKit
 import WebKit
+import SafariServices
 
 class EventController: UIViewController {
     
@@ -48,28 +49,13 @@ class EventController: UIViewController {
         if let imageData = event?.image {
             imageView.image = UIImage(data: imageData)
         }
-        
-//        scrollView.addSubview(imageView)
-//        [
-//            imageView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 24),
-//            imageView.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 10),
-//            imageView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -24),
-//            //imageView.heightAnchor.constraint(equalToConstant: (view.frame.width-24*2)*0.618033989)
-//            imageView.heightAnchor.constraint(equalToConstant: view.frame.width-24*2)
-//            //imageView.heightAnchor.constraint(equalToConstant: 50),
-//            //imageView.widthAnchor.constraint(equalToConstant: 50)
-//            ].forEach { $0.isActive = true }
-        
-        
+
         scrollView.addSubview(imageView)
         [
             imageView.leftAnchor.constraint(equalTo: view.leftAnchor),
             imageView.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 0),
             imageView.rightAnchor.constraint(equalTo: view.rightAnchor),
-            //imageView.heightAnchor.constraint(equalToConstant: (view.frame.width-24*2)*0.618033989)
             imageView.heightAnchor.constraint(equalToConstant: view.frame.width*0.618033989)
-            //imageView.heightAnchor.constraint(equalToConstant: 50),
-            //imageView.widthAnchor.constraint(equalToConstant: 50)
             ].forEach { $0.isActive = true }
         
         
@@ -80,7 +66,6 @@ class EventController: UIViewController {
             stackView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -10),
             stackView.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 24),
             stackView.bottomAnchor.constraint(lessThanOrEqualTo: scrollView.bottomAnchor, constant: -24)
-            //stackView.heightAnchor.constraint(equalToConstant: 1000)
             ].forEach { $0.isActive = true }
         
         let dateLabel = UILabel()
@@ -95,12 +80,28 @@ class EventController: UIViewController {
         toggleFavouriteButton.translatesAutoresizingMaskIntoConstraints = false
         toggleFavouriteButton.addTarget(self, action: #selector(toggleFavourite), for: .touchUpInside)
         toggleFavouriteButton.tintColor = .pridePurple
-        scrollView.addSubview(toggleFavouriteButton)
+        
+        let actionsStack = UIStackView()
+        actionsStack.translatesAutoresizingMaskIntoConstraints = false
+        actionsStack.distribution = .fillEqually
+        if let saleURL = event?.ticketSaleWebpage {
+            let webpageButton = UIButton(type: .system)
+            webpageButton.setImage(UIImage(named: "store"), for: .normal)
+            //("Billetter", for: .normal)
+            webpageButton.tintColor = .pridePurple
+            webpageButton.addTarget(self, action: #selector(displaySalesWebpage), for: .touchUpInside)
+            actionsStack.addArrangedSubview(webpageButton)
+        } else {
+            actionsStack.addArrangedSubview(UIView())
+        }
+        
+        actionsStack.addArrangedSubview(toggleFavouriteButton)
+        scrollView.addSubview(actionsStack)
         [
-            toggleFavouriteButton.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -24),
-            toggleFavouriteButton.centerYAnchor.constraint(equalTo: dateLabel.centerYAnchor),
-            toggleFavouriteButton.heightAnchor.constraint(equalToConstant: 55),
-            toggleFavouriteButton.widthAnchor.constraint(equalToConstant: 55)
+            actionsStack.centerYAnchor.constraint(equalTo: dateLabel.centerYAnchor),
+            actionsStack.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -10),
+            actionsStack.heightAnchor.constraint(equalToConstant: 55),
+            actionsStack.leftAnchor.constraint(equalTo: view.centerXAnchor)
             ].forEach { $0.isActive = true }
         
         let descriptionLabel = UILabel()
@@ -117,14 +118,19 @@ class EventController: UIViewController {
             descriptionLabel.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: -24)
             ].forEach { $0.isActive = true }
         
-        
+    }
+    
+    @objc fileprivate func displaySalesWebpage() {
+        guard let url = event?.ticketSaleWebpage else { return }
+        let controller = SFSafariViewController(url: url)
+        present(controller, animated: true, completion: nil)
     }
     
     @objc fileprivate func toggleFavourite() {
         guard let event = event else { return }
         CoreDataManager.shared.toggleFavourite(event: event) { (err) in
             if let err = err {
-                print("failed to save event")
+                print("failed to save event: ", err)
                 return
             }
             DispatchQueue.main.async {

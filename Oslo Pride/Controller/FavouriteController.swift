@@ -67,7 +67,7 @@ extension FavouriteController: FavouriteCellDelegate {
     }
     
     func presentDeleteConfirmation(_ event: Event) {
-        let confimationController = UIAlertController(title: "Fjern Event", message: "Dette fjerner eventet fra denne listen. Du kan fortsatt finne det i 'Events' tabben", preferredStyle: .actionSheet)
+        let confimationController = UIAlertController(title: "Fjern Event", message: "Du kan finne det igjen under Events", preferredStyle: .actionSheet)
         confimationController.addAction(UIAlertAction(title: "Fjern", style: .destructive, handler: { (_) in
             CoreDataManager.shared.toggleFavourite(event: event, completion: { (err) in
                 if let err = err {
