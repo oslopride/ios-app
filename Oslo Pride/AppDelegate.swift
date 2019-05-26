@@ -22,7 +22,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.makeKeyAndVisible()
         window?.rootViewController = TabBarController()
         
-        UINavigationBar.appearance().tintColor = .prideRed
+        //UINavigationBar.appearance().tintColor = .prideRed
         UINavigationBar.appearance().isTranslucent = false
         UINavigationBar.appearance().shadowImage = UIImage()
         

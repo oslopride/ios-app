@@ -7,10 +7,13 @@
 //
 
 import UIKit
+import UserNotifications
+import UserNotificationsUI
 
 protocol FavouriteCellDelegate {
     func presentDeleteConfirmation(_ event: Event)
     func presentDirections(_ event: Event)
+    func createNotification(_ event: Event)
 }
 
 class FavouriteCell: UICollectionViewCell {
@@ -60,7 +63,7 @@ class FavouriteCell: UICollectionViewCell {
     
     lazy var deleteButton: UIButton = {
         let butt = UIButton(type: .system)
-        butt.setImage(UIImage(named: "delete"), for: .normal)
+        butt.setImage(UIImage(named: "delete_twotone"), for: .normal)
         butt.tintColor = UIColor.prideRed
         butt.addTarget(self, action: #selector(displayDeleteConfirmation), for: .touchUpInside)
         
@@ -69,9 +72,18 @@ class FavouriteCell: UICollectionViewCell {
     
     lazy var directionsButton: UIButton = {
         let butt = UIButton(type: .system)
-        butt.setImage(UIImage(named: "directions"), for: .normal)
+        butt.setImage(UIImage(named: "directions_twotone"), for: .normal)
         butt.tintColor = UIColor.prideBlue
         butt.addTarget(self, action: #selector(displayDirections), for: .touchUpInside)
+        
+        return butt
+    }()
+    
+    lazy var reminderButton: UIButton = {
+        let butt = UIButton(type: .system)
+        butt.setImage(UIImage(named: "alert_twotone"), for: .normal)
+        butt.tintColor = UIColor.prideYellow
+        butt.addTarget(self, action: #selector(createNotification), for: .touchUpInside)
         
         return butt
     }()
@@ -82,12 +94,15 @@ class FavouriteCell: UICollectionViewCell {
     }
     
     @objc fileprivate func displayDirections() {
-        print("hai")
         delegate?.presentDirections(event)
     }
     
     @objc fileprivate func displayDeleteConfirmation() {
         delegate?.presentDeleteConfirmation(event)
+    }
+    
+    @objc fileprivate func createNotification() {
+        delegate?.createNotification(event)
     }
     
     fileprivate func setupLayout() {
@@ -120,7 +135,7 @@ class FavouriteCell: UICollectionViewCell {
             countdownLabel.leftAnchor.constraint(equalTo: centerXAnchor)
             ].forEach { $0.isActive = true }
         
-        let actionsStack = UIStackView(arrangedSubviews: [deleteButton, directionsButton])
+        let actionsStack = UIStackView(arrangedSubviews: [deleteButton, reminderButton, directionsButton])
         actionsStack.translatesAutoresizingMaskIntoConstraints = false
         actionsStack.distribution = .fillEqually
         addSubview(actionsStack)

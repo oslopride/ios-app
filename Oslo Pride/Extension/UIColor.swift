@@ -23,5 +23,13 @@ extension UIColor {
     static let prideBlue = UIColor(red:0.65, green:0.76, blue:0.96, alpha:1.0)
     static let prideGreen = UIColor(red:0.45, green:0.75, blue:0.58, alpha:1.0)
     static let prideRed = UIColor(red:0.90, green:0.45, blue:0.51, alpha:1.0)
+    static let prideDeepRed = UIColor(red:0.64, green:0.12, blue:0.20, alpha:1.0)
     static let pridePurple = UIColor(red:0.67, green:0.60, blue:0.89, alpha:1.0)
+    static let prideViolet = UIColor(red:0.21, green:0.33, blue:0.71, alpha:1.0)
+    static let prideDeepPurple = UIColor(red:0.21, green:0.14, blue:0.45, alpha:1.0)
+    static let prideYellow = UIColor(red:0.99, green:0.75, blue:0.18, alpha:1.0)
+    static let prideOrange = UIColor(red:0.93, green:0.37, blue:0.21, alpha:1.0)
+    
+    static let appleMapGreen = UIColor(red:0.78, green:0.90, blue:0.72, alpha:1.00)
+    static let mapForestGreen = UIColor(red:0.47, green:0.76, blue:0.40, alpha:1.00)
 }

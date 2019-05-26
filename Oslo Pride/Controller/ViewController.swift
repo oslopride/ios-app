@@ -23,8 +23,9 @@ class ViewController: UITableViewController {
         view.backgroundColor = .white
         tableView.register(EventCell.self, forCellReuseIdentifier: cellID)
         
-        tableView.register(UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: "headerfooter")
+        //tableView.register(TableViewHeaderLabel.self, forHeaderFooterViewReuseIdentifier: "headerfooter")
         //navigationController?.navigationBar.prefersLargeTitles = true
+        navigationController?.navigationBar.tintColor = .prideDeepPurple//.prideYellow
         setupNavItems()
 //        navigationController?.navigationBar.largeTitleTextAttributes = [
 //            NSAttributedString.Key.foregroundColor : UIColor.pridePurple
@@ -40,6 +41,7 @@ class ViewController: UITableViewController {
     }
     
     fileprivate func setupNavItems() {
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Slett", style: .plain, target: self, action: #selector(reset))
     }
     
@@ -114,7 +116,10 @@ extension ViewController {
     }
     
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let view = UITableViewHeaderFooterView(reuseIdentifier: "headerfooter")
+        //let view = UITableViewHeaderFooterView(reuseIdentifier: "headerfooter")
+        
+        let headerLabel = TableViewHeaderLabel()
+        
         
         guard let time = days?[section].first?.startingTime else { return nil }
         let formatter = DateFormatter()
@@ -123,9 +128,15 @@ extension ViewController {
         
         let timeText = formatter.string(from: time)
         
-        view.textLabel?.text = (timeText.first?.uppercased() ?? "") + timeText.dropFirst().lowercased()
+        headerLabel.text = (timeText.first?.uppercased() ?? "") + timeText.dropFirst().lowercased()
         
-        return view
+        let containerView = UIView()
+        containerView.addSubview(headerLabel)
+        headerLabel.centerXAnchor.constraint(equalTo: containerView.centerXAnchor).isActive = true
+        headerLabel.centerYAnchor.constraint(equalTo: containerView.centerYAnchor).isActive = true
+        
+        
+        return containerView
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

@@ -79,7 +79,7 @@ class EventController: UIViewController {
         toggleFavouriteButton.setImage(UIImage(named: "star_twotone_large"), for: .normal)
         toggleFavouriteButton.translatesAutoresizingMaskIntoConstraints = false
         toggleFavouriteButton.addTarget(self, action: #selector(toggleFavourite), for: .touchUpInside)
-        toggleFavouriteButton.tintColor = .pridePurple
+        toggleFavouriteButton.tintColor = .prideGreen//.prideYellow//.pridePurple
         
         let actionsStack = UIStackView()
         actionsStack.translatesAutoresizingMaskIntoConstraints = false

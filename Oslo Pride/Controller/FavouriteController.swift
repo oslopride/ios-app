@@ -8,6 +8,7 @@
 
 import UIKit
 import MapKit
+import UserNotifications
 
 class FavouriteController: UICollectionViewController {
     
@@ -59,8 +60,62 @@ class FavouriteController: UICollectionViewController {
 }
 
 extension FavouriteController: FavouriteCellDelegate {
+    func createNotification(_ event: Event) {
+        
+        let actionSheet = UIAlertController(title: "Påminnelse", message: "Velg tiden før eventet starter du vil få påminnelsen", preferredStyle: .actionSheet)
+        
+        actionSheet.addAction(UIAlertAction(title: "En Time", style: .default, handler: { (_) in
+            self.addNotification(after: 3600, title: event.title ?? "", body: "en time", id: event.id ?? "")
+        }))
+        actionSheet.addAction(UIAlertAction(title: "45 Minutter", style: .default, handler: { (_) in
+            self.addNotification(after: 2700, title: event.title ?? "", body: "45 minutter", id: event.id ?? "")
+        }))
+        actionSheet.addAction(UIAlertAction(title: "30 Minutter", style: .default, handler: { (_) in
+            self.addNotification(after: 1800, title: event.title ?? "", body: "30 minutter", id: event.id ?? "")
+        }))
+        actionSheet.addAction(UIAlertAction(title: "15 Minutter", style: .default, handler: { (_) in
+            self.addNotification(after: 900, title: event.title ?? "", body: "15 minutter", id: event.id ?? "")
+        }))
+        actionSheet.addAction(UIAlertAction(title: "10 sekunder", style: .default, handler: { (_) in
+            self.addNotification(after: 10, title: event.title ?? "", body: "10 sekunder", id: event.id ?? "")
+        }))
+        actionSheet.addAction(UIAlertAction(title: "Avbryt", style: .cancel, handler: nil))
+
+        present(actionSheet, animated: true, completion: nil)
+    }
+    
+    fileprivate func addNotification(after time: TimeInterval, title: String, body: String, id: String) {
+        let auth = UNAuthorizationOptions(arrayLiteral: [.alert])
+        UNUserNotificationCenter.current().requestAuthorization(options: auth) { [unowned self] (didConsent, err) in
+            if let err = err {
+                print("failed to ask for consent: ", err)
+                return
+            }
+            
+            guard didConsent else {
+                print("did not consent")
+                return
+            }
+            
+            let content = UNMutableNotificationContent()
+            content.title = title
+            content.body = "Eventet starter om " + body
+            
+            let trigger = UNTimeIntervalNotificationTrigger(timeInterval: time, repeats: false)
+            let req = UNNotificationRequest(identifier: id, content: content, trigger: trigger)
+            
+            UNUserNotificationCenter.current().add(req) { (err) in
+                if let err = err {
+                    print("failed to create notification: ", err)
+                    return
+                }
+                print("all good")
+            }
+        }
+    }
+    
     func presentDirections(_ event: Event) {
-        let address = event.locationAddress?.replacingOccurrences(of: " ", with: "")
+        let address = event.locationAddress?.replacingOccurrences(of: " ", with: "+")
         guard let url = URL(string:"http://maps.apple.com/?address=\(address ?? "")") else { return }
         print("yay")
         UIApplication.shared.open(url)
