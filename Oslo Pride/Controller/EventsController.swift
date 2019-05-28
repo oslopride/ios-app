@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UITableViewController {
+class EventsController: UITableViewController {
 
     var events: [Event]?
     var days: [[Event]]?
@@ -93,7 +93,7 @@ class ViewController: UITableViewController {
 
 }
 
-extension ViewController {
+extension EventsController {
     
     override func numberOfSections(in tableView: UITableView) -> Int {
         return days?.count ?? 0
@@ -148,7 +148,7 @@ extension ViewController {
     
 }
 
-extension ViewController {
+extension EventsController {
     
     
     

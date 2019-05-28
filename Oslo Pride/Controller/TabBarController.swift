@@ -12,7 +12,7 @@ class TabBarController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let viewController = ViewController()
+        let viewController = EventsController()
         viewController.tabBarItem = UITabBarItem(title: "Events", image: UIImage(named: "event_twotone"), tag: 0)
         
         let mapController = MapController()

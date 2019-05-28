@@ -44,12 +44,15 @@ class CoreDataManager {
         newEvent.contactPersonName = event.contactPerson?.name
         newEvent.contactPersonEmail = event.contactPerson?.epost
         
-        do {
-            try pc.viewContext.save()
-            completion(newEvent, nil)
-        } catch let err {
-            completion(nil, err)
+        DispatchQueue.main.async {
+            do {
+                try self.pc.viewContext.save()
+                completion(newEvent, nil)
+            } catch let err {
+                completion(nil, err)
+            }
         }
+        
     }
     
     fileprivate func populate(event: Event, from sanityEvent: SanityEvent) {
@@ -98,12 +101,15 @@ class CoreDataManager {
     // MARK:- Update
     func updateEventImage(_ event: Event, image: Data, completion: @escaping (Error?) -> ()) {
         event.image = image
-        do {
-            try pc.viewContext.save()
-            completion(nil)
-        } catch let err {
-            completion(err)
+        DispatchQueue.main.async {
+            do {
+                try self.pc.viewContext.save()
+                completion(nil)
+            } catch let err {
+                completion(err)
+            }
         }
+
     }
     
     func toggleFavourite(event: Event, completion: @escaping (Error?) -> ()) {

@@ -62,6 +62,7 @@ class DownloadController: UIViewController {
     
     fileprivate func downloadEvents() {
         NetworkAPI.shared.fetchEvents { [unowned self] (sanityEvents) in
+            guard let sanityEvents = sanityEvents else { return }
             self.total = sanityEvents.count-1
             let group = DispatchGroup()
             sanityEvents.forEach({ (sanityEvent) in
@@ -83,15 +84,16 @@ class DownloadController: UIViewController {
                             print("formatted result: ", string)
                             
                             guard let img = UIImage(data: data)?.jpegData(compressionQuality: 0.3) else { return }
-                            CoreDataManager.shared.updateEventImage(event, image: img, completion: { (err) in
-                                group.leave()
-                                self.current += 1
-                                DispatchQueue.main.async {
-                                    let percentage = Float(self.current)/Float(self.total)
-                                    self.progressBar.setProgress(percentage, animated: true)
-                                }
-                                print("\(self.current) / \(self.total)")
-                            })
+                                CoreDataManager.shared.updateEventImage(event, image: img, completion: { (err) in
+                                    group.leave()
+                                    self.current += 1
+                                    //DispatchQueue.main.async {
+                                        let percentage = Float(self.current)/Float(self.total)
+                                        self.progressBar.setProgress(percentage, animated: true)
+                                    //}
+                                    print("\(self.current) / \(self.total)")
+                                })
+  
                         })
                         
                     } else {
