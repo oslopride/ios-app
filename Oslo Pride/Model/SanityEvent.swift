@@ -8,6 +8,12 @@
 
 import Foundation
 
+struct SanityResponse: Decodable {
+    var ms: Int?
+    var query: String?
+    var result: [SanityEvent]?
+}
+
 fileprivate struct SanityEventRaw: Decodable {
     var _id: String
     var title: String
