@@ -11,8 +11,6 @@ import Foundation
 class EventsManager {
     static let shared = EventsManager()
     
-    //fileprivate var raw: [Event]?
-    
     fileprivate var days: [[Event]]?
     
     func set(events: [Event]) {
@@ -23,34 +21,62 @@ class EventsManager {
         return days?[day][n] ?? nil
     }
     
-    func get() -> [Event] {
-        var e = [Event]()
-        days?.forEach({ (b) in
-            b.forEach({ (c) in
-                e.append(c)
-            })
-        })
-        return e
-    }
-    
-    var numberOfDays: Int {
-        get {
-            return days?.count ?? 0
-        }
+    func numberOfDays() -> Int {
+        return days?.count ?? 0
     }
     
     func numberInDay(_ n: Int) -> Int {
         return days?[n].count ?? 0
     }
     
-    func filter(types: [String]) {
-        
+    fileprivate var categories = [String]()
+    
+    func addCategoryFilter(_ category: String, remove: Bool) {
+        if remove {
+            categories.append(category)
+        } else {
+            var newFilter = [String]()
+            for f in categories {
+                if f != category {
+                    newFilter.append(f)
+                }
+            }
+            categories = newFilter
+        }
+    }
+    
+    fileprivate func filterByCategory(days: [[Event]]) -> [[Event]] {
+        var categoryFilter = [[Event]]()
+        days.forEach({ (events) in
+            var cache = [Event]()
+            events.forEach({ (event) in
+                for f in categories {
+                    if event.category == f {
+                        return
+                    }
+                }
+                cache.append(event)
+            })
+            if cache.count > 0 {
+                categoryFilter.append(cache)
+            }
+        })
+        return categoryFilter
+    }
+    
+    func get() -> [[Event]] {
+        var newFilter = [[Event]]()
+        guard let days = days else { return newFilter }
+
+        newFilter = filterByCategory(days: days)
+
+        return newFilter
     }
 
     // Sorting alg in this function is a hack for Pride 2019.
     // It does not work if pride events overlaps month bondary
     // UPDATE: Not longer a hack, checks for months and year aswell
-    fileprivate func standardSortByDay(filtered: [Event]) -> [[Event]] {
+    func standardSortByDay(filtered: [Event]) -> [[Event]] {
         // Step 1: Sort events by time & date (descending).
         var filtered = filtered
         filtered.sort { (e1, e2) -> Bool in
@@ -115,14 +141,13 @@ extension EventsManager {
             // Image url has changed, update image
         }
         
-        CoreDataManager.shared.update(local: local, remote: remote, completion: { err in
-            if let err = err {
-                print("failed to update event: ", err)
-            }
-        })
+        DispatchQueue.main.async {
+            CoreDataManager.shared.update(local: local, remote: remote, completion: { err in
+                if let err = err {
+                    print("failed to update event: ", err)
+                }
+            })
+        }
+
     }
-    
-    
-    
-    
 }

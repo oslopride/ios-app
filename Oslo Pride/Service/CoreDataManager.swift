@@ -90,10 +90,11 @@ class CoreDataManager {
     }
     
     func update(local: Event, remote: SanityEvent, completion: @escaping (Error?) -> ()) {
-        pc.performBackgroundTask { (backgroundContext) in
+        //pc.performBackgroundTask { (backgroundContext) in
             local.id = remote.id
             local.title = remote.title
             local.organizer = remote.organizer
+            local.category = remote.category
             local.eventDescription = remote.description
             local.startingTime = remote.startingTime
             local.endingTime = remote.endingTime
@@ -109,15 +110,15 @@ class CoreDataManager {
             local.contactPersonName = remote.contactPerson?.name
             local.contactPersonEmail = remote.contactPerson?.epost
             do {
-                if backgroundContext.hasChanges {
-                    try backgroundContext.save()
+                if pc.viewContext.hasChanges {
+                    try pc.viewContext.save()
                 }
                 completion(nil)
             } catch let err {
                 print("failed to update event: ", err)
                 completion(err)
             }
-        }
+        //}
     }
     
     // TODO: Why doesn't this work?

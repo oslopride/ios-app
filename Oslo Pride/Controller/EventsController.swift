@@ -17,6 +17,8 @@ class EventsController: UITableViewController {
     
     var refreshController = UIRefreshControl()
     
+    let headerView = EventsFilterHeaderView()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Events"
@@ -35,6 +37,12 @@ class EventsController: UITableViewController {
         refreshController.addTarget(self, action: #selector(updateEvents), for: .valueChanged)
         tableView.refreshControl = refreshController
         
+        headerView.delegate = self
+        tableView.tableHeaderView = headerView
+        tableView.tableHeaderView?.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 70)
+        
+        tableView.tableFooterView = UIView()
+        
         displayEvents()
     }
     
@@ -47,12 +55,12 @@ class EventsController: UITableViewController {
     }
     
     @objc fileprivate func reset() {
-        CoreDataManager.shared.delete(events: EventsManager.shared.get(), completion: { err in
-            if let err = err {
-                print("failed to delete: ", err)
-            }
-            self.displayEvents()
-        })
+//        CoreDataManager.shared.delete(events: EventsManager.shared.get(), completion: { err in
+//            if let err = err {
+//                print("failed to delete: ", err)
+//            }
+//            self.displayEvents()
+//        })
     }
     
     @objc fileprivate func updateEvents() {
@@ -63,15 +71,16 @@ class EventsController: UITableViewController {
                 let newEvents = EventsManager.shared.compare(local: local, remote: remote)
                 print("We have \(newEvents.count) unsynced events")
                 
-                CoreDataManager.shared.save(events: newEvents, completion: { (newLocalEvents, err) in
-                    if let err = err {
-                        print("failed to batch save: ", err)
-                    }
-                    print("We saved \(newLocalEvents?.count ?? 0) new events")
-                    self.displayEvents()
-
-                })
-                
+                DispatchQueue.main.async {
+                    CoreDataManager.shared.save(events: newEvents, completion: { (newLocalEvents, err) in
+                        if let err = err {
+                            print("failed to batch save: ", err)
+                        }
+                        print("We saved \(newLocalEvents?.count ?? 0) new events")
+                        self.displayEvents()
+                        
+                    })
+                }
             }
         }
     }
@@ -80,6 +89,7 @@ class EventsController: UITableViewController {
         DispatchQueue.main.async {
             CoreDataManager.shared.getAllEvents { (events) in
                 EventsManager.shared.set(events: events)
+                self.days = EventsManager.shared.get()
                 self.tableView.reloadData()
                 self.refreshController.endRefreshing()
                 self.right.isEnabled = true
@@ -92,16 +102,16 @@ class EventsController: UITableViewController {
 extension EventsController {
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return EventsManager.shared.numberOfDays
+        return days?.count ?? 0
     }
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return EventsManager.shared.numberInDay(section)
+        return days?[section].count ?? 0
     }
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellID, for: indexPath) as! EventCell
         cell.eventImageView.image = nil
         
-        guard let event = EventsManager.shared.get(day: indexPath.section, n: indexPath.row) else { return cell }
+        guard let event = days?[indexPath.section][indexPath.row] else { return cell }
         cell.eventTitleLabel.text = event.title ?? "whap"
         if let imageData = event.image {
             cell.eventImageView.image = UIImage(data: imageData)
@@ -113,7 +123,7 @@ extension EventsController {
     
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerLabel = TableViewHeaderLabel()
-        guard let t = EventsManager.shared.get(day: section, n: 0)?.startingTime else { return nil }
+        guard let t = days?[section].first?.startingTime else { return nil }
         let formatter = DateFormatter()
         formatter.dateFormat = "EEEE dd"
         formatter.locale = Locale(identifier: "NO-BM")
@@ -133,13 +143,21 @@ extension EventsController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let c = EventController()
-        c.event = EventsManager.shared.get(day: indexPath.section, n: indexPath.row)
+        c.event = days?[indexPath.section][indexPath.row]
         navigationController?.pushViewController(c, animated: true)
     }
     
 }
 
-extension EventsController {
+extension EventsController: EventsFilterHeaderViewDelegte {
+    
+    func updateFilter(_ filter: Filter, remove: Bool) {
+        print("updating")
+        EventsManager.shared.addCategoryFilter(filter.category, remove: remove)
+        self.days = EventsManager.shared.get()
+        tableView.reloadData()
+    }
+    
     
     
     
