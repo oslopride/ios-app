@@ -23,6 +23,16 @@ class EventsManager {
         return days?[day][n] ?? nil
     }
     
+    func get() -> [Event] {
+        var e = [Event]()
+        days?.forEach({ (b) in
+            b.forEach({ (c) in
+                e.append(c)
+            })
+        })
+        return e
+    }
+    
     var numberOfDays: Int {
         get {
             return days?.count ?? 0
@@ -79,17 +89,13 @@ class EventsManager {
 }
 
 extension EventsManager {
-    
-    
     func compare(local: [Event], remote: [SanityEvent]) -> [SanityEvent] {
-        
         var unsyncedEvents = [SanityEvent]()
-        
         remote.forEach { (remoteEvent) in
             var exists = false
             for i in 0..<local.count {
-                guard let remoteTitle = remoteEvent.title, let localTitle = local[i].title else { continue }
-                if remoteTitle == localTitle {
+                guard let remoteID = remoteEvent.id, let localID = local[i].id else { continue }
+                if remoteID == localID {
                     updateIfNecessary(local: local[i], remote: remoteEvent)
                     exists = true
                     break
@@ -107,9 +113,13 @@ extension EventsManager {
     fileprivate func updateIfNecessary(local: Event, remote: SanityEvent) {
         if let localURL = local.imageURL, let remoteURL = remote.imageURL, localURL.absoluteString != remoteURL {
             // Image url has changed, update image
-            
         }
-
+        
+        CoreDataManager.shared.update(local: local, remote: remote, completion: { err in
+            if let err = err {
+                print("failed to update event: ", err)
+            }
+        })
     }
     
     

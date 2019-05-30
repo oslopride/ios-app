@@ -70,44 +70,45 @@ class DownloadController: UIViewController {
             
             sanityEvents.forEach({ (sanityEvent) in
                 group.enter()
-                CoreDataManager.shared.save(event: sanityEvent, completion: { (event, err) in
-                    if let err = err {
-                        print("failed to add event to core data: ", err)
-                        return
-                    }
-                    guard let event = event else { return }
-                    eventCache.append(event)
-                    if let url = event.imageURL {
-                        NetworkAPI.shared.fetchImage(from: url, completion: { [unowned self] (data) in
-                            guard let data = data else { return }
+                    CoreDataManager.shared.save(event: sanityEvent, completion: { (event, err) in
+                        if let err = err {
+                            print("failed to add event to core data: ", err)
+                            return
+                        }
+                        guard let event = event else { return }
+                        eventCache.append(event)
+                        if let url = event.imageURL {
+                            NetworkAPI.shared.fetchImage(from: url, completion: { [unowned self] (data) in
+                                guard let data = data else { return }
+                                
+                                let formatter = ByteCountFormatter()
+                                formatter.allowedUnits = [.useMB]
+                                formatter.countStyle = .file
+                                let string = formatter.string(fromByteCount: Int64(data.count))
+                                print("\(event.title ?? "") : \(string)")
+                                
+                                guard let img = UIImage(data: data)?.jpegData(compressionQuality: 0.3) else { return }
+                                group.leave()
+//
+//                                CoreDataManager.shared.updateEventImage(event, image: img, completion: { (err) in
+//                                    group.leave()
+//                                    self.current += 1
+//                                    //DispatchQueue.main.async {
+//                                    let percentage = Float(self.current)/Float(self.total)
+//                                    self.progressBar.setProgress(percentage, animated: true)
+//                                    //}
+//                                    print("\(self.current) / \(self.total)")
+//                                })
+                            })
                             
-                            let formatter = ByteCountFormatter()
-                            formatter.allowedUnits = [.useMB]
-                            formatter.countStyle = .file
-                            let string = formatter.string(fromByteCount: Int64(data.count))
-                            print("\(url.path ?? "") : \(string)")
-                            
-                            guard let img = UIImage(data: data)?.jpegData(compressionQuality: 0.3) else { return }
-                                CoreDataManager.shared.updateEventImage(event, image: img, completion: { (err) in
-                                    group.leave()
-                                    self.current += 1
-                                    //DispatchQueue.main.async {
-                                        let percentage = Float(self.current)/Float(self.total)
-                                        self.progressBar.setProgress(percentage, animated: true)
-                                    //}
-                                    print("\(self.current) / \(self.total)")
-                                })
-                        })
-                        
-                    } else {
-                        group.leave()
-                    }
-                })
+                        } else {
+                            group.leave()
+                        }
+                    })
             })
             group.notify(queue: .main, execute: { [unowned self] in
                 EventsManager.shared.set(events: eventCache)
                 self.dismiss(animated: true, completion: nil)
-                
             })
         }
     }

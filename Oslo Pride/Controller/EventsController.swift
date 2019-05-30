@@ -38,46 +38,52 @@ class EventsController: UITableViewController {
         displayEvents()
     }
     
+    lazy var right = UIBarButtonItem(image: UIImage(named: "refresh"), style: .plain, target: self, action: #selector(updateEvents))
+    
     fileprivate func setupNavItems() {
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Slett", style: .plain, target: self, action: #selector(reset))
+        navigationItem.rightBarButtonItem = right
     }
     
     @objc fileprivate func reset() {
-        CoreDataManager.shared.getAllEvents { (events) in
-            CoreDataManager.shared.delete(events: events)
+        CoreDataManager.shared.delete(events: EventsManager.shared.get(), completion: { err in
+            if let err = err {
+                print("failed to delete: ", err)
+            }
             self.displayEvents()
-        }
+        })
     }
     
     @objc fileprivate func updateEvents() {
+        right.isEnabled = false
         CoreDataManager.shared.getAllEvents { (local) in
             NetworkAPI.shared.fetchEvents { (remote) in
                 guard let remote = remote else { return }
                 let newEvents = EventsManager.shared.compare(local: local, remote: remote)
                 print("We have \(newEvents.count) unsynced events")
                 
-                let newLocalEvents = CoreDataManager.shared.save(events: newEvents)
-                print("We saved \(newLocalEvents.count) new events")
-                self.displayEvents()
+                CoreDataManager.shared.save(events: newEvents, completion: { (newLocalEvents, err) in
+                    if let err = err {
+                        print("failed to batch save: ", err)
+                    }
+                    print("We saved \(newLocalEvents?.count ?? 0) new events")
+                    self.displayEvents()
+
+                })
+                
             }
         }
-
-//
-//        CoreDataManager.shared.getAllEvents { (events) in
-//            EventsManager.shared.set(events: events)
-//            self.displayEvents()
-//        }
     }
     
     @objc fileprivate func displayEvents() {
-        CoreDataManager.shared.getAllEvents { (events) in
-            EventsManager.shared.set(events: events)
-            //self.displayEvents()
-        }
         DispatchQueue.main.async {
-            self.tableView.reloadData()
-            self.refreshController.endRefreshing()
+            CoreDataManager.shared.getAllEvents { (events) in
+                EventsManager.shared.set(events: events)
+                self.tableView.reloadData()
+                self.refreshController.endRefreshing()
+                self.right.isEnabled = true
+            }
         }
     }
 
