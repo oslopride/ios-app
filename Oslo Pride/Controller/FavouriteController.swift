@@ -10,7 +10,7 @@ import UIKit
 import MapKit
 import UserNotifications
 
-class FavouriteController: UICollectionViewController {
+class FavouriteController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     
     var favourites: [Event]?
     
@@ -19,7 +19,7 @@ class FavouriteController: UICollectionViewController {
         collectionView.backgroundColor = UIColor(red:0.93, green:0.93, blue:0.96, alpha:1.0)
         view.backgroundColor = .white
         collectionView.register(FavouriteCell.self, forCellWithReuseIdentifier: "cellid")
-        
+        collectionView.register(UICollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: "bottom")
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -54,6 +54,33 @@ class FavouriteController: UICollectionViewController {
         cell.delegate = self
         
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
+        return favourites?.count ?? 0 > 0 ? CGSize(width: view.frame.width, height: 0) : CGSize(width: view.frame.width, height: 300)
+        
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        
+        if kind == UICollectionView.elementKindSectionFooter {
+            let footer = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: "bottom", for: indexPath)
+            let label = UILabel()
+            label.font = UIFont.boldSystemFont(ofSize: 16)
+            label.textColor = .graySuit
+            label.numberOfLines = 0
+            label.textAlignment = .center
+            label.text = "Du kan legge til favoritter fra Events"
+            label.translatesAutoresizingMaskIntoConstraints = false
+            footer.addSubview(label)
+            label.centerXAnchor.constraint(equalTo: footer.centerXAnchor).isActive = true
+            label.centerYAnchor.constraint(equalTo: footer.centerYAnchor).isActive = true
+            
+            
+            return footer
+        }
+        
+        return UICollectionReusableView()
     }
     
     
