@@ -85,7 +85,7 @@ class DownloadController: UIViewController {
                             formatter.allowedUnits = [.useMB]
                             formatter.countStyle = .file
                             let string = formatter.string(fromByteCount: Int64(data.count))
-                            print("formatted result: ", string)
+                            print("\(url.path ?? "") : \(string)")
                             
                             guard let img = UIImage(data: data)?.jpegData(compressionQuality: 0.3) else { return }
                                 CoreDataManager.shared.updateEventImage(event, image: img, completion: { (err) in
@@ -97,7 +97,6 @@ class DownloadController: UIViewController {
                                     //}
                                     print("\(self.current) / \(self.total)")
                                 })
-  
                         })
                         
                     } else {

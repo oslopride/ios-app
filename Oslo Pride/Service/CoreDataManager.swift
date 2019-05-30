@@ -23,6 +23,23 @@ class CoreDataManager {
     }()
     
     // MARK:- Create
+    func save(events: [SanityEvent]) -> [Event] {
+        
+        var newEvents = [Event]()
+        events.forEach { (event) in
+            let semaphore = DispatchSemaphore(value: 0)
+            save(event: event, completion: { (local, err) in
+                if let local = local {
+                    newEvents.append(local)
+                }
+                semaphore.signal()
+            })
+            semaphore.wait()
+        }
+        
+        return newEvents
+    }
+    
     func save(event: SanityEvent, completion: @escaping (Event?, Error?) -> ()) {
         guard let newEvent = NSEntityDescription.insertNewObject(forEntityName: "Event", into: pc.viewContext) as? Event else { return }
         //populate(event: newEvent, from: event)

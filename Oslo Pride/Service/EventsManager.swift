@@ -76,6 +76,41 @@ class EventsManager {
         return days
     }
     
+}
+
+extension EventsManager {
+    
+    
+    func compare(local: [Event], remote: [SanityEvent]) -> [SanityEvent] {
+        
+        var unsyncedEvents = [SanityEvent]()
+        
+        remote.forEach { (remoteEvent) in
+            var exists = false
+            for i in 0..<local.count {
+                guard let remoteTitle = remoteEvent.title, let localTitle = local[i].title else { continue }
+                if remoteTitle == localTitle {
+                    updateIfNecessary(local: local[i], remote: remoteEvent)
+                    exists = true
+                    break
+                }
+            }
+            
+            if !exists {
+                unsyncedEvents.append(remoteEvent)
+            }
+        }
+        
+        return unsyncedEvents
+    }
+    
+    fileprivate func updateIfNecessary(local: Event, remote: SanityEvent) {
+        if let localURL = local.imageURL, let remoteURL = remote.imageURL, localURL.absoluteString != remoteURL {
+            // Image url has changed, update image
+            
+        }
+
+    }
     
     
     

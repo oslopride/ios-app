@@ -32,7 +32,7 @@ class EventsController: UITableViewController {
 //            NSAttributedString.Key.foregroundColor : UIColor.pridePurple
 //        ]
         
-        refreshController.addTarget(self, action: #selector(displayEvents), for: .valueChanged)
+        refreshController.addTarget(self, action: #selector(updateEvents), for: .valueChanged)
         tableView.refreshControl = refreshController
         
         displayEvents()
@@ -51,10 +51,23 @@ class EventsController: UITableViewController {
     }
     
     @objc fileprivate func updateEvents() {
-        CoreDataManager.shared.getAllEvents { (events) in
-            EventsManager.shared.set(events: events)
-            self.displayEvents()
+        CoreDataManager.shared.getAllEvents { (local) in
+            NetworkAPI.shared.fetchEvents { (remote) in
+                guard let remote = remote else { return }
+                let newEvents = EventsManager.shared.compare(local: local, remote: remote)
+                print("We have \(newEvents.count) unsynced events")
+                
+                let newLocalEvents = CoreDataManager.shared.save(events: newEvents)
+                print("We saved \(newLocalEvents.count) new events")
+                self.displayEvents()
+            }
         }
+
+//
+//        CoreDataManager.shared.getAllEvents { (events) in
+//            EventsManager.shared.set(events: events)
+//            self.displayEvents()
+//        }
     }
     
     @objc fileprivate func displayEvents() {
