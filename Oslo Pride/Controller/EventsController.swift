@@ -22,11 +22,9 @@ class EventsController: UITableViewController {
         title = "Events"
         view.backgroundColor = .white
         tableView.register(EventCell.self, forCellReuseIdentifier: cellID)
-        
-        //tableView.register(TableViewHeaderLabel.self, forHeaderFooterViewReuseIdentifier: "headerfooter")
-        //navigationController?.navigationBar.prefersLargeTitles = true
         navigationController?.navigationBar.tintColor = .prideDeepPurple//.prideYellow
         setupNavItems()
+//        navigationController?.navigationBar.prefersLargeTitles = true
 //        navigationController?.navigationBar.largeTitleTextAttributes = [
 //            NSAttributedString.Key.foregroundColor : UIColor.pridePurple
 //        ]
@@ -89,21 +87,14 @@ extension EventsController {
         if let imageData = event.image {
             cell.eventImageView.image = UIImage(data: imageData)
         }
-        cell.event = event//days?[indexPath.section][indexPath.row]
+        cell.event = event
         
         return cell
     }
     
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        //let view = UITableViewHeaderFooterView(reuseIdentifier: "headerfooter")
-        
         let headerLabel = TableViewHeaderLabel()
-        
-        //guard EventsManager.shared.numberOfDays() > 0 else { return nil }
-        
         guard let t = EventsManager.shared.get(day: section, n: 0)?.startingTime else { return nil }
-        
-        //guard let time = days?[section].first?.startingTime else { return nil }
         let formatter = DateFormatter()
         formatter.dateFormat = "EEEE dd"
         formatter.locale = Locale(identifier: "NO-BM")
@@ -123,8 +114,7 @@ extension EventsController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let c = EventController()
-        //c.title = events?[indexPath.row].title ?? ""
-        c.event = EventsManager.shared.get(day: indexPath.section, n: indexPath.row) //days?[indexPath.section][indexPath.row]
+        c.event = EventsManager.shared.get(day: indexPath.section, n: indexPath.row)
         navigationController?.pushViewController(c, animated: true)
     }
     
