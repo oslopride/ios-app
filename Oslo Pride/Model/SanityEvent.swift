@@ -8,10 +8,17 @@
 
 import Foundation
 
+struct SanityResponse: Decodable {
+    var ms: Int?
+    var query: String?
+    var result: [SanityEvent]?
+}
+
 fileprivate struct SanityEventRaw: Decodable {
     var _id: String
     var title: String
     var organizer: String
+    var category: String
     var ingress: String?
     var description: [SanityBlockDescription]?
     var startingTime: String
@@ -37,6 +44,7 @@ struct SanityEvent: Decodable {
     var id: String?
     var title: String?
     var organizer: String?
+    var category: String?
     var ingress: String?
     var description: String?
     var startingTime: Date?
@@ -54,6 +62,7 @@ struct SanityEvent: Decodable {
             self.id = rawResponse._id
             self.title = rawResponse.title
             self.organizer = rawResponse.organizer
+            self.category = rawResponse.category
             self.ingress = rawResponse.ingress
             self.ticketSaleWebpage = rawResponse.ticketSaleWebpage
             self.prices = rawResponse.prices

@@ -23,59 +23,129 @@ class CoreDataManager {
     }()
     
     // MARK:- Create
-    func save(event: SanityEvent, completion: @escaping (Event?, Error?) -> ()) {
-        guard let newEvent = NSEntityDescription.insertNewObject(forEntityName: "Event", into: pc.viewContext) as? Event else { return }
-        //populate(event: newEvent, from: event)
-        newEvent.id = event.id
-        newEvent.title = event.title
-        newEvent.organizer = event.organizer
-        newEvent.eventDescription = event.description
-        newEvent.startingTime = event.startingTime
-        newEvent.endingTime = event.endingTime
-        if let url = URL(string: event.ticketSaleWebpage ?? "") {
-            newEvent.ticketSaleWebpage = url
-        }
-        if let url = URL(string: event.imageURL ?? "") {
-            newEvent.imageURL = url
-        }
-        newEvent.ageLimit = event.ageLimit
-        newEvent.locationName = event.location?.name
-        newEvent.locationAddress = event.location?.address
-        newEvent.contactPersonName = event.contactPerson?.name
-        newEvent.contactPersonEmail = event.contactPerson?.epost
-        
-        do {
-            try pc.viewContext.save()
-            completion(newEvent, nil)
-        } catch let err {
-            completion(nil, err)
+    func save(events: [SanityEvent], completion: @escaping ([Event]?, Error?) -> ()) {
+        pc.performBackgroundTask { (backgroundContext) in
+            var newEvents = [Event]()
+            events.forEach { (event) in
+                guard let newEvent = NSEntityDescription.insertNewObject(forEntityName: "Event", into: backgroundContext) as? Event else { return }
+                //self.populate(event: &newEvent, from: event)
+                newEvent.id = event.id
+                newEvent.title = event.title
+                newEvent.organizer = event.organizer
+                newEvent.eventDescription = event.description
+                newEvent.startingTime = event.startingTime
+                newEvent.endingTime = event.endingTime
+                if let url = URL(string: event.ticketSaleWebpage ?? "") {
+                    newEvent.ticketSaleWebpage = url
+                }
+                if let url = URL(string: event.imageURL ?? "") {
+                    newEvent.imageURL = url
+                }
+                newEvent.ageLimit = event.ageLimit
+                newEvent.locationName = event.location?.name
+                newEvent.locationAddress = event.location?.address
+                newEvent.contactPersonName = event.contactPerson?.name
+                newEvent.contactPersonEmail = event.contactPerson?.epost
+                newEvents.append(newEvent)
+            }
+            
+            do {
+                try backgroundContext.save()
+                completion(newEvents, nil)
+            } catch let err {
+                completion(nil, err)
+            }
         }
     }
     
-    fileprivate func populate(event: Event, from sanityEvent: SanityEvent) {
-        event.id = sanityEvent.id
-        event.title = sanityEvent.title
-        event.organizer = sanityEvent.organizer
-        event.eventDescription = sanityEvent.description
-        event.startingTime = sanityEvent.startingTime
-        event.endingTime = sanityEvent.endingTime
-        event.ageLimit = sanityEvent.ageLimit
-        event.locationName = sanityEvent.location?.name
-        event.locationAddress = sanityEvent.location?.address
-        event.contactPersonName = sanityEvent.contactPerson?.name
-        event.contactPersonEmail = sanityEvent.contactPerson?.epost
+    func save(event: SanityEvent, completion: @escaping (Event?, Error?) -> ()) {
+        pc.performBackgroundTask { (backgroundContext) in
+            guard let newEvent = NSEntityDescription.insertNewObject(forEntityName: "Event", into: backgroundContext) as? Event else { return }
+            newEvent.id = event.id
+            newEvent.title = event.title
+            newEvent.organizer = event.organizer
+            newEvent.eventDescription = event.description
+            newEvent.startingTime = event.startingTime
+            newEvent.endingTime = event.endingTime
+            if let url = URL(string: event.ticketSaleWebpage ?? "") {
+                newEvent.ticketSaleWebpage = url
+            }
+            if let url = URL(string: event.imageURL ?? "") {
+                newEvent.imageURL = url
+            }
+            newEvent.ageLimit = event.ageLimit
+            newEvent.locationName = event.location?.name
+            newEvent.locationAddress = event.location?.address
+            newEvent.contactPersonName = event.contactPerson?.name
+            newEvent.contactPersonEmail = event.contactPerson?.epost
+            
+            do {
+                try backgroundContext.save()
+                completion(newEvent, nil)
+            } catch let err {
+                completion(nil, err)
+            }
+        }
+
+    }
+    
+    func update(local: Event, remote: SanityEvent, completion: @escaping (Error?) -> ()) {
+        //pc.performBackgroundTask { (backgroundContext) in
+            local.id = remote.id
+            local.title = remote.title
+            local.organizer = remote.organizer
+            local.category = remote.category
+            local.eventDescription = remote.description
+            local.startingTime = remote.startingTime
+            local.endingTime = remote.endingTime
+            if let url = URL(string: remote.ticketSaleWebpage ?? "") {
+                local.ticketSaleWebpage = url
+            }
+            if let url = URL(string: remote.imageURL ?? "") {
+                local.imageURL = url
+            }
+            local.ageLimit = remote.ageLimit
+            local.locationName = remote.location?.name
+            local.locationAddress = remote.location?.address
+            local.contactPersonName = remote.contactPerson?.name
+            local.contactPersonEmail = remote.contactPerson?.epost
+            do {
+                if pc.viewContext.hasChanges {
+                    try pc.viewContext.save()
+                }
+                completion(nil)
+            } catch let err {
+                print("failed to update event: ", err)
+                completion(err)
+            }
+        //}
+    }
+    
+    // TODO: Why doesn't this work?
+    fileprivate func populate(event: UnsafeMutablePointer<Event>, from sanityEvent: SanityEvent) {
+        guard event.pointee.id != nil else { return }
+        event.pointee.id = sanityEvent.id
+        event.pointee.title = sanityEvent.title
+        event.pointee.organizer = sanityEvent.organizer
+        event.pointee.eventDescription = sanityEvent.description
+        event.pointee.startingTime = sanityEvent.startingTime
+        event.pointee.endingTime = sanityEvent.endingTime
+        event.pointee.ageLimit = sanityEvent.ageLimit
+        event.pointee.locationName = sanityEvent.location?.name
+        event.pointee.locationAddress = sanityEvent.location?.address
+        event.pointee.contactPersonName = sanityEvent.contactPerson?.name
+        event.pointee.contactPersonEmail = sanityEvent.contactPerson?.epost
         if let url = URL(string: sanityEvent.ticketSaleWebpage ?? "") {
-            event.ticketSaleWebpage = url
+            event.pointee.ticketSaleWebpage = url
         }
         if let url = URL(string: sanityEvent.imageURL ?? "") {
-            event.imageURL = url
+            event.pointee.imageURL = url
         }
     }
     
     // MARK:- Read
     func getAllEvents(completionHandler: @escaping ([Event]) -> ()) {
         let fetchRequest = NSFetchRequest<Event>(entityName: "Event")
-        
         do {
             let allEvents = try pc.viewContext.fetch(fetchRequest)
             completionHandler(allEvents)
@@ -97,12 +167,14 @@ class CoreDataManager {
     
     // MARK:- Update
     func updateEventImage(_ event: Event, image: Data, completion: @escaping (Error?) -> ()) {
-        event.image = image
-        do {
-            try pc.viewContext.save()
-            completion(nil)
-        } catch let err {
-            completion(err)
+        pc.performBackgroundTask { (backgroundContext) in
+            event.image = image
+            do {
+                try backgroundContext.save()
+                completion(nil)
+            } catch let err {
+                completion(err)
+            }
         }
     }
     
@@ -119,23 +191,16 @@ class CoreDataManager {
     
     
     // MARK:- Delete
-    func delete(event: Event) {
-        pc.viewContext.delete(event)
-        let semaphore = DispatchSemaphore(value: 0)
-        do {
-            try pc.viewContext.save()
-            semaphore.signal()
-        } catch let err {
-            print("failed to delete event: ", err)
-            semaphore.signal()
-        }
-        semaphore.wait()
-    }
-    
-    func delete(events: [Event]) {
-        for i in 0..<events.count {
-            delete(event: events[i])
-        }
+    func delete(events: [Event], completion: @escaping (Error?) -> ()) {
+            events.forEach({ (event) in
+                pc.viewContext.delete(event)
+            })
+            do {
+                try pc.viewContext.save()
+                completion(nil)
+            } catch let err {
+                completion(err)
+            }
     }
     
 }

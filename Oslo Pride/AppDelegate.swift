@@ -27,13 +27,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UINavigationBar.appearance().shadowImage = UIImage()
         
         
-        CoreDataManager.shared.getAllEvents { [unowned self] (events) in
-            if events.count == 0 {
-                DispatchQueue.main.async {
-                    self.window?.rootViewController?.present(DownloadController(), animated: true, completion: nil)
-                }
-            }
-        }
+//        CoreDataManager.shared.getAllEvents { [unowned self] (events) in
+//            if events.count == 0 {
+//                DispatchQueue.main.async {
+//                    self.window?.rootViewController?.present(DownloadController(), animated: true, completion: nil)
+//                }
+//            }
+//        }
+        
+        
         
         return true
     }

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UITableViewController {
+class EventsController: UITableViewController {
 
     var events: [Event]?
     var days: [[Event]]?
@@ -17,16 +17,16 @@ class ViewController: UITableViewController {
     
     var refreshController = UIRefreshControl()
     
+    let headerView = EventsFilterHeaderView()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Events"
         view.backgroundColor = .white
         tableView.register(EventCell.self, forCellReuseIdentifier: cellID)
-        
-        //tableView.register(TableViewHeaderLabel.self, forHeaderFooterViewReuseIdentifier: "headerfooter")
-        //navigationController?.navigationBar.prefersLargeTitles = true
         navigationController?.navigationBar.tintColor = .prideDeepPurple//.prideYellow
         setupNavItems()
+//        navigationController?.navigationBar.prefersLargeTitles = true
 //        navigationController?.navigationBar.largeTitleTextAttributes = [
 //            NSAttributedString.Key.foregroundColor : UIColor.pridePurple
 //        ]
@@ -34,66 +34,72 @@ class ViewController: UITableViewController {
 //            NSAttributedString.Key.foregroundColor : UIColor.pridePurple
 //        ]
         
-        refreshController.addTarget(self, action: #selector(displayEvents), for: .valueChanged)
-        //tableView.refreshControl = refreshController
+        refreshController.addTarget(self, action: #selector(updateEvents), for: .valueChanged)
+        tableView.refreshControl = refreshController
+        
+        headerView.delegate = self
+        tableView.tableHeaderView = headerView
+        tableView.tableHeaderView?.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 70)
+        
+        tableView.tableFooterView = UIView()
         
         displayEvents()
     }
     
+    lazy var right = UIBarButtonItem(image: UIImage(named: "refresh"), style: .plain, target: self, action: #selector(updateEvents))
+    
     fileprivate func setupNavItems() {
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Slett", style: .plain, target: self, action: #selector(reset))
+        navigationItem.rightBarButtonItem = right
     }
     
     @objc fileprivate func reset() {
-        guard let events = events else { return }
-        CoreDataManager.shared.delete(events: events)
-        displayEvents()
+//        CoreDataManager.shared.delete(events: EventsManager.shared.get(), completion: { err in
+//            if let err = err {
+//                print("failed to delete: ", err)
+//            }
+//            self.displayEvents()
+//        })
+    }
+    
+    @objc fileprivate func updateEvents() {
+        right.isEnabled = false
+        CoreDataManager.shared.getAllEvents { (local) in
+            NetworkAPI.shared.fetchEvents { (remote) in
+                guard let remote = remote else { return }
+                let newEvents = EventsManager.shared.compare(local: local, remote: remote)
+                print("We have \(newEvents.count) unsynced events")
+                
+                DispatchQueue.main.async {
+                    CoreDataManager.shared.save(events: newEvents, completion: { (newLocalEvents, err) in
+                        if let err = err {
+                            print("failed to batch save: ", err)
+                        }
+                        print("We saved \(newLocalEvents?.count ?? 0) new events")
+                        self.displayEvents()
+                        
+                    })
+                }
+            }
+        }
     }
     
     @objc fileprivate func displayEvents() {
-        CoreDataManager.shared.getAllEvents { [unowned self] (events) in
-            var events = events
-            events.sort(by: { (one, two) -> Bool in
-                guard let date1 = one.startingTime, let date2 = two.startingTime else { return false }
-                return date1 < date2
-            })
-            
-            var days = [[Event]]()
-            for i in 0..<events.count {
-                if days.count == 0 {
-                    days.append([events[0]])
-                    continue
-                }
-                
-                if let last = days.last?.last?.startingTime, let current = events[i].startingTime {
-                    let lastHour = Calendar.current.component(.hour, from: last)
-                    let lastDay = Calendar.current.component(.day, from: last)
-                    
-                    let currentHour = Calendar.current.component(.hour, from: current)
-                    let currentDay = Calendar.current.component(.day, from: current)
-                    
-                    if currentDay > lastDay {
-                        days.append([events[i]])
-                    } else {
-                        days[days.count-1].append(events[i])
-                    }
-                }
-            }
-            
-            self.days = days
-            
-            self.events = events
-            DispatchQueue.main.async {
+        DispatchQueue.main.async {
+            CoreDataManager.shared.getAllEvents { (events) in
+                EventsManager.shared.set(events: events)
+                self.days = EventsManager.shared.get()
                 self.tableView.reloadData()
                 self.refreshController.endRefreshing()
+                self.right.isEnabled = true
             }
         }
     }
 
 }
 
-extension ViewController {
+extension EventsController {
     
     override func numberOfSections(in tableView: UITableView) -> Int {
         return days?.count ?? 0
@@ -110,23 +116,19 @@ extension ViewController {
         if let imageData = event.image {
             cell.eventImageView.image = UIImage(data: imageData)
         }
-        cell.event = days?[indexPath.section][indexPath.row]
+        cell.event = event
         
         return cell
     }
     
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        //let view = UITableViewHeaderFooterView(reuseIdentifier: "headerfooter")
-        
         let headerLabel = TableViewHeaderLabel()
-        
-        
-        guard let time = days?[section].first?.startingTime else { return nil }
+        guard let t = days?[section].first?.startingTime else { return nil }
         let formatter = DateFormatter()
         formatter.dateFormat = "EEEE dd"
         formatter.locale = Locale(identifier: "NO-BM")
         
-        let timeText = formatter.string(from: time)
+        let timeText = formatter.string(from: t)
         
         headerLabel.text = (timeText.first?.uppercased() ?? "") + timeText.dropFirst().lowercased()
         
@@ -141,14 +143,21 @@ extension ViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let c = EventController()
-        //c.title = events?[indexPath.row].title ?? ""
         c.event = days?[indexPath.section][indexPath.row]
         navigationController?.pushViewController(c, animated: true)
     }
     
 }
 
-extension ViewController {
+extension EventsController: EventsFilterHeaderViewDelegte {
+    
+    func updateFilter(_ filter: Filter, remove: Bool) {
+        print("updating")
+        EventsManager.shared.addCategoryFilter(filter.category, remove: remove)
+        self.days = EventsManager.shared.get()
+        tableView.reloadData()
+    }
+    
     
     
     
