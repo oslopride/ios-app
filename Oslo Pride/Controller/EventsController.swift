@@ -46,9 +46,10 @@ class EventsController: UITableViewController {
     }
     
     @objc fileprivate func reset() {
-        guard let events = events else { return }
-        CoreDataManager.shared.delete(events: events)
-        displayEvents()
+        CoreDataManager.shared.getAllEvents { (events) in
+            CoreDataManager.shared.delete(events: events)
+            self.displayEvents()
+        }
     }
     
     @objc fileprivate func updateEvents() {
