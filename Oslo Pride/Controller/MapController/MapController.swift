@@ -178,9 +178,9 @@ extension MapController {
             let img = UIImage(named: "pridepark")
             view.image = img
             calloutView.mapURL = URL(string:"http://maps.apple.com/?address=Karl+Johans+gate+24")
-            
-            
             calloutView.titleLabel.attributedText = attrText
+            view.detailCalloutAccessoryView = calloutView
+            
         } else if annotation == prideHouseArtAnnotaion {
             let attrText = NSMutableAttributedString()
             attrText.append(NSAttributedString(string: "Pride House\n", attributes: [
@@ -205,7 +205,8 @@ extension MapController {
             view.image = img
             calloutView.mapURL = URL(string:"http://maps.apple.com/?address=youngstorget")
             calloutView.titleLabel.attributedText = attrText
-            
+            view.detailCalloutAccessoryView = calloutView
+
         } else if annotation == prideParadeStartAnnotation {
             let img = UIImage(named: "trip")?.withRenderingMode(.alwaysTemplate)
             view.image = img
@@ -220,7 +221,8 @@ extension MapController {
                 ]))
             calloutView.titleLabel.attributedText = attrText
             calloutView.mapURL = URL(string:"http://maps.apple.com/?address=Gronlandsleiret+Platous+Gate+25")
-            
+            view.detailCalloutAccessoryView = calloutView
+
         } else if annotation == prideParadeEndAnnotation {
             let img = UIImage(named: "trip")?.withRenderingMode(.alwaysTemplate)
             view.image = img
@@ -237,6 +239,8 @@ extension MapController {
             
             calloutView.titleLabel.attributedText = attrText
             calloutView.mapURL = URL(string:"http://maps.apple.com/?address=Karl+Johans+gate+24")
+            view.detailCalloutAccessoryView = calloutView
+
         } else if annotation is PrideToiletAnnotation {
             let img = UIImage(named: "toilet")?.withRenderingMode(.alwaysOriginal)
             view.image = img
@@ -260,6 +264,8 @@ extension MapController {
             lbl.textColor = UIColor(red:0.24, green:0.16, blue:0.47, alpha:1.0)
             lbl.text = annotation.title ?? ""//"Hoved scene"
             view.addSubview(lbl)
+            view.detailCalloutAccessoryView = BeerCalloutView()
+
         } else if annotation == parkTorgetAnnotation {
             let img = UIImage(named: "ute_servering")?.withRenderingMode(.alwaysOriginal)
             view.image = img
@@ -270,6 +276,8 @@ extension MapController {
             lbl.textColor = UIColor(red:0.95, green:0.55, blue:0.36, alpha:1.0)
             lbl.text = annotation.title ?? ""
             view.addSubview(lbl)
+            view.detailCalloutAccessoryView = BeerCalloutView()
+            
         } else if annotation == parkInfoAnnotation {
             let img = UIImage(named: "info-1")?.withRenderingMode(.alwaysOriginal)
             view.image = img
@@ -293,9 +301,12 @@ extension MapController {
             lbl.textColor = .prideDeepPurple //UIColor(red:0.91, green:0.20, blue:0.54, alpha:1.0)
             lbl.text = annotation.title ?? ""
             view.addSubview(lbl)
+
+            view.detailCalloutAccessoryView = BeerCalloutView()
+            
         }
         
-        view.detailCalloutAccessoryView = calloutView
+        //view.detailCalloutAccessoryView = calloutView
         
         return view
     }
@@ -314,12 +325,12 @@ extension MapController {
             mapView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
             ].forEach { $0.isActive = true }
         
-        view.addSubview(segmentController)
-        [
-            segmentController.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            segmentController.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24),
-            segmentController.heightAnchor.constraint(equalToConstant: 44)
-            ].forEach { $0.isActive = true }
+//        view.addSubview(segmentController)
+//        [
+//            segmentController.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+//            segmentController.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24),
+//            segmentController.heightAnchor.constraint(equalToConstant: 44)
+//            ].forEach { $0.isActive = true }
         
     }
     

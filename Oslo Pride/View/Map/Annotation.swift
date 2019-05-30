@@ -9,6 +9,96 @@
 import Foundation
 import MapKit
 
+class BeerCalloutView: UIView {
+    let titleLabel: UILabel = {
+        let lbl = UILabel()
+        lbl.translatesAutoresizingMaskIntoConstraints = false
+        lbl.numberOfLines = 0
+        return lbl
+        
+    }()
+    
+    var beerPrizes = [
+        ("Fatøl", 75),
+        ("Cider", 79),
+        ("SOL", 83),
+        ("Glutenfritt Øl", 89),
+        ("Alkoholfritt Øl", 48),
+        
+//        ("Mineralvann", 40),
+//        ("Flaskevann", 35),
+//        ("Eplemost", 40),
+//        ("Kaffe", 30),
+//        ("Snacks", 30),
+//        ("Armbånd", 75),
+//        ("Pin", 76)
+    ]
+    
+    let hvitvinPrices = [
+        ("Jacobs Creek Chardonnay")
+    
+    ]
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        
+        
+        let attrText = NSMutableAttributedString()
+        attrText.append(NSAttributedString(string: "ØL 🍻\n", attributes: [
+            NSAttributedString.Key.foregroundColor : UIColor.kindaBlack,
+            NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 16)
+            ]))
+        attrText.append(NSAttributedString(string: " 75 - 89 kr\n", attributes: [
+            NSAttributedString.Key.foregroundColor : UIColor.graySuit
+            ]))
+        attrText.append(NSAttributedString(string: "Alkoholfritt ", attributes: [
+            NSAttributedString.Key.foregroundColor : UIColor.graySuit
+            ]))
+        attrText.append(NSAttributedString(string: " 48 kr\n\n", attributes: [
+            NSAttributedString.Key.foregroundColor : UIColor.graySuit
+            ]))
+
+        
+        attrText.append(NSAttributedString(string: "Hvit, rød og Rosevin 🍷\n", attributes: [
+            NSAttributedString.Key.foregroundColor : UIColor.kindaBlack,
+            NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 16)
+            ]))
+        attrText.append(NSAttributedString(string: "Glass 80 kr\n", attributes: [
+            NSAttributedString.Key.foregroundColor : UIColor.graySuit
+            ]))
+        attrText.append(NSAttributedString(string: "Flaske 395 kr\n\n", attributes: [
+            NSAttributedString.Key.foregroundColor : UIColor.graySuit
+            ]))
+        
+        attrText.append(NSAttributedString(string: "BOBLER 🍾\n", attributes: [
+            NSAttributedString.Key.foregroundColor : UIColor.kindaBlack,
+            NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 16)
+            ]))
+        attrText.append(NSAttributedString(string: "Glass 80 kr\n", attributes: [
+            NSAttributedString.Key.foregroundColor : UIColor.graySuit
+            ]))
+        attrText.append(NSAttributedString(string: "Flaske 410 kr\n", attributes: [
+            NSAttributedString.Key.foregroundColor : UIColor.graySuit
+            ]))
+
+        titleLabel.attributedText = attrText
+        
+        addSubview(titleLabel)
+        [
+            titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: 0),
+            titleLabel.leftAnchor.constraint(equalTo: leftAnchor, constant: 0),
+            titleLabel.bottomAnchor.constraint(equalTo: bottomAnchor),
+            titleLabel.rightAnchor.constraint(equalTo: rightAnchor, constant: 0)
+            ].forEach { $0.isActive = true }
+        
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+}
+
 class AnnotationCalloutView: UIView {
     
     let titleLabel: UILabel = {
