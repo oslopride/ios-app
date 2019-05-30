@@ -65,6 +65,9 @@ class DownloadController: UIViewController {
             guard let sanityEvents = sanityEvents else { return }
             self.total = sanityEvents.count-1
             let group = DispatchGroup()
+            
+            var eventCache = [Event]()
+            
             sanityEvents.forEach({ (sanityEvent) in
                 group.enter()
                 CoreDataManager.shared.save(event: sanityEvent, completion: { (event, err) in
@@ -73,6 +76,7 @@ class DownloadController: UIViewController {
                         return
                     }
                     guard let event = event else { return }
+                    eventCache.append(event)
                     if let url = event.imageURL {
                         NetworkAPI.shared.fetchImage(from: url, completion: { [unowned self] (data) in
                             guard let data = data else { return }
@@ -102,7 +106,9 @@ class DownloadController: UIViewController {
                 })
             })
             group.notify(queue: .main, execute: { [unowned self] in
+                EventsManager.shared.set(events: eventCache)
                 self.dismiss(animated: true, completion: nil)
+                
             })
         }
     }

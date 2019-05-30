@@ -35,7 +35,7 @@ class EventsController: UITableViewController {
 //        ]
         
         refreshController.addTarget(self, action: #selector(displayEvents), for: .valueChanged)
-        //tableView.refreshControl = refreshController
+        tableView.refreshControl = refreshController
         
         displayEvents()
     }
@@ -51,43 +51,21 @@ class EventsController: UITableViewController {
         displayEvents()
     }
     
+    @objc fileprivate func updateEvents() {
+        CoreDataManager.shared.getAllEvents { (events) in
+            EventsManager.shared.set(events: events)
+            self.displayEvents()
+        }
+    }
+    
     @objc fileprivate func displayEvents() {
-        CoreDataManager.shared.getAllEvents { [unowned self] (events) in
-            var events = events
-            events.sort(by: { (one, two) -> Bool in
-                guard let date1 = one.startingTime, let date2 = two.startingTime else { return false }
-                return date1 < date2
-            })
-            
-            var days = [[Event]]()
-            for i in 0..<events.count {
-                if days.count == 0 {
-                    days.append([events[0]])
-                    continue
-                }
-                
-                if let last = days.last?.last?.startingTime, let current = events[i].startingTime {
-                    let lastHour = Calendar.current.component(.hour, from: last)
-                    let lastDay = Calendar.current.component(.day, from: last)
-                    
-                    let currentHour = Calendar.current.component(.hour, from: current)
-                    let currentDay = Calendar.current.component(.day, from: current)
-                    
-                    if currentDay > lastDay {
-                        days.append([events[i]])
-                    } else {
-                        days[days.count-1].append(events[i])
-                    }
-                }
-            }
-            
-            self.days = days
-            
-            self.events = events
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
-                self.refreshController.endRefreshing()
-            }
+        CoreDataManager.shared.getAllEvents { (events) in
+            EventsManager.shared.set(events: events)
+            //self.displayEvents()
+        }
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+            self.refreshController.endRefreshing()
         }
     }
 
@@ -96,21 +74,21 @@ class EventsController: UITableViewController {
 extension EventsController {
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return days?.count ?? 0
+        return EventsManager.shared.numberOfDays
     }
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return days?[section].count ?? 0
+        return EventsManager.shared.numberInDay(section)
     }
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellID, for: indexPath) as! EventCell
         cell.eventImageView.image = nil
         
-        guard let event = days?[indexPath.section][indexPath.row] else { return cell }
+        guard let event = EventsManager.shared.get(day: indexPath.section, n: indexPath.row) else { return cell }
         cell.eventTitleLabel.text = event.title ?? "whap"
         if let imageData = event.image {
             cell.eventImageView.image = UIImage(data: imageData)
         }
-        cell.event = days?[indexPath.section][indexPath.row]
+        cell.event = event//days?[indexPath.section][indexPath.row]
         
         return cell
     }
@@ -120,13 +98,16 @@ extension EventsController {
         
         let headerLabel = TableViewHeaderLabel()
         
+        //guard EventsManager.shared.numberOfDays() > 0 else { return nil }
         
-        guard let time = days?[section].first?.startingTime else { return nil }
+        guard let t = EventsManager.shared.get(day: section, n: 0)?.startingTime else { return nil }
+        
+        //guard let time = days?[section].first?.startingTime else { return nil }
         let formatter = DateFormatter()
         formatter.dateFormat = "EEEE dd"
         formatter.locale = Locale(identifier: "NO-BM")
         
-        let timeText = formatter.string(from: time)
+        let timeText = formatter.string(from: t)
         
         headerLabel.text = (timeText.first?.uppercased() ?? "") + timeText.dropFirst().lowercased()
         
@@ -142,7 +123,7 @@ extension EventsController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let c = EventController()
         //c.title = events?[indexPath.row].title ?? ""
-        c.event = days?[indexPath.section][indexPath.row]
+        c.event = EventsManager.shared.get(day: indexPath.section, n: indexPath.row) //days?[indexPath.section][indexPath.row]
         navigationController?.pushViewController(c, animated: true)
     }
     

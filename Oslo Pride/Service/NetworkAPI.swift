@@ -10,13 +10,6 @@ import Foundation
 
 class NetworkAPI {
     static let shared = NetworkAPI()
-    //let host = "http://localhost:3010/api/v1"
-    //let host = "http://192.168.58.82:3010/api/v1"
-    //let host = "http://10.0.1.100:3010/api/v1"
-    //let host = "http://169.254.41.208:3010/api/v1"
-    
-    //let host = "https://2ger3rla.api.sanity.io/v1/data/query/prod2019?query=*[_type == \"event\"]&$editorialState=\"published\"{\"imageURL\": image.asset->url, ...}"
-    
     let host = "https://2ger3rla.api.sanity.io/v1/data/query/prod2019?query=*%5B_type%20%3D%3D%20'event'%20%26%26%20editorialState%20%3D%3D%20'published'%5D%7B%0A%20%20%22imageURL%22%3A%20image.asset-%3Eurl%2C%0A%20%20...%0A%7D"
     var imageCache = [String : Data]()
 }

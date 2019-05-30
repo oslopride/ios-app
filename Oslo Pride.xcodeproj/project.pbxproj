@@ -17,8 +17,10 @@
 		3AB6CC74228B26EB0039868E /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB6CC73228B26EB0039868E /* CoreDataManager.swift */; };
 		3AB6CC77228B27880039868E /* PrideDataModels.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 3AB6CC75228B27880039868E /* PrideDataModels.xcdatamodeld */; };
 		3ACDFF31229455AB002FDC84 /* MapController+Overlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ACDFF30229455AB002FDC84 /* MapController+Overlay.swift */; };
+		3AE6537F229D9A5D00C6B2CE /* EventsFilterHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AE6537E229D9A5D00C6B2CE /* EventsFilterHeaderView.swift */; };
+		3AE65381229D9F5F00C6B2CE /* EventsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AE65380229D9F5F00C6B2CE /* EventsManager.swift */; };
 		3AECE97E22760D9700F9DEF0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AECE97D22760D9700F9DEF0 /* AppDelegate.swift */; };
-		3AECE98022760D9700F9DEF0 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AECE97F22760D9700F9DEF0 /* ViewController.swift */; };
+		3AECE98022760D9700F9DEF0 /* EventsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AECE97F22760D9700F9DEF0 /* EventsController.swift */; };
 		3AECE98522760D9900F9DEF0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3AECE98422760D9900F9DEF0 /* Assets.xcassets */; };
 		3AECE98822760D9900F9DEF0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3AECE98622760D9900F9DEF0 /* LaunchScreen.storyboard */; };
 		3AEE589022884A1C00891790 /* NetworkAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AEE588F22884A1C00891790 /* NetworkAPI.swift */; };
@@ -42,9 +44,11 @@
 		3AB6CC73228B26EB0039868E /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		3AB6CC76228B27880039868E /* PrideDataModels.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = PrideDataModels.xcdatamodel; sourceTree = "<group>"; };
 		3ACDFF30229455AB002FDC84 /* MapController+Overlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MapController+Overlay.swift"; sourceTree = "<group>"; };
+		3AE6537E229D9A5D00C6B2CE /* EventsFilterHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsFilterHeaderView.swift; sourceTree = "<group>"; };
+		3AE65380229D9F5F00C6B2CE /* EventsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsManager.swift; sourceTree = "<group>"; };
 		3AECE97A22760D9700F9DEF0 /* Oslo Pride.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Oslo Pride.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3AECE97D22760D9700F9DEF0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		3AECE97F22760D9700F9DEF0 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		3AECE97F22760D9700F9DEF0 /* EventsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsController.swift; sourceTree = "<group>"; };
 		3AECE98422760D9900F9DEF0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3AECE98722760D9900F9DEF0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		3AECE98922760D9900F9DEF0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -124,6 +128,7 @@
 				3AEE588F22884A1C00891790 /* NetworkAPI.swift */,
 				3AEE589C2288750900891790 /* Location.swift */,
 				3AB6CC73228B26EB0039868E /* CoreDataManager.swift */,
+				3AE65380229D9F5F00C6B2CE /* EventsManager.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -145,6 +150,7 @@
 				3AEE58952288532000891790 /* EventCell.swift */,
 				3A9F6044228F2AFD00AF937C /* FavouriteCell.swift */,
 				3A192C5122917D3A0040EB73 /* TableViewHeaderLabel.swift */,
+				3AE6537E229D9A5D00C6B2CE /* EventsFilterHeaderView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -153,10 +159,10 @@
 			isa = PBXGroup;
 			children = (
 				3A5F2A3F229AA8EF00E24836 /* MapController */,
-				3AECE97F22760D9700F9DEF0 /* ViewController.swift */,
+				3AECE97F22760D9700F9DEF0 /* EventsController.swift */,
+				3AEE58A1228882F900891790 /* EventController.swift */,
 				3AEE58982288739000891790 /* TabBarController.swift */,
 				3A04D3C1228EE44400AAD8BB /* DownloadController.swift */,
-				3AEE58A1228882F900891790 /* EventController.swift */,
 				3A04D3C3228F061700AAD8BB /* FavouriteController.swift */,
 			);
 			path = Controller;
@@ -246,7 +252,7 @@
 				3AB6CC77228B27880039868E /* PrideDataModels.xcdatamodeld in Sources */,
 				3AEE58A2228882F900891790 /* EventController.swift in Sources */,
 				3AEE589D2288750900891790 /* Location.swift in Sources */,
-				3AECE98022760D9700F9DEF0 /* ViewController.swift in Sources */,
+				3AECE98022760D9700F9DEF0 /* EventsController.swift in Sources */,
 				3A29E0C9229AAF6B00340770 /* Annotation.swift in Sources */,
 				3AEE58A022887E4C00891790 /* UIColor.swift in Sources */,
 				3A192C5222917D3A0040EB73 /* TableViewHeaderLabel.swift in Sources */,
@@ -254,8 +260,10 @@
 				3AEE58962288532000891790 /* EventCell.swift in Sources */,
 				3AEE58992288739000891790 /* TabBarController.swift in Sources */,
 				3ACDFF31229455AB002FDC84 /* MapController+Overlay.swift in Sources */,
+				3AE6537F229D9A5D00C6B2CE /* EventsFilterHeaderView.swift in Sources */,
 				3A9F6045228F2AFD00AF937C /* FavouriteCell.swift in Sources */,
 				3AECE97E22760D9700F9DEF0 /* AppDelegate.swift in Sources */,
+				3AE65381229D9F5F00C6B2CE /* EventsManager.swift in Sources */,
 				3AEE589022884A1C00891790 /* NetworkAPI.swift in Sources */,
 				3AB6CC74228B26EB0039868E /* CoreDataManager.swift in Sources */,
 				3A686CBF2290A2A300F48475 /* String.swift in Sources */,
