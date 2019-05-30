@@ -123,13 +123,15 @@ class FilterButton: UIButton {
     
     var isActivated = true {
         didSet {
-            if isActivated {
-                backgroundColor = .prideRed
-                tintColor = .white
-            } else {
-                backgroundColor = .white
-                tintColor = .prideRed
-            }
+            UIView.animate(withDuration: 0.1, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.8, options: .curveEaseInOut, animations: {
+                if self.isActivated {
+                    self.backgroundColor = .prideRed
+                    self.tintColor = .white
+                } else {
+                    self.backgroundColor = .white
+                    self.tintColor = .prideRed
+                }
+            }, completion: nil)
         }
     }
     

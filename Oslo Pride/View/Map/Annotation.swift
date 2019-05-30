@@ -34,11 +34,6 @@ class BeerCalloutView: UIView {
 //        ("Pin", 76)
     ]
     
-    let hvitvinPrices = [
-        ("Jacobs Creek Chardonnay")
-    
-    ]
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
