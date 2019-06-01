@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		3A04D3C2228EE44400AAD8BB /* DownloadController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A04D3C1228EE44400AAD8BB /* DownloadController.swift */; };
 		3A04D3C4228F061700AAD8BB /* FavouriteController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A04D3C3228F061700AAD8BB /* FavouriteController.swift */; };
+		3A14A6D022A2CEDC0086905C /* NotificationCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A14A6CF22A2CEDC0086905C /* NotificationCenter.swift */; };
 		3A192C5222917D3A0040EB73 /* TableViewHeaderLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A192C5122917D3A0040EB73 /* TableViewHeaderLabel.swift */; };
 		3A29E0C6229AAB0000340770 /* MapCoordinates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A29E0C5229AAB0000340770 /* MapCoordinates.swift */; };
 		3A29E0C9229AAF6B00340770 /* Annotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A29E0C8229AAF6B00340770 /* Annotation.swift */; };
@@ -36,6 +37,7 @@
 /* Begin PBXFileReference section */
 		3A04D3C1228EE44400AAD8BB /* DownloadController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadController.swift; sourceTree = "<group>"; };
 		3A04D3C3228F061700AAD8BB /* FavouriteController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavouriteController.swift; sourceTree = "<group>"; };
+		3A14A6CF22A2CEDC0086905C /* NotificationCenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationCenter.swift; sourceTree = "<group>"; };
 		3A192C5122917D3A0040EB73 /* TableViewHeaderLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewHeaderLabel.swift; sourceTree = "<group>"; };
 		3A29E0C5229AAB0000340770 /* MapCoordinates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapCoordinates.swift; sourceTree = "<group>"; };
 		3A29E0C8229AAF6B00340770 /* Annotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Annotation.swift; sourceTree = "<group>"; };
@@ -173,6 +175,7 @@
 			children = (
 				3AEE589F22887E4C00891790 /* UIColor.swift */,
 				3A686CBE2290A2A300F48475 /* String.swift */,
+				3A14A6CF22A2CEDC0086905C /* NotificationCenter.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -267,6 +270,7 @@
 				3AEE589022884A1C00891790 /* NetworkAPI.swift in Sources */,
 				3AB6CC74228B26EB0039868E /* CoreDataManager.swift in Sources */,
 				3A686CBF2290A2A300F48475 /* String.swift in Sources */,
+				3A14A6D022A2CEDC0086905C /* NotificationCenter.swift in Sources */,
 				3A29E0C6229AAB0000340770 /* MapCoordinates.swift in Sources */,
 				3A04D3C4228F061700AAD8BB /* FavouriteController.swift in Sources */,
 			);

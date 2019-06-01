@@ -48,6 +48,9 @@ class EventController: UIViewController {
         imageView.clipsToBounds = true
         if let imageData = event?.image {
             imageView.image = UIImage(data: imageData)
+        } else {
+            imageView.image = UIImage(named: "trekanter")
+            imageView.contentMode = .scaleAspectFit
         }
 
         scrollView.addSubview(imageView)

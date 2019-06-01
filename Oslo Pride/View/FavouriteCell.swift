@@ -151,6 +151,10 @@ class FavouriteCell: UICollectionViewCell {
     fileprivate func setupUI() {
         if let imageData = event.image {
             eventImageView.image = UIImage(data: imageData)
+            eventImageView.contentMode = .scaleAspectFill
+        } else {
+            eventImageView.image = UIImage(named: "trekanter")
+            eventImageView.contentMode = .scaleAspectFit
         }
         eventTitleLabel.text = event.title
         

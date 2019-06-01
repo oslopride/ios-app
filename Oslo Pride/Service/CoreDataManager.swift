@@ -167,15 +167,16 @@ class CoreDataManager {
     
     // MARK:- Update
     func updateEventImage(_ event: Event, image: Data, completion: @escaping (Error?) -> ()) {
-        pc.performBackgroundTask { (backgroundContext) in
             event.image = image
             do {
-                try backgroundContext.save()
+                if !pc.viewContext.hasChanges {
+                    print("No changes to save")
+                }
+                try pc.viewContext.save()
                 completion(nil)
             } catch let err {
                 completion(err)
             }
-        }
     }
     
     func toggleFavourite(event: Event, completion: @escaping (Error?) -> ()) {
@@ -187,8 +188,6 @@ class CoreDataManager {
             completion(err)
         }
     }
-    
-    
     
     // MARK:- Delete
     func delete(events: [Event], completion: @escaping (Error?) -> ()) {

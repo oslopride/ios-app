@@ -47,8 +47,20 @@ class EventCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        eventImageView.image = nil
+        //eventImageView.image = nil
         setupLayout()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(imageDownloaded), name: .imageDownloadeddd, object: nil)
+        
+    }
+    
+    @objc fileprivate func imageDownloaded(notification: Notification) {
+        guard let id = notification.userInfo?["id"] as? String, id == event?.id else { return }
+        guard let imageData = notification.object as? Data else { return }
+        print("Yay, my image is here")
+        guard let image = UIImage(data: imageData) else { return }
+        eventImageView.image = image
+        
     }
     
     fileprivate func setupUI() {
