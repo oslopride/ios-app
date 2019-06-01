@@ -88,12 +88,8 @@ class EventsFilterHeaderView: UIView {
         ].forEach { (filter) in
             let butt = FilterButton(type: .system)
             butt.setTitle(" \(filter.name) ", for: .normal)
-            butt.backgroundColor = .prideRed
-            butt.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
-            butt.tintColor = .white
             
-            butt.layer.cornerRadius = 5
-            butt.clipsToBounds = true
+
             butt.addTarget(self, action: #selector(updateFilter), for: .touchUpInside)
             butt.filter = filter
             
@@ -121,15 +117,18 @@ struct Filter {
 class FilterButton: UIButton {
     var filter: Filter!
     
+    let bc = UIColor.prideGreen
+    let tc = UIColor.white
+    
     var isActivated = true {
         didSet {
             UIView.animate(withDuration: 0.1, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.8, options: .curveEaseInOut, animations: {
                 if self.isActivated {
-                    self.backgroundColor = .prideRed
-                    self.tintColor = .white
+                    self.backgroundColor = self.bc
+                    self.tintColor = self.tc
                 } else {
-                    self.backgroundColor = .white
-                    self.tintColor = .prideRed
+                    self.backgroundColor = self.tc
+                    self.tintColor = self.bc
                 }
             }, completion: nil)
         }
@@ -137,6 +136,12 @@ class FilterButton: UIButton {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        backgroundColor = bc
+        tintColor = tc
+        titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
+        layer.cornerRadius = 5
+        clipsToBounds = true
+
     }
     
     required init?(coder aDecoder: NSCoder) {
