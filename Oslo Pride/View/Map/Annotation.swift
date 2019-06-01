@@ -180,5 +180,6 @@ class PrideAnnotation: NSObject, MKAnnotation {
 }
 
 class PrideToiletAnnotation: PrideAnnotation {}
+class ATMAnnotation: PrideAnnotation {}
 
 class PrideTentPolygon: MKPolygon {}

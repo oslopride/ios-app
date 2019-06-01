@@ -89,6 +89,7 @@ class EventsFilterHeaderView: UIView {
             let butt = FilterButton(type: .system)
             butt.setTitle(" \(filter.name) ", for: .normal)
             
+            butt.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
 
             butt.addTarget(self, action: #selector(updateFilter), for: .touchUpInside)
             butt.filter = filter
@@ -138,7 +139,6 @@ class FilterButton: UIButton {
         super.init(frame: frame)
         backgroundColor = bc
         tintColor = tc
-        titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
         layer.cornerRadius = 5
         clipsToBounds = true
 

@@ -104,13 +104,8 @@ class MapController: UIViewController, MKMapViewDelegate {
         let camera = MKMapCamera(lookingAtCenter: osloDowntown, fromDistance: 10000, pitch: 0, heading: 0)
         mapView.setCamera(camera, animated: true)
         
-        //let locationService = Location()
         Location.shared.askPermission { (success) in
-            //guard success else { return }
             print("Got Permission: ", success)
-            //            let location = locationService.getCoordinates()
-            //            let coordinate = CLLocationCoordinate2D(latitude: location.0 ?? 0, longitude: location.1 ?? 0)
-            //            let mapCamera = MKMapCamera(lookingAtCenter: coordinate, fromDistance: 10000, pitch: 0, heading: 0)
         }
         
     }
@@ -304,6 +299,8 @@ extension MapController {
 
             view.detailCalloutAccessoryView = BeerCalloutView()
             
+        } else if annotation is ATMAnnotation {
+            view.image = UIImage(named: "atm")
         }
         
         //view.detailCalloutAccessoryView = calloutView
@@ -388,8 +385,12 @@ extension MapController {
             parkPrideBarAnnotation,
             parkInfoAnnotation,
             parkKlubbenAnnotation,
-
         ]
+        
+        MapCoordinates().atmCoordinates.forEach { (coordinate) in
+            let annotation = ATMAnnotation(title: "Minibank", lat: coordinate.latitude, long: coordinate.longitude)
+            mapView.addAnnotation(annotation)
+        }
         
         distanceViewAnnotations = [
             prideHouseArtAnnotaion,
