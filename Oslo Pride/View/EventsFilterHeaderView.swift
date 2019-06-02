@@ -84,7 +84,7 @@ class EventsFilterHeaderView: UIView {
           Filter(name: "Pride House", category: "3", color: .prideBlue),
           Filter(name: "Pride Park", category: "2", color: .prideGreen),
           Filter(name: "Pride Art", category: "4", color: .pridePurple),
-          Filter(name: "Eksterne", category: "0", color: .prideYellow)
+          Filter(name: "Ekstern Arena", category: "0", color: .prideYellow)
         ].forEach { (filter) in
             let butt = FilterButton(type: .system)
             butt.setTitle(" \(filter.name) ", for: .normal)
