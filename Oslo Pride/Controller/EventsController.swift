@@ -39,11 +39,15 @@ class EventsController: UITableViewController {
         
         headerView.delegate = self
         tableView.tableHeaderView = headerView
-        tableView.tableHeaderView?.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 70)
+        tableView.tableHeaderView?.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 100)//70)
         
         tableView.tableFooterView = UIView()
         
         displayEvents()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        headerView.scrollView.flashScrollIndicators()
     }
     
     lazy var right = UIBarButtonItem(image: UIImage(named: "refresh"), style: .plain, target: self, action: #selector(updateEvents))
@@ -164,6 +168,11 @@ extension EventsController: EventsFilterHeaderViewDelegte {
         tableView.reloadData()
     }
     
+    func reloadTableview() {
+        self.days = EventsManager.shared.get()
+        self.tableView.reloadData()
+
+    }
     
     
     

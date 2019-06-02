@@ -19,6 +19,10 @@ class FilterStackView: UIStackView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
+        isLayoutMarginsRelativeArrangement = true
+        layoutMargins = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+        translatesAutoresizingMaskIntoConstraints = false
     }
     
     required init(coder: NSCoder) {
@@ -29,6 +33,7 @@ class FilterStackView: UIStackView {
 
 protocol EventsFilterHeaderViewDelegte {
     func updateFilter(_ filter: Filter, remove: Bool)
+    func reloadTableview()
 }
 
 class EventsFilterHeaderView: UIView {
@@ -37,6 +42,7 @@ class EventsFilterHeaderView: UIView {
         let scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         //scrollView.backgroundColor = .prideBlue
+        scrollView.scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
         
         return scrollView
     }()
@@ -59,26 +65,26 @@ class EventsFilterHeaderView: UIView {
          scrollView.bottomAnchor.constraint(equalTo: bottomAnchor)
             ].forEach { $0.isActive = true }
         
-        let stackView = FilterStackView()
+        let categoryStack = FilterStackView()
         
-        stackView.isLayoutMarginsRelativeArrangement = true
-        stackView.layoutMargins = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.axis = .horizontal
-        stackView.spacing = 10
+//        categoryStack.isLayoutMarginsRelativeArrangement = true
+//        categoryStack.layoutMargins = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+//        categoryStack.translatesAutoresizingMaskIntoConstraints = false
+        categoryStack.axis = .horizontal
+        categoryStack.spacing = 10
         
         //stackView.distribution = .fillEqually
         
-        scrollView.addSubview(stackView)
+        scrollView.addSubview(categoryStack)
         [
-            //stackView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
-            stackView.leftAnchor.constraint(equalTo: scrollView.leftAnchor),
-            stackView.rightAnchor.constraint(equalTo: scrollView.rightAnchor),
-            stackView.topAnchor.constraint(equalTo: topAnchor),
-            stackView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            
+            categoryStack.leftAnchor.constraint(equalTo: scrollView.leftAnchor),
+            categoryStack.rightAnchor.constraint(equalTo: scrollView.rightAnchor),
+            categoryStack.topAnchor.constraint(equalTo: topAnchor),
+            categoryStack.heightAnchor.constraint(equalToConstant: 50),
+            //categoryStack.bottomAnchor.constraint(equalTo: bottomAnchor),
             //stackView.heightAnchor.constraint(equalToConstant: 50)
             ].forEach { $0.isActive = true }
-        
         
         [
           Filter(name: "Pride House", category: "3", color: .prideBlue),
@@ -94,12 +100,46 @@ class EventsFilterHeaderView: UIView {
             butt.addTarget(self, action: #selector(updateFilter), for: .touchUpInside)
             butt.filter = filter
             
-            stackView.addArrangedSubview(butt)
+            categoryStack.addArrangedSubview(butt)
         }
+        
+        
+        let miscFilterActions = FilterStackView()
+        miscFilterActions.translatesAutoresizingMaskIntoConstraints = false
+        miscFilterActions.distribution = .fillEqually
+        miscFilterActions.axis = .horizontal
+        miscFilterActions.backgroundColor = .red
+        
+        scrollView.addSubview(miscFilterActions)
+        [
+            miscFilterActions.topAnchor.constraint(equalTo: categoryStack.bottomAnchor, constant: 0),
+            miscFilterActions.leftAnchor.constraint(equalTo: categoryStack.leftAnchor),
+            miscFilterActions.rightAnchor.constraint(lessThanOrEqualTo: scrollView.rightAnchor, constant: -10),
+            miscFilterActions.heightAnchor.constraint(equalToConstant: 50),
+            ].forEach { $0.isActive = true }
+        
+        let todayButton = UIButton(type: .system)
+        todayButton.setTitle(" ✓ Skjul Historikk  ", for: .normal)
+        todayButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
+        todayButton.tintColor = .graySuit
+        todayButton.addTarget(self, action: #selector(fromTodayButtonDidPress), for: .touchUpInside)
+        todayButton.widthAnchor.constraint(equalToConstant: 150).isActive = true
+        
+        miscFilterActions.addArrangedSubview(todayButton)
+        
+    }
+    
+    @objc fileprivate func fromTodayButtonDidPress(sender: UIButton) {
+        if sender.titleLabel?.text == " ✓ Skjul Historikk  " {
+            sender.setTitle("  Skjul Historikk  ", for: .normal)
+        } else {
+            sender.setTitle(" ✓ Skjul Historikk  ", for: .normal)
+        }
+        EventsManager.shared.toggleFilterFromToday()
+        delegate?.reloadTableview()
     }
     
     @objc fileprivate func updateFilter(sender: FilterButton) {
-        print(sender.filter.name)
         sender.isActivated = !sender.isActivated
         delegate?.updateFilter(sender.filter, remove: !sender.isActivated)
     }
@@ -120,6 +160,8 @@ class FilterButton: UIButton {
     var filter: Filter! {
         didSet {
             backgroundColor = filter.color
+            titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
+
         }
     }
     
@@ -145,6 +187,7 @@ class FilterButton: UIButton {
         tintColor = .white
         layer.cornerRadius = 5
         clipsToBounds = true
+
 
     }
     
