@@ -44,6 +44,12 @@ class FavouriteCell: UICollectionViewCell {
         return label
     }()
     
+    let eventCategoryLabel: EventCategoryLabel = {
+        let label = EventCategoryLabel()
+        
+        return label
+    }()
+    
     let dateLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -120,12 +126,17 @@ class FavouriteCell: UICollectionViewCell {
             eventTitleLabel.rightAnchor.constraint(equalTo: rightAnchor, constant: -14),
             eventTitleLabel.topAnchor.constraint(equalTo: eventImageView.bottomAnchor, constant: 10)
             ].forEach { $0.isActive = true }
+        addSubview(eventCategoryLabel)
+        [
+            eventCategoryLabel.leftAnchor.constraint(lessThanOrEqualTo: eventTitleLabel.leftAnchor),
+            eventCategoryLabel.topAnchor.constraint(equalTo: eventTitleLabel.bottomAnchor, constant: 10),
+            ].forEach { $0.isActive = true }
         
         addSubview(dateLabel)
         [
             dateLabel.leftAnchor.constraint(equalTo: leftAnchor, constant: 14),
             dateLabel.rightAnchor.constraint(equalTo: rightAnchor, constant: -14),
-            dateLabel.topAnchor.constraint(equalTo: eventTitleLabel.bottomAnchor, constant: 10)
+            dateLabel.topAnchor.constraint(equalTo: eventCategoryLabel.bottomAnchor, constant: 10)
             ].forEach { $0.isActive = true }
         
         addSubview(countdownLabel)
@@ -157,6 +168,7 @@ class FavouriteCell: UICollectionViewCell {
             eventImageView.contentMode = .scaleAspectFit
         }
         eventTitleLabel.text = event.title
+        eventCategoryLabel.category = event.category
         
         guard let start = event?.startingTime, let end = event?.endingTime else { return }
         dateLabel.setupEventDateLabel(start: start, end: end)
