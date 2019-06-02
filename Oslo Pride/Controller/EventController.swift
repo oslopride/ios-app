@@ -58,8 +58,13 @@ class EventController: UIViewController {
     
     let presentSalesWebpageButton: UIButton = {
         let webpageButton = UIButton(type: .system)
-        webpageButton.setImage(UIImage(named: "store"), for: .normal)
-        webpageButton.tintColor = .pridePurple
+        //webpageButton.setImage(UIImage(named: "store"), for: .normal)
+        webpageButton.titleLabel?.numberOfLines = 2
+        webpageButton.setTitle("🎟\nSkaff Billett", for: .normal)
+        webpageButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
+        webpageButton.titleLabel?.textAlignment = .center
+        webpageButton.tintColor = .prideRed
+        //webpageButton.tintColor = .pridePurple
         webpageButton.addTarget(self, action: #selector(displaySalesWebpage), for: .touchUpInside)
         
         return webpageButton
