@@ -66,11 +66,39 @@ class EventsManager {
         return categoryFilter
     }
     
+    var shallFilterFromToday = true
+    func toggleFilterFromToday() {
+        shallFilterFromToday = !shallFilterFromToday
+    }
+    
+    fileprivate func filterFromToday(days: [[Event]]) -> [[Event]] {
+        guard shallFilterFromToday else {
+            return days
+        }
+        var dateFilter = [[Event]]()
+        let now = Date()
+        days.forEach { (events) in
+            var cache = [Event]()
+            events.forEach({ (event) in
+                if event.endingTime ?? Date() < now {
+                    return
+                }
+                cache.append(event)
+
+            })
+            if cache.count > 0 {
+                dateFilter.append(cache)
+            }
+        }
+        return dateFilter
+    }
+    
     func get() -> [[Event]] {
         var newFilter = [[Event]]()
         guard let days = days else { return newFilter }
-
-        newFilter = filterByCategory(days: days)
+        
+        newFilter = filterFromToday(days: days)
+        newFilter = filterByCategory(days: newFilter)
 
         return newFilter
     }

@@ -113,7 +113,7 @@ extension FavouriteController: FavouriteCellDelegate {
     
     fileprivate func addNotification(after time: TimeInterval, title: String, body: String, id: String) {
         let auth = UNAuthorizationOptions(arrayLiteral: [.alert])
-        UNUserNotificationCenter.current().requestAuthorization(options: auth) { [unowned self] (didConsent, err) in
+        UNUserNotificationCenter.current().requestAuthorization(options: auth) {(didConsent, err) in
             if let err = err {
                 print("failed to ask for consent: ", err)
                 return

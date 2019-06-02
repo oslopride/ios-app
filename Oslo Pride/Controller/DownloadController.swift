@@ -78,7 +78,7 @@ class DownloadController: UIViewController {
                         guard let event = event else { return }
                         eventCache.append(event)
                         if let url = event.imageURL {
-                            NetworkAPI.shared.fetchImage(from: url, completion: { [unowned self] (data) in
+                            NetworkAPI.shared.fetchImage(from: url, completion: {(data) in
                                 guard let data = data else { return }
                                 
                                 let formatter = ByteCountFormatter()
@@ -86,19 +86,7 @@ class DownloadController: UIViewController {
                                 formatter.countStyle = .file
                                 let string = formatter.string(fromByteCount: Int64(data.count))
                                 print("\(event.title ?? "") : \(string)")
-                                
-                                guard let img = UIImage(data: data)?.jpegData(compressionQuality: 0.3) else { return }
                                 group.leave()
-//
-//                                CoreDataManager.shared.updateEventImage(event, image: img, completion: { (err) in
-//                                    group.leave()
-//                                    self.current += 1
-//                                    //DispatchQueue.main.async {
-//                                    let percentage = Float(self.current)/Float(self.total)
-//                                    self.progressBar.setProgress(percentage, animated: true)
-//                                    //}
-//                                    print("\(self.current) / \(self.total)")
-//                                })
                             })
                             
                         } else {
