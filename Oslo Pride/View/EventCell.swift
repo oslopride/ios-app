@@ -59,6 +59,7 @@ class EventCell: UITableViewCell {
         guard let imageData = notification.object as? Data else { return }
         print("Yay, my image is here")
         guard let image = UIImage(data: imageData) else { return }
+        eventImageView.contentMode = .scaleToFill
         eventImageView.image = image
         
     }
