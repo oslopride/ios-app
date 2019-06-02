@@ -34,11 +34,6 @@ class BeerCalloutView: UIView {
 //        ("Pin", 76)
     ]
     
-    let hvitvinPrices = [
-        ("Jacobs Creek Chardonnay")
-    
-    ]
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -185,5 +180,6 @@ class PrideAnnotation: NSObject, MKAnnotation {
 }
 
 class PrideToiletAnnotation: PrideAnnotation {}
+class ATMAnnotation: PrideAnnotation {}
 
 class PrideTentPolygon: MKPolygon {}

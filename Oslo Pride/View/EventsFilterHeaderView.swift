@@ -81,19 +81,16 @@ class EventsFilterHeaderView: UIView {
         
         
         [
-          Filter(name: "Pride House", category: "3"),
-          Filter(name: "Pride Park", category: "2"),
-          Filter(name: "Pride Art", category: "4"),
-          Filter(name: "Eksterne", category: "0")
+          Filter(name: "Pride House", category: "3", color: .prideBlue),
+          Filter(name: "Pride Park", category: "2", color: .prideGreen),
+          Filter(name: "Pride Art", category: "4", color: .pridePurple),
+          Filter(name: "Ekstern Arena", category: "0", color: .prideYellow)
         ].forEach { (filter) in
             let butt = FilterButton(type: .system)
             butt.setTitle(" \(filter.name) ", for: .normal)
-            butt.backgroundColor = .prideRed
-            butt.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
-            butt.tintColor = .white
             
-            butt.layer.cornerRadius = 5
-            butt.clipsToBounds = true
+            butt.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
+
             butt.addTarget(self, action: #selector(updateFilter), for: .touchUpInside)
             butt.filter = filter
             
@@ -116,25 +113,39 @@ class EventsFilterHeaderView: UIView {
 struct Filter {
     var name: String
     var category: String
+    var color: UIColor
 }
 
 class FilterButton: UIButton {
-    var filter: Filter!
+    var filter: Filter! {
+        didSet {
+            backgroundColor = filter.color
+        }
+    }
+    
+    let bc = UIColor.prideGreen
+    let tc = UIColor.white
     
     var isActivated = true {
         didSet {
-            if isActivated {
-                backgroundColor = .prideRed
-                tintColor = .white
-            } else {
-                backgroundColor = .white
-                tintColor = .prideRed
-            }
+            UIView.animate(withDuration: 0.1, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.8, options: .curveEaseInOut, animations: {
+                if self.isActivated {
+                    self.backgroundColor = self.filter.color //self.bc
+                    self.tintColor = self.tc
+                } else {
+                    self.backgroundColor = self.tc
+                    self.tintColor = .graySuit //self.bc
+                }
+            }, completion: nil)
         }
     }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        tintColor = .white
+        layer.cornerRadius = 5
+        clipsToBounds = true
+
     }
     
     required init?(coder aDecoder: NSCoder) {

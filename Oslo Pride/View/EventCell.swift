@@ -39,6 +39,16 @@ class EventCell: UITableViewCell {
         return label
     }()
     
+    let eventCategoryLabel: EventCategoryLabel = {
+        let label = EventCategoryLabel()
+        label.textColor = .graySuit
+        label.layer.cornerRadius = 5
+        label.clipsToBounds = true
+        //label.textColor = .white
+        
+        return label
+    }()
+    
     var event: Event? {
         didSet {
             setupUI()
@@ -47,8 +57,21 @@ class EventCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        eventImageView.image = nil
+        //eventImageView.image = nil
         setupLayout()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(imageDownloaded), name: .imageDownloadeddd, object: nil)
+        
+    }
+    
+    @objc fileprivate func imageDownloaded(notification: Notification) {
+        guard let id = notification.userInfo?["id"] as? String, id == event?.id else { return }
+        guard let imageData = notification.object as? Data else { return }
+        print("Yay, my image is here")
+        guard let image = UIImage(data: imageData) else { return }
+        eventImageView.contentMode = .scaleToFill
+        eventImageView.image = image
+        
     }
     
     fileprivate func setupUI() {
@@ -59,6 +82,7 @@ class EventCell: UITableViewCell {
             formatter.dateFormat = "HH:mm"
             eventOrganizerLabel.text = "\(formatter.string(from: startingTime)) - \(formatter.string(from: endingTime))"
         }
+        eventCategoryLabel.category = event.category
         
     }
     
@@ -69,7 +93,7 @@ class EventCell: UITableViewCell {
             eventImageView.topAnchor.constraint(equalTo: topAnchor, constant: 10),
             eventImageView.widthAnchor.constraint(equalToConstant: 100),
             eventImageView.heightAnchor.constraint(equalToConstant: 100),
-            eventImageView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -10)
+            eventImageView.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor, constant: -10)
             ].forEach { $0.isActive = true }
         
 
@@ -77,14 +101,21 @@ class EventCell: UITableViewCell {
         eventTitleLabel.leftAnchor.constraint(equalTo: eventImageView.rightAnchor, constant: 10).isActive = true
         eventTitleLabel.rightAnchor.constraint(equalTo: rightAnchor, constant: -10).isActive = true
         eventTitleLabel.topAnchor.constraint(equalTo: eventImageView.topAnchor).isActive = true
+
+        addSubview(eventCategoryLabel)
+        [
+            eventCategoryLabel.leftAnchor.constraint(equalTo: eventTitleLabel.leftAnchor),
+            eventCategoryLabel.topAnchor.constraint(equalTo: eventTitleLabel.bottomAnchor, constant: 5),
+            ].forEach { $0.isActive = true }
         
         addSubview(eventOrganizerLabel)
         [
             eventOrganizerLabel.leftAnchor.constraint(equalTo: eventTitleLabel.leftAnchor),
             eventOrganizerLabel.rightAnchor.constraint(equalTo: eventTitleLabel.rightAnchor),
-            eventOrganizerLabel.topAnchor.constraint(equalTo: eventTitleLabel.bottomAnchor, constant: 5),
-            eventOrganizerLabel.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor, constant: -10)
+            eventOrganizerLabel.topAnchor.constraint(equalTo: eventCategoryLabel.bottomAnchor, constant: 5),
+            eventOrganizerLabel.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor, constant: -20)
             ].forEach { $0.isActive = true }
+        
     }
     
     required init?(coder aDecoder: NSCoder) {

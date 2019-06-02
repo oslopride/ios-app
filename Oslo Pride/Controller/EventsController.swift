@@ -65,8 +65,10 @@ class EventsController: UITableViewController {
     
     @objc fileprivate func updateEvents() {
         right.isEnabled = false
+        
         CoreDataManager.shared.getAllEvents { (local) in
             NetworkAPI.shared.fetchEvents { (remote) in
+                
                 guard let remote = remote else { return }
                 let newEvents = EventsManager.shared.compare(local: local, remote: remote)
                 print("We have \(newEvents.count) unsynced events")
@@ -78,7 +80,6 @@ class EventsController: UITableViewController {
                         }
                         print("We saved \(newLocalEvents?.count ?? 0) new events")
                         self.displayEvents()
-                        
                     })
                 }
             }
@@ -115,6 +116,10 @@ extension EventsController {
         cell.eventTitleLabel.text = event.title ?? "whap"
         if let imageData = event.image {
             cell.eventImageView.image = UIImage(data: imageData)
+            cell.eventImageView.contentMode = .scaleAspectFill
+        } else {
+            cell.eventImageView.image = UIImage(named: "trekanter")
+            cell.eventImageView.contentMode = .scaleAspectFit
         }
         cell.event = event
         
@@ -144,6 +149,7 @@ extension EventsController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let c = EventController()
         c.event = days?[indexPath.section][indexPath.row]
+        
         navigationController?.pushViewController(c, animated: true)
     }
     

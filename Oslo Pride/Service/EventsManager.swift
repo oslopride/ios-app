@@ -7,11 +7,13 @@
 //
 
 import Foundation
+import UIKit
 
 class EventsManager {
     static let shared = EventsManager()
     
     fileprivate var days: [[Event]]?
+    fileprivate var downloadStack = [Event]()
     
     func set(events: [Event]) {
         days = standardSortByDay(filtered: events)
@@ -115,6 +117,7 @@ class EventsManager {
 }
 
 extension EventsManager {
+    
     func compare(local: [Event], remote: [SanityEvent]) -> [SanityEvent] {
         var unsyncedEvents = [SanityEvent]()
         remote.forEach { (remoteEvent) in
@@ -122,6 +125,7 @@ extension EventsManager {
             for i in 0..<local.count {
                 guard let remoteID = remoteEvent.id, let localID = local[i].id else { continue }
                 if remoteID == localID {
+                    print("we got one")
                     updateIfNecessary(local: local[i], remote: remoteEvent)
                     exists = true
                     break
@@ -133,14 +137,44 @@ extension EventsManager {
             }
         }
         
+        DispatchQueue.global(qos: .background).async {
+            self.processDownloadStack()
+        }
+        
         return unsyncedEvents
     }
     
-    fileprivate func updateIfNecessary(local: Event, remote: SanityEvent) {
-        if let localURL = local.imageURL, let remoteURL = remote.imageURL, localURL.absoluteString != remoteURL {
-            // Image url has changed, update image
+    fileprivate func processDownloadStack() {
+        print("starting..")
+        guard self.downloadStack.count > 0 else { return }
+        downloadStack.forEach { (event) in
+            guard let imageURL = event.imageURL else { return }
+            let semaphore = DispatchSemaphore(value: 0)
+            NetworkAPI.shared.fetchImage(from: imageURL, completion: { (imageData) in
+                guard let imageData = imageData, let img = UIImage(data: imageData)?.jpegData(compressionQuality: 0.3) else {
+                    print("failed to download image")
+                    semaphore.signal()
+                    return
+                }
+                DispatchQueue.main.async {
+                    CoreDataManager.shared.updateEventImage(event, image: img, completion: { (err) in
+                        if let err = err {
+                            print("failed to save image: ", err)
+                        }
+                        NotificationCenter.default.post(name: .imageDownloadeddd, object: img, userInfo: ["id":event.id as Any])
+                        semaphore.signal()
+                        print("did download image for event: ", event.title ?? "")
+                    })
+                }
+            })
+            semaphore.wait()
         }
-        
+    }
+    
+    fileprivate func updateIfNecessary(local: Event, remote: SanityEvent) {
+        if (local.image == nil && local.imageURL != nil) || (local.imageURL?.absoluteString != remote.imageURL) {
+            downloadStack.append(local)
+        }
         DispatchQueue.main.async {
             CoreDataManager.shared.update(local: local, remote: remote, completion: { err in
                 if let err = err {
@@ -148,6 +182,35 @@ extension EventsManager {
                 }
             })
         }
-
     }
+}
+
+extension EventsManager {
+    
+    func addEventsToImageDownloadStack(_ events: [Event]) {
+        events.forEach { (event) in
+            guard let imageURL = event.imageURL else { return }
+            let semaphore = DispatchSemaphore(value: 0)
+            print(imageURL)
+            NetworkAPI.shared.fetchImage(from: imageURL, completion: { (imageData) in
+                guard let imageData = imageData else {
+                    print("failed to download image")
+                    semaphore.signal()
+                    return
+                }
+                guard let img = UIImage(data: imageData)?.jpegData(compressionQuality: 0.3) else { return }
+                DispatchQueue.main.async {
+                    CoreDataManager.shared.updateEventImage(event, image: img, completion: { (err) in
+                        if let err = err {
+                            print("failed to save image: ", err)
+                        }
+                        semaphore.signal()
+                        print("did download image for event: ", event.title ?? "")
+                    })
+                }
+            })
+            semaphore.wait()
+        }
+    }
+
 }

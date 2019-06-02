@@ -10,6 +10,7 @@ import Foundation
 import CoreLocation
 
 class Location: NSObject {
+    static let shared = Location()
     fileprivate var location: CLLocation?
     
     fileprivate let manager = CLLocationManager()
@@ -36,6 +37,8 @@ extension Location: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         if status == .authorizedAlways || status == .authorizedWhenInUse {
             permissionHandler?(true)
+        } else {
+            //permissionHandler?(false)
         }
     }
     
