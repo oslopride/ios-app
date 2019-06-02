@@ -68,7 +68,13 @@ struct SanityEvent: Decodable {
             self.prices = rawResponse.prices
             self.ageLimit = rawResponse.ageLimit
             self.location = rawResponse.location
-            self.imageURL = rawResponse.imageURL
+        
+            if (rawResponse.imageURL != nil && rawResponse.imageURL != ""){
+                self.imageURL = rawResponse.imageURL! + "?w1024&h=768"
+            } else {
+                self.imageURL = ""
+            }
+            
             self.contactPerson = rawResponse.contactPerson
             
             let dateFormatter = ISO8601DateFormatter()
