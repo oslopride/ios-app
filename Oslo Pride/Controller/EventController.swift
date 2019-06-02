@@ -25,11 +25,99 @@ class EventController: UIViewController {
         return scrollView
     }()
     
+    let imageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
+        imageView.image = UIImage(named: "trekanter")
+        imageView.contentMode = .scaleAspectFit
+        
+        return imageView
+    }()
+    
+    let descriptionLabel: UILabel = {
+        let descriptionLabel = UILabel()
+        descriptionLabel.numberOfLines = 0
+        descriptionLabel.textColor = .darkGray
+        descriptionLabel.font = UIFont.systemFont(ofSize: 16)
+        descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        return descriptionLabel
+    }()
+    
+    let toggleFavouriteButton: UIButton = {
+        let toggleFavouriteButton = UIButton(type: .system)
+        toggleFavouriteButton.setImage(UIImage(named: "star_twotone_large"), for: .normal)
+        toggleFavouriteButton.translatesAutoresizingMaskIntoConstraints = false
+        toggleFavouriteButton.addTarget(self, action: #selector(toggleFavourite), for: .touchUpInside)
+        toggleFavouriteButton.tintColor = .prideGreen
+        
+        return toggleFavouriteButton
+    }()
+    
+    let presentSalesWebpageButton: UIButton = {
+        let webpageButton = UIButton(type: .system)
+        webpageButton.setImage(UIImage(named: "store"), for: .normal)
+        webpageButton.tintColor = .pridePurple
+        webpageButton.addTarget(self, action: #selector(displaySalesWebpage), for: .touchUpInside)
+        
+        return webpageButton
+    }()
+    
+    let actionsStackView : UIStackView = {
+        let actionsStack = UIStackView()
+        actionsStack.translatesAutoresizingMaskIntoConstraints = false
+        actionsStack.distribution = .fillEqually
+        
+        return actionsStack
+    }()
+    
+    let detailsStackView : UIStackView = {
+        let stackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .vertical
+        
+        return stackView
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         title = event?.title
         setupLayout()
+    }
+    
+    fileprivate func setupUI() {
+        guard let event = event else { return }
+        
+        // Display description
+        descriptionLabel.text = event.eventDescription
+
+        // Display Image if present
+        if let imageData = event.image, let image = UIImage(data: imageData) {
+            imageView.image = image
+            imageView.contentMode = .scaleAspectFill
+        }
+        
+        // Setup Actions Row
+        if let _ = event.ticketSaleWebpage {
+            actionsStackView.addArrangedSubview(presentSalesWebpageButton)
+        } else {
+            actionsStackView.addArrangedSubview(UIView())
+        }
+        actionsStackView.addArrangedSubview(toggleFavouriteButton)
+        
+
+        // Setup details stackview
+        if let start = event.startingTime, let end = event.endingTime {
+            let dateLabel = UILabel()
+            dateLabel.numberOfLines = 0
+            dateLabel.setupEventDateLabel(start: start, end: end)
+            detailsStackView.addArrangedSubview(dateLabel)
+        }
+    
+        
     }
     
     fileprivate func setupLayout() {
@@ -40,18 +128,6 @@ class EventController: UIViewController {
             scrollView.rightAnchor.constraint(equalTo: view.rightAnchor),
             scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
             ].forEach { $0.isActive = true }
-        
-        let imageView = UIImageView()
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.contentMode = .scaleAspectFill
-        //imageView.layer.cornerRadius = 15
-        imageView.clipsToBounds = true
-        if let imageData = event?.image {
-            imageView.image = UIImage(data: imageData)
-        } else {
-            imageView.image = UIImage(named: "trekanter")
-            imageView.contentMode = .scaleAspectFit
-        }
 
         scrollView.addSubview(imageView)
         [
@@ -62,66 +138,32 @@ class EventController: UIViewController {
             ].forEach { $0.isActive = true }
         
         
-        let stackView = createStackView()
-        scrollView.addSubview(stackView)
+        scrollView.addSubview(detailsStackView)
         [
-            stackView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 10),
-            stackView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -10),
-            stackView.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 24),
-            stackView.bottomAnchor.constraint(lessThanOrEqualTo: scrollView.bottomAnchor, constant: -24)
+            detailsStackView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 10),
+            detailsStackView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -10),
+            detailsStackView.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 24),
+            detailsStackView.bottomAnchor.constraint(lessThanOrEqualTo: scrollView.bottomAnchor, constant: -24)
+            ].forEach { $0.isActive = true }
+
+        scrollView.addSubview(actionsStackView)
+        [
+            actionsStackView.centerYAnchor.constraint(equalTo: detailsStackView.centerYAnchor),
+            actionsStackView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -10),
+            actionsStackView.heightAnchor.constraint(equalToConstant: 55),
+            actionsStackView.leftAnchor.constraint(equalTo: view.centerXAnchor)
             ].forEach { $0.isActive = true }
         
-        let dateLabel = UILabel()
-        dateLabel.numberOfLines = 0
-        
-        guard let start = event?.startingTime, let end = event?.endingTime else { return }
-        dateLabel.setupEventDateLabel(start: start, end: end)
-        stackView.addArrangedSubview(dateLabel)
-        
-        let toggleFavouriteButton = UIButton(type: .system)
-        toggleFavouriteButton.setImage(UIImage(named: "star_twotone_large"), for: .normal)
-        toggleFavouriteButton.translatesAutoresizingMaskIntoConstraints = false
-        toggleFavouriteButton.addTarget(self, action: #selector(toggleFavourite), for: .touchUpInside)
-        toggleFavouriteButton.tintColor = .prideGreen//.prideYellow//.pridePurple
-        
-        let actionsStack = UIStackView()
-        actionsStack.translatesAutoresizingMaskIntoConstraints = false
-        actionsStack.distribution = .fillEqually
-        if let saleURL = event?.ticketSaleWebpage {
-            let webpageButton = UIButton(type: .system)
-            webpageButton.setImage(UIImage(named: "store"), for: .normal)
-            //("Billetter", for: .normal)
-            webpageButton.tintColor = .pridePurple
-            webpageButton.addTarget(self, action: #selector(displaySalesWebpage), for: .touchUpInside)
-            actionsStack.addArrangedSubview(webpageButton)
-        } else {
-            actionsStack.addArrangedSubview(UIView())
-        }
-        
-        actionsStack.addArrangedSubview(toggleFavouriteButton)
-        scrollView.addSubview(actionsStack)
-        [
-            actionsStack.centerYAnchor.constraint(equalTo: dateLabel.centerYAnchor),
-            actionsStack.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -10),
-            actionsStack.heightAnchor.constraint(equalToConstant: 55),
-            actionsStack.leftAnchor.constraint(equalTo: view.centerXAnchor)
-            ].forEach { $0.isActive = true }
-        
-        let descriptionLabel = UILabel()
-        descriptionLabel.numberOfLines = 0
-        descriptionLabel.textColor = .darkGray
-        descriptionLabel.font = UIFont.systemFont(ofSize: 16)
-        descriptionLabel.text = event?.eventDescription
-        descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
         scrollView.addSubview(descriptionLabel)
         [
             descriptionLabel.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 24),
             descriptionLabel.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -24),
-            descriptionLabel.topAnchor.constraint(equalTo: dateLabel.bottomAnchor, constant: 10),
+            descriptionLabel.topAnchor.constraint(equalTo: detailsStackView.bottomAnchor, constant: 10),
             descriptionLabel.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: -24)
             ].forEach { $0.isActive = true }
         
     }
+
     
     @objc fileprivate func displaySalesWebpage() {
         guard let url = event?.ticketSaleWebpage else { return }
@@ -151,14 +193,6 @@ class EventController: UIViewController {
         
         return stackView
     }
-    
-    
-    
-    fileprivate func setupUI() {
-        
-    }
-    
- 
     
     
     
