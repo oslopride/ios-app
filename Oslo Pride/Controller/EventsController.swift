@@ -132,20 +132,29 @@ extension EventsController {
     
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerLabel = TableViewHeaderLabel()
+        headerLabel.numberOfLines = 2
         guard let t = days?[section].first?.startingTime else { return nil }
         let formatter = DateFormatter()
         formatter.dateFormat = "EEEE dd"
         formatter.locale = Locale(identifier: "NO-BM")
         
         let timeText = formatter.string(from: t)
+        let txt = (timeText.first?.uppercased() ?? "") + timeText.dropFirst().lowercased()
+        let day = Calendar.current.component(.day, from: t)
         
-        headerLabel.text = (timeText.first?.uppercased() ?? "") + timeText.dropFirst().lowercased()
+        let attrText = NSMutableAttributedString(string: txt, attributes: nil)
+        attrText.append(NSAttributedString(string: "\nDag \(day - 13)", attributes: [
+            NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 16),
+            NSAttributedString.Key.foregroundColor : UIColor.graySuit
+            ]))
+        
+        headerLabel.attributedText = attrText
         
         let containerView = UIView()
         containerView.addSubview(headerLabel)
         headerLabel.centerXAnchor.constraint(equalTo: containerView.centerXAnchor).isActive = true
         headerLabel.centerYAnchor.constraint(equalTo: containerView.centerYAnchor).isActive = true
-        
+        headerLabel.heightAnchor.constraint(equalToConstant: 70).isActive = true
         
         return containerView
     }
@@ -155,6 +164,10 @@ extension EventsController {
         c.event = days?[indexPath.section][indexPath.row]
         
         navigationController?.pushViewController(c, animated: true)
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 65
     }
     
 }

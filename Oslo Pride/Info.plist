@@ -17,7 +17,7 @@
 	<key>CFBundleShortVersionString</key>
 	<string>2019.1</string>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>2</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
@@ -25,9 +25,9 @@
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 	</dict>
-    <key>NSLocationAlwaysUsageDescription</key>
-    <string>Brukes til kart og analyse</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Brukes til kart og analyse</string>
+	<key>NSLocationAlwaysUsageDescription</key>
 	<string>Brukes til kart og analyse</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Brukes til kart og analyse</string>
