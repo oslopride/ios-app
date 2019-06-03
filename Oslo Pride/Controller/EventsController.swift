@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SafariServices
 
 class EventsController: UITableViewController {
 
@@ -26,13 +27,13 @@ class EventsController: UITableViewController {
         tableView.register(EventCell.self, forCellReuseIdentifier: cellID)
         navigationController?.navigationBar.tintColor = .prideDeepPurple//.prideYellow
         setupNavItems()
-//        navigationController?.navigationBar.prefersLargeTitles = true
-//        navigationController?.navigationBar.largeTitleTextAttributes = [
-//            NSAttributedString.Key.foregroundColor : UIColor.pridePurple
-//        ]
-//        navigationController?.navigationBar.titleTextAttributes = [
-//            NSAttributedString.Key.foregroundColor : UIColor.pridePurple
-//        ]
+        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationController?.navigationBar.largeTitleTextAttributes = [
+            NSAttributedString.Key.foregroundColor : UIColor.prideDeepPurple
+        ]
+        navigationController?.navigationBar.titleTextAttributes = [
+            NSAttributedString.Key.foregroundColor : UIColor.prideDeepPurple
+        ]
         
         refreshController.addTarget(self, action: #selector(updateEvents), for: .valueChanged)
         tableView.refreshControl = refreshController
@@ -54,17 +55,13 @@ class EventsController: UITableViewController {
     
     fileprivate func setupNavItems() {
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)
-        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Slett", style: .plain, target: self, action: #selector(reset))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add
+            , target: self, action: #selector(presentEventsregistration))
         navigationItem.rightBarButtonItem = right
     }
     
-    @objc fileprivate func reset() {
-//        CoreDataManager.shared.delete(events: EventsManager.shared.get(), completion: { err in
-//            if let err = err {
-//                print("failed to delete: ", err)
-//            }
-//            self.displayEvents()
-//        })
+    @objc fileprivate func presentEventsregistration() {
+        present(UINavigationController(rootViewController: EventregistrationController()), animated: true, completion: nil)
     }
     
     @objc fileprivate func updateEvents() {
@@ -175,7 +172,6 @@ extension EventsController {
 extension EventsController: EventsFilterHeaderViewDelegte {
     
     func updateFilter(_ filter: Filter, remove: Bool) {
-        print("updating")
         EventsManager.shared.addCategoryFilter(filter.category, remove: remove)
         self.days = EventsManager.shared.get()
         tableView.reloadData()

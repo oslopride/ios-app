@@ -25,7 +25,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //UINavigationBar.appearance().tintColor = .prideRed
         UINavigationBar.appearance().isTranslucent = false
         UINavigationBar.appearance().shadowImage = UIImage()
-        
+        UINavigationBar.appearance().tintColor = .prideDeepPurple
         
 //        CoreDataManager.shared.getAllEvents { [unowned self] (events) in
 //            if events.count == 0 {
