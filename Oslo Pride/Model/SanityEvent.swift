@@ -69,7 +69,7 @@ struct SanityEvent: Decodable {
             self.ageLimit = rawResponse.ageLimit
             self.location = rawResponse.location
         
-            if (rawResponse.imageURL != nil && rawResponse.imageURL != ""){
+            if let urlString = rawResponse.imageURL, urlString.count > 0 {
                 self.imageURL = rawResponse.imageURL! + "?w1024&h=768"
             } else {
                 self.imageURL = ""

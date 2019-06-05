@@ -15,6 +15,8 @@ class EventsManager {
     fileprivate var days: [[Event]]?
     fileprivate var downloadStack = [Event]()
     
+    fileprivate var isDownloading = false
+    
     func set(events: [Event]) {
         days = standardSortByDay(filtered: events)
     }
@@ -153,7 +155,6 @@ extension EventsManager {
             for i in 0..<local.count {
                 guard let remoteID = remoteEvent.id, let localID = local[i].id else { continue }
                 if remoteID == localID {
-                    print("we got one")
                     updateIfNecessary(local: local[i], remote: remoteEvent)
                     exists = true
                     break
@@ -165,17 +166,21 @@ extension EventsManager {
             }
         }
         
-        DispatchQueue.global(qos: .background).async {
-            self.processDownloadStack()
+        if !isDownloading {
+            DispatchQueue.global(qos: .background).async {
+                self.processDownloadStack()
+            }
         }
-        
+
         return unsyncedEvents
     }
     
     fileprivate func processDownloadStack() {
         print("starting..")
         guard self.downloadStack.count > 0 else { return }
-        downloadStack.forEach { (event) in
+        isDownloading = true
+        for i in (0..<downloadStack.count).reversed() {
+            let event = downloadStack.remove(at: i)
             guard let imageURL = event.imageURL else { return }
             let semaphore = DispatchSemaphore(value: 0)
             NetworkAPI.shared.fetchImage(from: imageURL, completion: { (imageData) in
@@ -197,11 +202,25 @@ extension EventsManager {
             })
             semaphore.wait()
         }
+        print("Done")
+        isDownloading = false
     }
     
     fileprivate func updateIfNecessary(local: Event, remote: SanityEvent) {
         if (local.image == nil && local.imageURL != nil) || (local.imageURL?.absoluteString != remote.imageURL) {
-            downloadStack.append(local)
+            
+            var exists = false
+            for i in downloadStack {
+                if i.id == local.id {
+                    exists = true
+                    break
+                }
+            }
+            
+            if !exists {
+                downloadStack.append(local)
+            }
+            
         }
         DispatchQueue.main.async {
             CoreDataManager.shared.update(local: local, remote: remote, completion: { err in
@@ -211,34 +230,4 @@ extension EventsManager {
             })
         }
     }
-}
-
-extension EventsManager {
-    
-    func addEventsToImageDownloadStack(_ events: [Event]) {
-        events.forEach { (event) in
-            guard let imageURL = event.imageURL else { return }
-            let semaphore = DispatchSemaphore(value: 0)
-            print(imageURL)
-            NetworkAPI.shared.fetchImage(from: imageURL, completion: { (imageData) in
-                guard let imageData = imageData else {
-                    print("failed to download image")
-                    semaphore.signal()
-                    return
-                }
-                guard let img = UIImage(data: imageData)?.jpegData(compressionQuality: 0.3) else { return }
-                DispatchQueue.main.async {
-                    CoreDataManager.shared.updateEventImage(event, image: img, completion: { (err) in
-                        if let err = err {
-                            print("failed to save image: ", err)
-                        }
-                        semaphore.signal()
-                        print("did download image for event: ", event.title ?? "")
-                    })
-                }
-            })
-            semaphore.wait()
-        }
-    }
-
 }
