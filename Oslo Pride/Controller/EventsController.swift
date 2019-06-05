@@ -27,13 +27,13 @@ class EventsController: UITableViewController {
         tableView.register(EventCell.self, forCellReuseIdentifier: cellID)
         navigationController?.navigationBar.tintColor = .prideDeepPurple//.prideYellow
         setupNavItems()
-        navigationController?.navigationBar.prefersLargeTitles = true
-        navigationController?.navigationBar.largeTitleTextAttributes = [
-            NSAttributedString.Key.foregroundColor : UIColor.prideDeepPurple
-        ]
-        navigationController?.navigationBar.titleTextAttributes = [
-            NSAttributedString.Key.foregroundColor : UIColor.prideDeepPurple
-        ]
+//        navigationController?.navigationBar.prefersLargeTitles = true
+//        navigationController?.navigationBar.largeTitleTextAttributes = [
+//            NSAttributedString.Key.foregroundColor : UIColor.prideDeepPurple
+//        ]
+//        navigationController?.navigationBar.titleTextAttributes = [
+//            NSAttributedString.Key.foregroundColor : UIColor.prideDeepPurple
+//        ]
         
         refreshController.addTarget(self, action: #selector(updateEvents), for: .valueChanged)
         tableView.refreshControl = refreshController
