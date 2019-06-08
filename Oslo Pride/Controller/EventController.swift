@@ -9,6 +9,8 @@
 import UIKit
 import WebKit
 import SafariServices
+import MapKit
+import CoreLocation
 
 class EventController: UIViewController {
     
@@ -106,6 +108,17 @@ class EventController: UIViewController {
         return stackView
     }()
     
+    let mapView : MKMapView = {
+        let mv = MKMapView()
+        mv.translatesAutoresizingMaskIntoConstraints = false
+        mv.layer.cornerRadius = 5
+        mv.clipsToBounds = true
+        mv.isUserInteractionEnabled = false
+        
+        
+        return mv
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
@@ -191,6 +204,32 @@ class EventController: UIViewController {
         let accessability = createDetail(main: "Rullestolvennlig", secondary: event.accessible ? "Ja" : "Nei")
         descriptionStackView.addArrangedSubview(accessability)
         
+        let placeDetail = createDetail(main: "Sted", secondary: "\(event.locationName ?? "")\n\(event.locationAddress ?? "")")
+        descriptionStackView.addArrangedSubview(placeDetail)
+        
+        
+        
+        if let coordinate = event.coordinates() {
+            setCamera(to: coordinate)
+        } else {
+            let geoCoder = CLGeocoder()
+            geoCoder.geocodeAddressString(event.locationAddress ?? "") { (placemark, err) in
+                if let err = err {
+                    print("Failed to find location: ", err)
+                    return
+                }
+                if let coordinate = placemark?.first?.location?.coordinate {
+                    self.setCamera(to: coordinate)
+                }
+            }
+        }
+    }
+    
+    fileprivate func setCamera(to: CLLocationCoordinate2D) {
+        let camera = MKMapCamera(lookingAtCenter: to, fromDistance: 5000, pitch: 0, heading: 0)
+        self.mapView.setCamera(camera, animated: false)
+        let notation = PrideAnnotation(title: event?.title ?? "", lat: to.latitude, long: to.longitude)
+        self.mapView.addAnnotation(notation)
     }
     
     fileprivate func createDetail(main: String, secondary: String) -> UILabel {
@@ -284,8 +323,19 @@ class EventController: UIViewController {
             descriptionStackView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 10),
             descriptionStackView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -10),
             descriptionStackView.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: 24),
-            descriptionStackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: -24)
+           // descriptionStackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: -24)
             ].forEach { $0.isActive = true }
+        
+        scrollView.addSubview(mapView)
+        [
+            mapView.leftAnchor.constraint(equalTo: descriptionStackView.leftAnchor),
+            mapView.rightAnchor.constraint(equalTo: descriptionStackView.rightAnchor),
+            mapView.topAnchor.constraint(equalTo: descriptionStackView.bottomAnchor, constant: 24),
+            mapView.heightAnchor.constraint(equalToConstant: 250),
+            mapView.bottomAnchor.constraint(lessThanOrEqualTo: scrollView.bottomAnchor, constant: -46)
+            ].forEach { $0.isActive = true }
+        
+        
         
         
     }

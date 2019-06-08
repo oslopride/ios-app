@@ -11,6 +11,15 @@ import MapKit
 
 class MapCoordinates {
     
+    let pridePark = CLLocationCoordinate2D(latitude: 59.914252, longitude: 10.735609)
+    let prideHouseArt = CLLocationCoordinate2D(latitude: 59.914809, longitude: 10.749099)
+        
+    let prideParadeStart = CLLocationCoordinate2D(latitude: 59.911959, longitude: 10.766269)
+//        
+//    let prideParadeEndAnnotation = PrideAnnotation(title: nil, lat: 59.913132, long: 10.738024)
+    
+    
+    
     let paradeCoordinates = [
         CLLocationCoordinate2D(latitude: 59.911959, longitude: 10.766269),
         CLLocationCoordinate2D(latitude: 59.912717, longitude: 10.762831),

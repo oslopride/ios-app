@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import CoreLocation
 
 extension Event {
     
@@ -45,6 +46,21 @@ extension Event {
         case "0":   return "For Alle"
         case "99":  return "Annet"
         default:    return "\(self.ageLimit ?? "") år"
+        }
+    }
+    
+    func coordinates() -> CLLocationCoordinate2D? {
+        switch self.category {
+        case "0":
+            return nil
+        case "1":
+            return nil
+        case "2":
+            return MapCoordinates().pridePark
+        case "3", "4":
+            return MapCoordinates().prideHouseArt
+        default:
+            return nil
         }
     }
     
