@@ -108,7 +108,7 @@ class EventController: UIViewController {
         return stackView
     }()
     
-    let mapView : MKMapView = {
+    lazy var mapView : MKMapView = {
         let mv = MKMapView()
         mv.translatesAutoresizingMaskIntoConstraints = false
         mv.layer.cornerRadius = 5
@@ -116,8 +116,15 @@ class EventController: UIViewController {
         //mv.isUserInteractionEnabled = false
         mv.userTrackingMode = .follow
         mv.showsUserLocation = true
+        mv.delegate = self
         
         return mv
+    }()
+    
+    let distanceLabel: UILabel = {
+        let label = UILabel()
+        
+        return label
     }()
     
     override func viewDidLoad() {
@@ -207,7 +214,7 @@ class EventController: UIViewController {
         
         let placeDetail = createDetail(main: "Sted", secondary: "\(event.locationName ?? "")\n\(event.locationAddress ?? "")")
         descriptionStackView.addArrangedSubview(placeDetail)
-        
+        //descriptionStackView.addArrangedSubview(distanceLabel)
         
         
         if let coordinate = event.coordinates() {
@@ -231,6 +238,35 @@ class EventController: UIViewController {
         self.mapView.setCamera(camera, animated: false)
         let notation = PrideAnnotation(title: event?.title ?? "", lat: to.latitude, long: to.longitude)
         self.mapView.addAnnotation(notation)
+        
+        if let userLocation = mapView.userLocation.location {
+            let distance = userLocation.distance(from: CLLocation(latitude: to.latitude, longitude: to.longitude))
+
+            
+            let request = MKDirections.Request()
+            let toPlacemark = MKPlacemark(coordinate: to)
+            let toItem = MKMapItem(placemark: toPlacemark)
+            request.destination = toItem
+
+            let fromPlacemark = MKPlacemark(coordinate: userLocation.coordinate)
+            let fromItem = MKMapItem(placemark: fromPlacemark)
+            request.source = fromItem
+            request.transportType = .walking
+            
+            let directions = MKDirections(request: request)
+            directions.calculateETA { (eta, err) in
+                if let err = err {
+                    print("Failed to get directions: ", err)
+                    let distanceDetail = self.createDetail(main: "Distanse", secondary: "\(Int(distance)) meter")
+                    self.descriptionStackView.addArrangedSubview(distanceDetail)
+                    return
+                }
+                
+                let distanceDetail = self.createDetail(main: "Distanse", secondary: "\(Int(eta?.distance ?? 0)) meter\n\(Int((eta?.expectedTravelTime ?? 0) / 60)) minutter i ganghastighet")
+                self.descriptionStackView.addArrangedSubview(distanceDetail)
+            }
+        }
+        
     }
     
     fileprivate func createDetail(main: String, secondary: String) -> UILabel {
@@ -372,5 +408,15 @@ class EventController: UIViewController {
     }
     
     
+    
+}
+
+extension EventController: MKMapViewDelegate {
+    
+    func mapView(_ mapView: MKMapView, didUpdate userLocation: MKUserLocation) {
+        print("user location did update")
+        
+        
+    }
     
 }
