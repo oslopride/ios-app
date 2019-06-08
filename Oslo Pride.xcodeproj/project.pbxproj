@@ -19,6 +19,7 @@
 		3AB6CC74228B26EB0039868E /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB6CC73228B26EB0039868E /* CoreDataManager.swift */; };
 		3AB6CC77228B27880039868E /* PrideDataModels.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 3AB6CC75228B27880039868E /* PrideDataModels.xcdatamodeld */; };
 		3ACDFF31229455AB002FDC84 /* MapController+Overlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ACDFF30229455AB002FDC84 /* MapController+Overlay.swift */; };
+		3ACE450322AC024000CC3097 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ACE450222AC024000CC3097 /* Event.swift */; };
 		3AE6537F229D9A5D00C6B2CE /* EventsFilterHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AE6537E229D9A5D00C6B2CE /* EventsFilterHeaderView.swift */; };
 		3AE65381229D9F5F00C6B2CE /* EventsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AE65380229D9F5F00C6B2CE /* EventsManager.swift */; };
 		3AECE97E22760D9700F9DEF0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AECE97D22760D9700F9DEF0 /* AppDelegate.swift */; };
@@ -49,6 +50,7 @@
 		3AB6CC73228B26EB0039868E /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		3AB6CC76228B27880039868E /* PrideDataModels.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = PrideDataModels.xcdatamodel; sourceTree = "<group>"; };
 		3ACDFF30229455AB002FDC84 /* MapController+Overlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MapController+Overlay.swift"; sourceTree = "<group>"; };
+		3ACE450222AC024000CC3097 /* Event.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
 		3AE6537E229D9A5D00C6B2CE /* EventsFilterHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsFilterHeaderView.swift; sourceTree = "<group>"; };
 		3AE65380229D9F5F00C6B2CE /* EventsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsManager.swift; sourceTree = "<group>"; };
 		3AECE97A22760D9700F9DEF0 /* Oslo Pride.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Oslo Pride.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -182,6 +184,7 @@
 				3AEE589F22887E4C00891790 /* UIColor.swift */,
 				3A686CBE2290A2A300F48475 /* String.swift */,
 				3A14A6CF22A2CEDC0086905C /* NotificationCenter.swift */,
+				3ACE450222AC024000CC3097 /* Event.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -268,6 +271,7 @@
 				3A04D3C2228EE44400AAD8BB /* DownloadController.swift in Sources */,
 				3AEE58962288532000891790 /* EventCell.swift in Sources */,
 				9B9DE90122A407F600E6978E /* EventCategoryLabel.swift in Sources */,
+				3ACE450322AC024000CC3097 /* Event.swift in Sources */,
 				3AEE58992288739000891790 /* TabBarController.swift in Sources */,
 				3ACDFF31229455AB002FDC84 /* MapController+Overlay.swift in Sources */,
 				3AE6537F229D9A5D00C6B2CE /* EventsFilterHeaderView.swift in Sources */,

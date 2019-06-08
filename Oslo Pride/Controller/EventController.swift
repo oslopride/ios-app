@@ -84,6 +84,7 @@ class EventController: UIViewController {
         let actionsStack = UIStackView()
         actionsStack.translatesAutoresizingMaskIntoConstraints = false
         actionsStack.distribution = .fillEqually
+        actionsStack.axis = .vertical
         
         return actionsStack
     }()
@@ -139,14 +140,27 @@ class EventController: UIViewController {
             imageView.contentMode = .scaleAspectFill
         }
         
-        // Setup Actions Row
-        if let _ = event.ticketSaleWebpage {
-            actionsStackView.addArrangedSubview(presentSalesWebpageButton)
-        } else {
-            actionsStackView.addArrangedSubview(UIView())
-        }
-        actionsStackView.addArrangedSubview(toggleFavouriteButton)
+        let categoryLabel = UILabel()
+        categoryLabel.attributedText = event.categoryName()
+        categoryLabel.textAlignment = .right
+        categoryLabel.font = UIFont.boldSystemFont(ofSize: 16)
+        actionsStackView.addArrangedSubview(categoryLabel)
         
+        let placeLabel = UILabel()
+        placeLabel.text = event.locationName
+        placeLabel.textAlignment = .right
+        placeLabel.font = UIFont.boldSystemFont(ofSize: 16)
+        placeLabel.textColor = .graySuit
+        placeLabel.numberOfLines = 0
+        actionsStackView.addArrangedSubview(placeLabel)
+        
+        
+//        let addressLabel = UILabel()
+//        addressLabel.text = event.locationAddress
+//        addressLabel.textAlignment = .right
+//        addressLabel.textColor = .graySuit
+//        addressLabel.numberOfLines = 0
+//        actionsStackView.addArrangedSubview(addressLabel)
 
         // Setup details stackview
         if let start = event.startingTime, let end = event.endingTime {
@@ -191,19 +205,19 @@ class EventController: UIViewController {
             detailsStackView.bottomAnchor.constraint(lessThanOrEqualTo: scrollView.bottomAnchor, constant: -24)
             ].forEach { $0.isActive = true }
 
-//        scrollView.addSubview(actionsStackView)
-//        [
-//            actionsStackView.centerYAnchor.constraint(equalTo: detailsStackView.centerYAnchor),
-//            actionsStackView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -10),
-//            actionsStackView.heightAnchor.constraint(equalToConstant: 55),
-//            actionsStackView.leftAnchor.constraint(equalTo: view.centerXAnchor)
-//            ].forEach { $0.isActive = true }
+        scrollView.addSubview(actionsStackView)
+        [
+            actionsStackView.centerYAnchor.constraint(equalTo: detailsStackView.centerYAnchor),
+            actionsStackView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -10),
+            //actionsStackView.heightAnchor.constraint(equalToConstant: 55),
+            actionsStackView.leftAnchor.constraint(equalTo: view.centerXAnchor)
+            ].forEach { $0.isActive = true }
         
         scrollView.addSubview(descriptionLabel)
         [
             descriptionLabel.leftAnchor.constraint(equalTo: detailsStackView.leftAnchor),
             descriptionLabel.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -10),
-            descriptionLabel.topAnchor.constraint(equalTo: detailsStackView.bottomAnchor, constant: 10),
+            descriptionLabel.topAnchor.constraint(equalTo: actionsStackView.bottomAnchor, constant: 10),
             descriptionLabel.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: -24)
             ].forEach { $0.isActive = true }
         
