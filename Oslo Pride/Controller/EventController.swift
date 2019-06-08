@@ -9,6 +9,8 @@
 import UIKit
 import WebKit
 import SafariServices
+import MapKit
+import CoreLocation
 
 class EventController: UIViewController {
     
@@ -32,8 +34,19 @@ class EventController: UIViewController {
         imageView.clipsToBounds = true
         imageView.image = UIImage(named: "trekanter")
         imageView.contentMode = .scaleAspectFit
-        
+        imageView.layer.cornerRadius = 9
+        imageView.backgroundColor = UIColor(white: 0, alpha: 0.05)
+        //imageView.layer.cornerCurve = .continuous
         return imageView
+    }()
+    
+    let titleLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = UIFont.boldSystemFont(ofSize: 18)
+        label.numberOfLines = 0
+        
+        return label
     }()
     
     let descriptionLabel: UILabel = {
@@ -74,6 +87,7 @@ class EventController: UIViewController {
         let actionsStack = UIStackView()
         actionsStack.translatesAutoresizingMaskIntoConstraints = false
         actionsStack.distribution = .fillEqually
+        actionsStack.axis = .vertical
         
         return actionsStack
     }()
@@ -85,16 +99,60 @@ class EventController: UIViewController {
         
         return stackView
     }()
+
+    let descriptionStackView : UIStackView = {
+        let stackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .vertical
+        stackView.spacing = 10
+        return stackView
+    }()
+    
+    let mapView : MKMapView = {
+        let mv = MKMapView()
+        mv.translatesAutoresizingMaskIntoConstraints = false
+        mv.layer.cornerRadius = 5
+        mv.clipsToBounds = true
+        //mv.isUserInteractionEnabled = false
+        mv.userTrackingMode = .follow
+        mv.showsUserLocation = true
+        
+        return mv
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-        title = event?.title
+        setupNavigationItems()
         setupLayout()
+    }
+    
+    fileprivate func setupNavigationItems() {
+        var right = [
+            UIBarButtonItem(image: UIImage(named: "share"), style: .plain, target: self, action: #selector(shareEvent)),
+            UIBarButtonItem(image: UIImage(named: "star_border"), style: .plain, target: self, action: #selector(toggleFavourite))
+        ]
+        
+        if let _ = event?.ticketSaleWebpage {
+            let ticket = UIBarButtonItem(title: "🎟 Billett", style: .plain, target: self, action: #selector(displaySalesWebpage))
+            ticket.tintColor = .prideRed
+            right.append(ticket)
+        }
+        
+        navigationItem.rightBarButtonItems = right
+    }
+    
+    @objc fileprivate func shareEvent() {
+        guard let id = event?.id else { return }
+        guard let eventURLString = URL(string: "https://www.oslopride.no/events/\(id)") else { return }
+        let shareController = UIActivityViewController(activityItems: [eventURLString], applicationActivities: [])
+        present(shareController, animated: true, completion: nil)
     }
     
     fileprivate func setupUI() {
         guard let event = event else { return }
+        
+        titleLabel.text = event.title
         
         // Display description
         descriptionLabel.text = event.eventDescription
@@ -105,14 +163,27 @@ class EventController: UIViewController {
             imageView.contentMode = .scaleAspectFill
         }
         
-        // Setup Actions Row
-        if let _ = event.ticketSaleWebpage {
-            actionsStackView.addArrangedSubview(presentSalesWebpageButton)
-        } else {
-            actionsStackView.addArrangedSubview(UIView())
-        }
-        actionsStackView.addArrangedSubview(toggleFavouriteButton)
+        let categoryLabel = UILabel()
+        categoryLabel.attributedText = event.categoryName()
+        categoryLabel.textAlignment = .right
+        categoryLabel.font = UIFont.boldSystemFont(ofSize: 16)
+        actionsStackView.addArrangedSubview(categoryLabel)
         
+        let placeLabel = UILabel()
+        placeLabel.text = event.locationName
+        placeLabel.textAlignment = .right
+        placeLabel.font = UIFont.boldSystemFont(ofSize: 16)
+        placeLabel.textColor = .graySuit
+        placeLabel.numberOfLines = 0
+        //actionsStackView.addArrangedSubview(placeLabel)
+        
+        
+//        let addressLabel = UILabel()
+//        addressLabel.text = event.locationAddress
+//        addressLabel.textAlignment = .right
+//        addressLabel.textColor = .graySuit
+//        addressLabel.numberOfLines = 0
+//        actionsStackView.addArrangedSubview(addressLabel)
 
         // Setup details stackview
         if let start = event.startingTime, let end = event.endingTime {
@@ -121,8 +192,65 @@ class EventController: UIViewController {
             dateLabel.setupEventDateLabel(start: start, end: end)
             detailsStackView.addArrangedSubview(dateLabel)
         }
-    
         
+        let organizerDetail = createDetail(main: "Arrangør", secondary: event.organizer ?? "Ikke Oppgitt")
+        descriptionStackView.addArrangedSubview(organizerDetail)
+    
+        let deafInterpretationDetail = createDetail(main: "Tegnspråktolket", secondary: (event.deafInterpretation ? "Ja" : "Nei"))
+        descriptionStackView.addArrangedSubview(deafInterpretationDetail)
+        
+        let ageLimitDetail = createDetail(main: "Aldersgrense", secondary: event.ageLimitString())
+        descriptionStackView.addArrangedSubview(ageLimitDetail)
+        
+        let accessability = createDetail(main: "Rullestolvennlig", secondary: event.accessible ? "Ja" : "Nei")
+        descriptionStackView.addArrangedSubview(accessability)
+        
+        let placeDetail = createDetail(main: "Sted", secondary: "\(event.locationName ?? "")\n\(event.locationAddress ?? "")")
+        descriptionStackView.addArrangedSubview(placeDetail)
+        
+        
+        
+        if let coordinate = event.coordinates() {
+            setCamera(to: coordinate)
+        } else {
+            let geoCoder = CLGeocoder()
+            geoCoder.geocodeAddressString(event.locationAddress ?? "") { (placemark, err) in
+                if let err = err {
+                    print("Failed to find location: ", err)
+                    return
+                }
+                if let coordinate = placemark?.first?.location?.coordinate {
+                    self.setCamera(to: coordinate)
+                }
+            }
+        }
+    }
+    
+    fileprivate func setCamera(to: CLLocationCoordinate2D) {
+        let camera = MKMapCamera(lookingAtCenter: to, fromDistance: 5000, pitch: 0, heading: 0)
+        self.mapView.setCamera(camera, animated: false)
+        let notation = PrideAnnotation(title: event?.title ?? "", lat: to.latitude, long: to.longitude)
+        self.mapView.addAnnotation(notation)
+    }
+    
+    fileprivate func createDetail(main: String, secondary: String) -> UILabel {
+        let accessLabel = UILabel()
+        accessLabel.font = UIFont.boldSystemFont(ofSize: 16)
+        accessLabel.numberOfLines = 0
+        let accessAttrLabel = NSMutableAttributedString()
+        accessAttrLabel.append(NSAttributedString(string: "\(main)" + "\n", attributes: [
+            NSAttributedString.Key.foregroundColor : UIColor.kindaBlack,
+            //NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 16)
+            ]))
+        
+        accessAttrLabel.append(NSAttributedString(string: secondary, attributes: [
+            NSAttributedString.Key.foregroundColor : UIColor.graySuit,
+            //NSAttributedString.Key.paragraphStyle : rightParagraph
+            //NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 16)
+            ]))
+        accessLabel.attributedText = accessAttrLabel
+        
+        return accessLabel
     }
     
     fileprivate func setupLayout() {
@@ -136,18 +264,24 @@ class EventController: UIViewController {
 
         scrollView.addSubview(imageView)
         [
-            imageView.leftAnchor.constraint(equalTo: view.leftAnchor),
+            imageView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 10),
             imageView.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 0),
-            imageView.rightAnchor.constraint(equalTo: view.rightAnchor),
-            imageView.heightAnchor.constraint(equalToConstant: view.frame.width*0.618033989)
+            imageView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -10),
+            imageView.heightAnchor.constraint(equalToConstant: (view.frame.width*0.618033989) - 20)
             ].forEach { $0.isActive = true }
         
+        scrollView.addSubview(titleLabel)
+        [
+            titleLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 18),
+            titleLabel.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 10),
+            titleLabel.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -10),
+            ].forEach { $0.isActive = true }
         
         scrollView.addSubview(detailsStackView)
         [
             detailsStackView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 10),
             detailsStackView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -10),
-            detailsStackView.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 24),
+            detailsStackView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 18),
             detailsStackView.bottomAnchor.constraint(lessThanOrEqualTo: scrollView.bottomAnchor, constant: -24)
             ].forEach { $0.isActive = true }
 
@@ -155,17 +289,55 @@ class EventController: UIViewController {
         [
             actionsStackView.centerYAnchor.constraint(equalTo: detailsStackView.centerYAnchor),
             actionsStackView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -10),
-            actionsStackView.heightAnchor.constraint(equalToConstant: 55),
+            //actionsStackView.heightAnchor.constraint(equalToConstant: 55),
             actionsStackView.leftAnchor.constraint(equalTo: view.centerXAnchor)
             ].forEach { $0.isActive = true }
         
         scrollView.addSubview(descriptionLabel)
         [
-            descriptionLabel.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 24),
-            descriptionLabel.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -24),
-            descriptionLabel.topAnchor.constraint(equalTo: detailsStackView.bottomAnchor, constant: 10),
-            descriptionLabel.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: -24)
+            descriptionLabel.leftAnchor.constraint(equalTo: detailsStackView.leftAnchor),
+            descriptionLabel.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -10),
+            descriptionLabel.topAnchor.constraint(equalTo: actionsStackView.bottomAnchor, constant: 24),
+            //descriptionLabel.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: -24)
             ].forEach { $0.isActive = true }
+        
+        let seperator = UIView()
+        seperator.backgroundColor = .graySuit
+        seperator.alpha = 0.5
+        seperator.clipsToBounds = true
+        seperator.layer.cornerRadius = 1
+        
+        seperator.translatesAutoresizingMaskIntoConstraints = false
+        
+        scrollView.addSubview(seperator)
+        [
+            seperator.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor),
+            seperator.leftAnchor.constraint(equalTo: descriptionLabel.leftAnchor),
+            seperator.rightAnchor.constraint(equalTo: descriptionLabel.rightAnchor),
+            seperator.heightAnchor.constraint(equalToConstant: 2)
+            ].forEach { $0.isActive = true }
+        
+
+        //detailsStackView.distribution = .fillEqually
+        scrollView.addSubview(descriptionStackView)
+        [
+            descriptionStackView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 10),
+            descriptionStackView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -10),
+            descriptionStackView.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: 24),
+           // descriptionStackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: -24)
+            ].forEach { $0.isActive = true }
+        
+        scrollView.addSubview(mapView)
+        [
+            mapView.leftAnchor.constraint(equalTo: descriptionStackView.leftAnchor),
+            mapView.rightAnchor.constraint(equalTo: descriptionStackView.rightAnchor),
+            mapView.topAnchor.constraint(equalTo: descriptionStackView.bottomAnchor, constant: 24),
+            mapView.heightAnchor.constraint(equalToConstant: 250),
+            mapView.bottomAnchor.constraint(lessThanOrEqualTo: scrollView.bottomAnchor, constant: -46)
+            ].forEach { $0.isActive = true }
+        
+        
+        
         
     }
 
@@ -184,7 +356,7 @@ class EventController: UIViewController {
                 return
             }
             DispatchQueue.main.async {
-                
+                // Update icon..
             }
         }
     }

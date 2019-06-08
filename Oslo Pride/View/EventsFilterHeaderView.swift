@@ -62,7 +62,8 @@ class EventsFilterHeaderView: UIView {
          scrollView.leftAnchor.constraint(equalTo: leftAnchor),
          scrollView.rightAnchor.constraint(equalTo: rightAnchor),
          scrollView.topAnchor.constraint(equalTo: topAnchor),
-         scrollView.bottomAnchor.constraint(equalTo: bottomAnchor)
+         scrollView.heightAnchor.constraint(equalToConstant: 60)
+         //scrollView.bottomAnchor.constraint(equalTo: bottomAnchor)
             ].forEach { $0.isActive = true }
         
         let categoryStack = FilterStackView()
@@ -81,7 +82,7 @@ class EventsFilterHeaderView: UIView {
             categoryStack.leftAnchor.constraint(equalTo: scrollView.leftAnchor),
             categoryStack.rightAnchor.constraint(equalTo: scrollView.rightAnchor),
             categoryStack.topAnchor.constraint(equalTo: topAnchor),
-            categoryStack.heightAnchor.constraint(equalToConstant: 50),
+            categoryStack.heightAnchor.constraint(equalToConstant: 60),
             //categoryStack.bottomAnchor.constraint(equalTo: bottomAnchor),
             //stackView.heightAnchor.constraint(equalToConstant: 50)
             ].forEach { $0.isActive = true }
@@ -110,10 +111,10 @@ class EventsFilterHeaderView: UIView {
         miscFilterActions.axis = .horizontal
         miscFilterActions.backgroundColor = .red
         
-        scrollView.addSubview(miscFilterActions)
+        addSubview(miscFilterActions)
         [
-            miscFilterActions.topAnchor.constraint(equalTo: categoryStack.bottomAnchor, constant: 0),
-            miscFilterActions.leftAnchor.constraint(equalTo: categoryStack.leftAnchor),
+            miscFilterActions.topAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: 0),
+            miscFilterActions.leftAnchor.constraint(equalTo: leftAnchor),
             miscFilterActions.rightAnchor.constraint(lessThanOrEqualTo: scrollView.rightAnchor, constant: -10),
             miscFilterActions.heightAnchor.constraint(equalToConstant: 50),
             ].forEach { $0.isActive = true }
