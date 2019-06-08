@@ -40,4 +40,12 @@ extension Event {
         }
     }
     
+    func ageLimitString() -> String {
+        switch self.ageLimit {
+        case "0":   return "For Alle"
+        case "99":  return "Annet"
+        default:    return "\(self.ageLimit ?? "") år"
+        }
+    }
+    
 }

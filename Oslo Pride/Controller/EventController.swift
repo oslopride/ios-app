@@ -33,6 +33,7 @@ class EventController: UIViewController {
         imageView.image = UIImage(named: "trekanter")
         imageView.contentMode = .scaleAspectFit
         imageView.layer.cornerRadius = 9
+        imageView.backgroundColor = UIColor(white: 0, alpha: 0.05)
         //imageView.layer.cornerCurve = .continuous
         return imageView
     }()
@@ -96,6 +97,14 @@ class EventController: UIViewController {
         
         return stackView
     }()
+
+    let descriptionStackView : UIStackView = {
+        let stackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .vertical
+        stackView.spacing = 10
+        return stackView
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -152,7 +161,7 @@ class EventController: UIViewController {
         placeLabel.font = UIFont.boldSystemFont(ofSize: 16)
         placeLabel.textColor = .graySuit
         placeLabel.numberOfLines = 0
-        actionsStackView.addArrangedSubview(placeLabel)
+        //actionsStackView.addArrangedSubview(placeLabel)
         
         
 //        let addressLabel = UILabel()
@@ -169,8 +178,39 @@ class EventController: UIViewController {
             dateLabel.setupEventDateLabel(start: start, end: end)
             detailsStackView.addArrangedSubview(dateLabel)
         }
-    
         
+        let organizerDetail = createDetail(main: "Arrangør", secondary: event.organizer ?? "Ikke Oppgitt")
+        descriptionStackView.addArrangedSubview(organizerDetail)
+    
+        let deafInterpretationDetail = createDetail(main: "Tegnspråktolket", secondary: (event.deafInterpretation ? "Ja" : "Nei"))
+        descriptionStackView.addArrangedSubview(deafInterpretationDetail)
+        
+        let ageLimitDetail = createDetail(main: "Aldersgrense", secondary: event.ageLimitString())
+        descriptionStackView.addArrangedSubview(ageLimitDetail)
+        
+        let accessability = createDetail(main: "Rullestolvennlig", secondary: event.accessible ? "Ja" : "Nei")
+        descriptionStackView.addArrangedSubview(accessability)
+        
+    }
+    
+    fileprivate func createDetail(main: String, secondary: String) -> UILabel {
+        let accessLabel = UILabel()
+        accessLabel.font = UIFont.boldSystemFont(ofSize: 16)
+        accessLabel.numberOfLines = 0
+        let accessAttrLabel = NSMutableAttributedString()
+        accessAttrLabel.append(NSAttributedString(string: "\(main)" + "\n", attributes: [
+            NSAttributedString.Key.foregroundColor : UIColor.kindaBlack,
+            //NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 16)
+            ]))
+        
+        accessAttrLabel.append(NSAttributedString(string: secondary, attributes: [
+            NSAttributedString.Key.foregroundColor : UIColor.graySuit,
+            //NSAttributedString.Key.paragraphStyle : rightParagraph
+            //NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 16)
+            ]))
+        accessLabel.attributedText = accessAttrLabel
+        
+        return accessLabel
     }
     
     fileprivate func setupLayout() {
@@ -217,9 +257,36 @@ class EventController: UIViewController {
         [
             descriptionLabel.leftAnchor.constraint(equalTo: detailsStackView.leftAnchor),
             descriptionLabel.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -10),
-            descriptionLabel.topAnchor.constraint(equalTo: actionsStackView.bottomAnchor, constant: 10),
-            descriptionLabel.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: -24)
+            descriptionLabel.topAnchor.constraint(equalTo: actionsStackView.bottomAnchor, constant: 24),
+            //descriptionLabel.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: -24)
             ].forEach { $0.isActive = true }
+        
+        let seperator = UIView()
+        seperator.backgroundColor = .graySuit
+        seperator.alpha = 0.5
+        seperator.clipsToBounds = true
+        seperator.layer.cornerRadius = 1
+        
+        seperator.translatesAutoresizingMaskIntoConstraints = false
+        
+        scrollView.addSubview(seperator)
+        [
+            seperator.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor),
+            seperator.leftAnchor.constraint(equalTo: descriptionLabel.leftAnchor),
+            seperator.rightAnchor.constraint(equalTo: descriptionLabel.rightAnchor),
+            seperator.heightAnchor.constraint(equalToConstant: 2)
+            ].forEach { $0.isActive = true }
+        
+
+        //detailsStackView.distribution = .fillEqually
+        scrollView.addSubview(descriptionStackView)
+        [
+            descriptionStackView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 10),
+            descriptionStackView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -10),
+            descriptionStackView.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: 24),
+            descriptionStackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: -24)
+            ].forEach { $0.isActive = true }
+        
         
     }
 
@@ -238,7 +305,7 @@ class EventController: UIViewController {
                 return
             }
             DispatchQueue.main.async {
-                
+                // Update icon..
             }
         }
     }
