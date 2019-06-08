@@ -109,6 +109,7 @@ class EventController: UIViewController {
     }()
     
     lazy var mapView : MKMapView = {
+
         let mv = MKMapView()
         mv.translatesAutoresizingMaskIntoConstraints = false
         mv.layer.cornerRadius = 5
@@ -120,13 +121,7 @@ class EventController: UIViewController {
         
         return mv
     }()
-    
-    let distanceLabel: UILabel = {
-        let label = UILabel()
-        
-        return label
-    }()
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
@@ -182,15 +177,6 @@ class EventController: UIViewController {
         placeLabel.font = UIFont.boldSystemFont(ofSize: 16)
         placeLabel.textColor = .graySuit
         placeLabel.numberOfLines = 0
-        //actionsStackView.addArrangedSubview(placeLabel)
-        
-        
-//        let addressLabel = UILabel()
-//        addressLabel.text = event.locationAddress
-//        addressLabel.textAlignment = .right
-//        addressLabel.textColor = .graySuit
-//        addressLabel.numberOfLines = 0
-//        actionsStackView.addArrangedSubview(addressLabel)
 
         // Setup details stackview
         if let start = event.startingTime, let end = event.endingTime {
@@ -241,7 +227,6 @@ class EventController: UIViewController {
         
         if let userLocation = mapView.userLocation.location {
             let distance = userLocation.distance(from: CLLocation(latitude: to.latitude, longitude: to.longitude))
-
             
             let request = MKDirections.Request()
             let toPlacemark = MKPlacemark(coordinate: to)
@@ -266,9 +251,8 @@ class EventController: UIViewController {
                 self.descriptionStackView.addArrangedSubview(distanceDetail)
             }
         }
-        
     }
-    
+
     fileprivate func createDetail(main: String, secondary: String) -> UILabel {
         let accessLabel = UILabel()
         accessLabel.font = UIFont.boldSystemFont(ofSize: 16)
@@ -371,9 +355,7 @@ class EventController: UIViewController {
             mapView.heightAnchor.constraint(equalToConstant: 250),
             mapView.bottomAnchor.constraint(lessThanOrEqualTo: scrollView.bottomAnchor, constant: -46)
             ].forEach { $0.isActive = true }
-        
-        
-        
+
         
     }
 
