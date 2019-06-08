@@ -54,7 +54,7 @@ extension Event {
         case "0":
             return nil
         case "1":
-            return nil
+            return MapCoordinates().prideParadeStart
         case "2":
             return MapCoordinates().pridePark
         case "3", "4":

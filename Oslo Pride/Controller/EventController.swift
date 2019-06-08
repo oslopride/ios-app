@@ -113,8 +113,9 @@ class EventController: UIViewController {
         mv.translatesAutoresizingMaskIntoConstraints = false
         mv.layer.cornerRadius = 5
         mv.clipsToBounds = true
-        mv.isUserInteractionEnabled = false
-        
+        //mv.isUserInteractionEnabled = false
+        mv.userTrackingMode = .follow
+        mv.showsUserLocation = true
         
         return mv
     }()
