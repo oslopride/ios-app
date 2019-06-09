@@ -151,6 +151,13 @@ class EventController: UIViewController {
         present(shareController, animated: true, completion: nil)
     }
     
+    var eventLocation: CLLocationCoordinate2D? {
+        didSet {
+            guard let eventLocation = eventLocation else { return }
+            setCamera(to: eventLocation)
+        }
+    }
+    
     fileprivate func setupUI() {
         guard let event = event else { return }
         
@@ -204,7 +211,8 @@ class EventController: UIViewController {
         
         
         if let coordinate = event.coordinates() {
-            setCamera(to: coordinate)
+            eventLocation = coordinate
+            //setCamera(to: coordinate)
         } else {
             let geoCoder = CLGeocoder()
             geoCoder.geocodeAddressString(event.locationAddress ?? "") { (placemark, err) in
@@ -213,7 +221,8 @@ class EventController: UIViewController {
                     return
                 }
                 if let coordinate = placemark?.first?.location?.coordinate {
-                    self.setCamera(to: coordinate)
+                    self.eventLocation = coordinate
+                    //self.setCamera(to: coordinate)
                 }
             }
         }
@@ -397,8 +406,8 @@ extension EventController: MKMapViewDelegate {
     
     func mapView(_ mapView: MKMapView, didUpdate userLocation: MKUserLocation) {
         print("user location did update")
-        
-        
+        guard let eventLocation = eventLocation else { return }
+        setCamera(to: eventLocation)
     }
     
 }
