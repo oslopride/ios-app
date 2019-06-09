@@ -230,6 +230,8 @@ class EventController: UIViewController {
                 }
             }
         }
+        
+        updateDistance(userLocation: mapView.userLocation)
     }
     
     fileprivate func setCamera(to: CLLocationCoordinate2D) {
