@@ -68,14 +68,28 @@ class EventCell: UITableViewCell {
         guard let id = notification.userInfo?["id"] as? String, id == event?.id else { return }
         guard let imageData = notification.object as? Data else { return }
         print("Yay, my image is here")
-        guard let image = UIImage(data: imageData) else { return }
-        eventImageView.contentMode = .scaleToFill
-        eventImageView.image = image
+        DispatchQueue.main.async {
+            guard let image = UIImage(data: imageData) else { return }
+            self.eventImageView.contentMode = .scaleAspectFill
+            self.eventImageView.image = image
+        }
+
         
     }
     
     fileprivate func setupUI() {
         guard let event = event else { return }
+
+        eventTitleLabel.text = event.title ?? "whap"
+
+        if let imageData = event.image {
+            eventImageView.image = UIImage(data: imageData)
+            eventImageView.contentMode = .scaleAspectFill
+        } else {
+            eventImageView.image = UIImage(named: "trekanter")
+            eventImageView.contentMode = .scaleAspectFit
+        }
+
         
         if let startingTime = event.startingTime, let endingTime = event.endingTime {
             let formatter = DateFormatter()

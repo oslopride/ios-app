@@ -22,7 +22,17 @@ class EventsManager {
         DispatchQueue.global(qos: .background).async {
             for event in events {
                 if event.image == nil && event.imageURL != nil {
-                    self.downloadStack.append(event)
+                    var exists = false
+                    for i in self.downloadStack {
+                        if i.id == event.id {
+                            exists = true
+                            break
+                        }
+                    }
+                    
+                    if !exists {
+                        self.downloadStack.append(event)
+                    }
                 }
             }
             self.processDownloadStack()
@@ -185,16 +195,13 @@ extension EventsManager {
     
     fileprivate func processDownloadStack() {
         print("starting..")
-        
-        guard self.downloadStack.count > 0 else { return }
+        guard self.downloadStack.count > 0 && !isDownloading else { return }
         isDownloading = true
-        
         for i in (0..<downloadStack.count).reversed() {
-//            let event = downloadStack.removeLast()
             let event = downloadStack.remove(at: i)
-            
             guard let imageURL = event.imageURL else { continue }
             let semaphore = DispatchSemaphore(value: 0)
+            
             NetworkAPI.shared.fetchImage(from: imageURL, completion: { (imageData) in
                 guard let imageData = imageData, let img = UIImage(data: imageData)?.jpegData(compressionQuality: 0.3) else {
                     print("failed to download image")
@@ -218,6 +225,7 @@ extension EventsManager {
         }
         print("Done")
         isDownloading = false
+        self.downloadStack = [Event]()
     }
     
     fileprivate func updateIfNecessary(local: Event, remote: SanityEvent) {

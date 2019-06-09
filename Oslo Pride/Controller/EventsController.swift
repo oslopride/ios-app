@@ -115,16 +115,7 @@ extension EventsController {
         cell.eventImageView.image = nil
         
         guard let event = days?[indexPath.section][indexPath.row] else { return cell }
-        cell.eventTitleLabel.text = event.title ?? "whap"
-        if let imageData = event.image {
-            cell.eventImageView.image = UIImage(data: imageData)
-            cell.eventImageView.contentMode = .scaleAspectFill
-        } else {
-            cell.eventImageView.image = UIImage(named: "trekanter")
-            cell.eventImageView.contentMode = .scaleAspectFit
-        }
         cell.event = event
-        
         return cell
     }
     
