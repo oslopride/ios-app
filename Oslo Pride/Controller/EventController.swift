@@ -129,6 +129,10 @@ class EventController: UIViewController {
         setupLayout()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+       // navigationController?.setNavigationBarHidden(false, animated: true)
+    }
+    
     fileprivate func setupNavigationItems() {
         var right = [
             UIBarButtonItem(image: UIImage(named: "share"), style: .plain, target: self, action: #selector(shareEvent)),

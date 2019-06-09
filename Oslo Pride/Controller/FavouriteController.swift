@@ -20,9 +20,18 @@ class FavouriteController: UICollectionViewController, UICollectionViewDelegateF
         view.backgroundColor = .white
         collectionView.register(FavouriteCell.self, forCellWithReuseIdentifier: "cellid")
         collectionView.register(UICollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: "bottom")
+        navigationController?.isNavigationBarHidden = true
+        
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: self, action: #selector(didDismissEvent))
+    }
+    
+    @objc fileprivate func didDismissEvent() {
+        navigationController?.setNavigationBarHidden(true, animated: true)
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        navigationController?.setNavigationBarHidden(true, animated: true)
+
         CoreDataManager.shared.getFavourites { (fav) in
             var fav = fav
             fav.sort(by: { (e1, e2) -> Bool in
@@ -34,6 +43,14 @@ class FavouriteController: UICollectionViewController, UICollectionViewDelegateF
                 self.collectionView.reloadData()
             }
         }
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let event = favourites?[indexPath.row] else { return }
+        let eventController = EventController()
+        eventController.event = event
+        navigationController?.setNavigationBarHidden(false, animated: true)
+        navigationController?.pushViewController(eventController, animated: true)
     }
     
     override func numberOfSections(in collectionView: UICollectionView) -> Int {

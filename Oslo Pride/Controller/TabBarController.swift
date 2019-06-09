@@ -24,8 +24,10 @@ class TabBarController: UITabBarController {
         
         let favouriteController = FavouriteController(collectionViewLayout: flowLayout)
         favouriteController.collectionView.contentInset = .init(top: 24, left: 0, bottom: 24, right: 0)
-        favouriteController.tabBarItem = UITabBarItem(title: "Favoritter", image: UIImage(named: "star_twotone"), tag: 2)
-        
+        //favouriteController.tabBarItem = UITabBarItem(title: "Favoritter", image: UIImage(named: "star_twotone"), tag: 2)
+        let favouriteNavController = UINavigationController(rootViewController: favouriteController)
+        favouriteNavController.tabBarItem = UITabBarItem(title: "Favoritter", image: UIImage(named: "star_twotone"), tag: 2)
+        favouriteNavController.view.backgroundColor = .white
         tabBar.tintColor = .prideRed
         
         let navViewController = UINavigationController(rootViewController: viewController)
@@ -36,7 +38,7 @@ class TabBarController: UITabBarController {
         infoController.tabBarItem = UITabBarItem(title: "Info", image: UIImage(named: "info"), tag: 3)
         
         viewControllers = [
-            favouriteController,
+            favouriteNavController,
             navViewController,
             mapController,
             infoController
