@@ -141,8 +141,11 @@ class EventsFilterHeaderView: UIView {
     }
     
     @objc fileprivate func updateFilter(sender: FilterButton) {
+        let feedback = UISelectionFeedbackGenerator()
+        feedback.prepare()
         sender.isActivated = !sender.isActivated
         delegate?.updateFilter(sender.filter, remove: !sender.isActivated)
+        feedback.selectionChanged()
     }
     
     required init?(coder aDecoder: NSCoder) {
