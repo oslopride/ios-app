@@ -32,6 +32,9 @@ class CoreDataManager {
                 newEvent.id = event.id
                 newEvent.title = event.title
                 newEvent.organizer = event.organizer
+                newEvent.category = event.category
+                newEvent.deafInterpretation = event.deafInterpretation ?? false
+                newEvent.accessible = event.accessible ?? false
                 newEvent.eventDescription = event.description
                 newEvent.startingTime = event.startingTime
                 newEvent.endingTime = event.endingTime
