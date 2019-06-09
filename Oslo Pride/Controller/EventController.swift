@@ -385,12 +385,16 @@ class EventController: UIViewController {
     
     @objc fileprivate func toggleFavourite() {
         guard let event = event else { return }
+        let feedback = UINotificationFeedbackGenerator()
+        feedback.prepare()
         CoreDataManager.shared.toggleFavourite(event: event) { (err) in
             if let err = err {
                 print("failed to save event: ", err)
+                feedback.notificationOccurred(.error)
                 return
             }
             DispatchQueue.main.async {
+                feedback.notificationOccurred(.success)
                 // Update icon..
             }
         }

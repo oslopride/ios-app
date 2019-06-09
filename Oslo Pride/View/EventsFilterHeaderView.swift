@@ -131,6 +131,8 @@ class EventsFilterHeaderView: UIView {
     }
     
     @objc fileprivate func fromTodayButtonDidPress(sender: UIButton) {
+        let feedback = UISelectionFeedbackGenerator()
+        feedback.prepare()
         if sender.titleLabel?.text == " ✓ Skjul Historikk  " {
             sender.setTitle("  Skjul Historikk  ", for: .normal)
         } else {
@@ -138,11 +140,15 @@ class EventsFilterHeaderView: UIView {
         }
         EventsManager.shared.toggleFilterFromToday()
         delegate?.reloadTableview()
+        feedback.selectionChanged()
     }
     
     @objc fileprivate func updateFilter(sender: FilterButton) {
+        let feedback = UISelectionFeedbackGenerator()
+        feedback.prepare()
         sender.isActivated = !sender.isActivated
         delegate?.updateFilter(sender.filter, remove: !sender.isActivated)
+        feedback.selectionChanged()
     }
     
     required init?(coder aDecoder: NSCoder) {
