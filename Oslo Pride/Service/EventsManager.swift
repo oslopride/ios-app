@@ -177,11 +177,15 @@ extension EventsManager {
     
     fileprivate func processDownloadStack() {
         print("starting..")
+        
         guard self.downloadStack.count > 0 else { return }
         isDownloading = true
+        
         for i in (0..<downloadStack.count).reversed() {
+//            let event = downloadStack.removeLast()
             let event = downloadStack.remove(at: i)
-            guard let imageURL = event.imageURL else { return }
+            
+            guard let imageURL = event.imageURL else { continue }
             let semaphore = DispatchSemaphore(value: 0)
             NetworkAPI.shared.fetchImage(from: imageURL, completion: { (imageData) in
                 guard let imageData = imageData, let img = UIImage(data: imageData)?.jpegData(compressionQuality: 0.3) else {
@@ -197,6 +201,8 @@ extension EventsManager {
                         NotificationCenter.default.post(name: .imageDownloadeddd, object: img, userInfo: ["id":event.id as Any])
                         semaphore.signal()
                         print("did download image for event: ", event.title ?? "")
+                        
+                        print("Number: \(i) of \(self.downloadStack.count)")
                     })
                 }
             })
