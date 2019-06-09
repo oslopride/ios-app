@@ -80,6 +80,7 @@ class EventsController: UITableViewController {
                             print("failed to batch save: ", err)
                         }
                         print("We saved \(newLocalEvents?.count ?? 0) new events")
+                        
                         self.displayEvents()
                     })
                 }

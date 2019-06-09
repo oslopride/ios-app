@@ -19,6 +19,14 @@ class EventsManager {
     
     func set(events: [Event]) {
         days = standardSortByDay(filtered: events)
+        DispatchQueue.global(qos: .background).async {
+            for event in events {
+                if event.image == nil && event.imageURL != nil {
+                    self.downloadStack.append(event)
+                }
+            }
+            self.processDownloadStack()
+        }
     }
     
     func get(day: Int, n: Int) -> Event? {
