@@ -216,7 +216,7 @@ class EventController: UIViewController {
         
         if let coordinate = event.coordinates() {
             eventLocation = coordinate
-            //setCamera(to: coordinate)
+            updateDistance(userLocation: mapView.userLocation)
         } else {
             let geoCoder = CLGeocoder()
             geoCoder.geocodeAddressString(event.locationAddress ?? "") { (placemark, err) in
@@ -226,12 +226,11 @@ class EventController: UIViewController {
                 }
                 if let coordinate = placemark?.first?.location?.coordinate {
                     self.eventLocation = coordinate
-                    //self.setCamera(to: coordinate)
+                    self.updateDistance(userLocation: self.mapView.userLocation)
                 }
             }
         }
         
-        updateDistance(userLocation: mapView.userLocation)
     }
     
     fileprivate func setCamera(to: CLLocationCoordinate2D) {
