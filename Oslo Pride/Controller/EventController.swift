@@ -158,7 +158,11 @@ class EventController: UIViewController {
         }
     }
     
+    var distanceDetail = UILabel()
+    
     fileprivate func setupUI() {
+        distanceDetail = createDetail(main: "Distanse", secondary: "-")
+        
         guard let event = event else { return }
         
         titleLabel.text = event.title
@@ -207,7 +211,7 @@ class EventController: UIViewController {
         
         let placeDetail = createDetail(main: "Sted", secondary: "\(event.locationName ?? "")\n\(event.locationAddress ?? "")")
         descriptionStackView.addArrangedSubview(placeDetail)
-        //descriptionStackView.addArrangedSubview(distanceLabel)
+        descriptionStackView.addArrangedSubview(distanceDetail)
         
         
         if let coordinate = event.coordinates() {
@@ -226,6 +230,8 @@ class EventController: UIViewController {
                 }
             }
         }
+        
+        updateDistance(userLocation: mapView.userLocation)
     }
     
     fileprivate func setCamera(to: CLLocationCoordinate2D) {
@@ -233,15 +239,17 @@ class EventController: UIViewController {
         self.mapView.setCamera(camera, animated: false)
         let notation = PrideAnnotation(title: event?.title ?? "", lat: to.latitude, long: to.longitude)
         self.mapView.addAnnotation(notation)
-        
-        if let userLocation = mapView.userLocation.location {
-            let distance = userLocation.distance(from: CLLocation(latitude: to.latitude, longitude: to.longitude))
+    }
+    
+    fileprivate func updateDistance(userLocation: MKUserLocation) {
+        if let userLocation = userLocation.location, let eventLocation = eventLocation {
+            let distance = userLocation.distance(from: CLLocation(latitude: eventLocation.latitude, longitude: eventLocation.longitude))
             
             let request = MKDirections.Request()
-            let toPlacemark = MKPlacemark(coordinate: to)
+            let toPlacemark = MKPlacemark(coordinate: eventLocation)
             let toItem = MKMapItem(placemark: toPlacemark)
             request.destination = toItem
-
+            
             let fromPlacemark = MKPlacemark(coordinate: userLocation.coordinate)
             let fromItem = MKMapItem(placemark: fromPlacemark)
             request.source = fromItem
@@ -251,13 +259,10 @@ class EventController: UIViewController {
             directions.calculateETA { (eta, err) in
                 if let err = err {
                     print("Failed to get directions: ", err)
-                    let distanceDetail = self.createDetail(main: "Distanse", secondary: "\(Int(distance)) meter")
-                    self.descriptionStackView.addArrangedSubview(distanceDetail)
+                    self.distanceDetail.attributedText = self.createDetail(main: "Distanse", secondary: "\(Int(distance)) meter").attributedText
                     return
                 }
-                
-                let distanceDetail = self.createDetail(main: "Distanse", secondary: "\(Int(eta?.distance ?? 0)) meter\n\(Int((eta?.expectedTravelTime ?? 0) / 60)) minutter i ganghastighet")
-                self.descriptionStackView.addArrangedSubview(distanceDetail)
+                self.distanceDetail.attributedText = self.createDetail(main: "Distanse", secondary: "\(Int(eta?.distance ?? 0)) meter\n\(Int((eta?.expectedTravelTime ?? 0) / 60)) minutter i ganghastighet").attributedText
             }
         }
     }
@@ -406,8 +411,9 @@ extension EventController: MKMapViewDelegate {
     
     func mapView(_ mapView: MKMapView, didUpdate userLocation: MKUserLocation) {
         print("user location did update")
-        guard let eventLocation = eventLocation else { return }
-        setCamera(to: eventLocation)
+        //guard let eventLocation = eventLocation else { return }
+        //setCamera(to: eventLocation)
+        updateDistance(userLocation: userLocation)
     }
     
 }
