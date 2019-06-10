@@ -22,7 +22,7 @@ class EventsController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "Events"
+        title = "Program"
         view.backgroundColor = .white
         tableView.register(EventCell.self, forCellReuseIdentifier: cellID)
         navigationController?.navigationBar.tintColor = .prideDeepPurple//.prideYellow
