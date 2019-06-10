@@ -24,8 +24,9 @@
         <attribute name="startingTime" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="ticketSaleWebpage" optional="YES" attributeType="URI"/>
         <attribute name="title" optional="YES" attributeType="String"/>
+        <attribute name="venue" optional="YES" attributeType="String"/>
     </entity>
     <elements>
-        <element name="Event" positionX="-63" positionY="-18" width="128" height="388"/>
+        <element name="Event" positionX="-63" positionY="-18" width="128" height="403"/>
     </elements>
 </model>

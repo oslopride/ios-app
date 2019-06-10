@@ -27,6 +27,7 @@ fileprivate struct SanityEventRaw: Decodable {
     var prices: [SanityPrice]?
     var ageLimit: String
     var location: SanityLocation?
+    var venue: String?
     var imageURL: String?
     var contactPerson: ContactPerson
     var deafInterpretation: Bool?
@@ -54,6 +55,7 @@ struct SanityEvent: Decodable {
     var prices: [SanityPrice]?
     var ageLimit: String?
     var location: SanityLocation?
+    var venue: String?
     var imageURL: String?
     var contactPerson: ContactPerson?
     var deafInterpretation: Bool?
@@ -71,6 +73,7 @@ struct SanityEvent: Decodable {
             self.prices = rawResponse.prices
             self.ageLimit = rawResponse.ageLimit
             self.location = rawResponse.location
+            self.venue = rawResponse.venue
             self.accessible = rawResponse.accessible
             self.deafInterpretation = rawResponse.deafInterpretation
         
@@ -109,6 +112,7 @@ struct SanityEvent: Decodable {
 struct SanityLocation: Decodable {
     var name: String?
     var address: String?
+    //var venue: String?
 }
 
 struct SanityPrice: Decodable {

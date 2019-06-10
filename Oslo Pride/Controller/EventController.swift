@@ -127,6 +127,7 @@ class EventController: UIViewController {
         view.backgroundColor = .white
         setupNavigationItems()
         setupLayout()
+        print("Event Venue: ", event?.venue)
     }
     
     override func viewDidAppear(_ animated: Bool) {
