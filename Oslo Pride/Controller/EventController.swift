@@ -122,6 +122,8 @@ class EventController: UIViewController {
         return mv
     }()
 
+    var showDismissButton = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
@@ -147,6 +149,13 @@ class EventController: UIViewController {
         }
         
         navigationItem.rightBarButtonItems = right
+        if showDismissButton {
+            navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Lukk", style: .plain, target: self, action: #selector(handleDismiss))
+        }
+    }
+    
+    @objc fileprivate func handleDismiss() {
+        dismiss(animated: true, completion: nil)
     }
     
     @objc fileprivate func shareEvent() {

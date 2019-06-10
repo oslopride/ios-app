@@ -167,16 +167,37 @@ class MapController: UIViewController, MKMapViewDelegate {
     
 }
 
+class DismissableNavController: UINavigationController {
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        
+        let item = UIBarButtonItem(title: "Lukk", style: .plain, target: self, action: #selector(close))
+        
+        navigationItem.setLeftBarButton(item, animated: false)
+        
+    }
+    
+    @objc fileprivate func close() {
+        dismiss(animated: true, completion: nil)
+    }
+    
+}
+
 // MARK:- Map Delegate
 extension MapController {
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         if let annotation = view.annotation as? ExtenalArenaFavouriteAnnotation {
             let eventController = EventController()
             eventController.event = annotation.event
-            //self.selectedAnnotationView = view
-            navigationController?.setNavigationBarHidden(false, animated: true)
-            navigationController?.pushViewController(eventController, animated: true)
-            //view.setSelected(false, animated: true)
+            eventController.showDismissButton = true
+            
+            let nav = DismissableNavController(rootViewController: eventController)
+            
+            present(nav, animated: true) {
+                mapView.deselectAnnotation(annotation, animated: true)
+            }
         }
     }
     
