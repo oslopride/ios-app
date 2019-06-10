@@ -41,10 +41,10 @@ class EventsController: UITableViewController {
         headerView.delegate = self
         tableView.tableHeaderView = headerView
         tableView.tableHeaderView?.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 100)//70)
-        
         tableView.tableFooterView = UIView()
         
-        displayEvents()
+        //displayEvents()
+        updateEvents()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -103,9 +103,22 @@ class EventsController: UITableViewController {
 }
 
 extension EventsController {
+    override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        if days == nil {
+            return 70
+        }
+        return 0
+    }
     
+    override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        let activityIndicator = UIActivityIndicatorView(style: .white)
+        activityIndicator.color = UIColor.kindaBlack
+        activityIndicator.startAnimating()
+        
+        return activityIndicator
+    }
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return days?.count ?? 0
+        return days?.count ?? 1
     }
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return days?[section].count ?? 0
@@ -120,6 +133,11 @@ extension EventsController {
     }
     
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        if days == nil {
+            let view = UIView()
+            view.backgroundColor = .white
+            return view
+        }
         let headerLabel = TableViewHeaderLabel()
         headerLabel.numberOfLines = 2
         guard let t = days?[section].first?.startingTime else { return nil }
