@@ -416,6 +416,10 @@ class EventController: UIViewController {
             DispatchQueue.main.async {
                 feedback.notificationOccurred(.success)
                 self.favoriteBarButtonItem.image = event.isFavourite ? UIImage(named: "star_cross") : UIImage(named: "star_border")
+                NotificationCenter.default.post(name: .didToggleFavourite, object: nil, userInfo: [
+                    "id"     : event.id,
+                    "toggle" : event.isFavourite
+                    ])
             }
         }
     }

@@ -397,6 +397,7 @@ extension MapController {
         } else {
             let view = MKMarkerAnnotationView(annotation: annotation, reuseIdentifier: "id")
             view.glyphImage = UIImage(named: "star_border")
+            view.markerTintColor = .prideYellow
             view.animatesWhenAdded = true
             return view
         }

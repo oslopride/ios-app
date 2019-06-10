@@ -13,7 +13,7 @@ class TabBarController: UITabBarController {
         super.viewDidLoad()
         
         let viewController = EventsController()
-        viewController.tabBarItem = UITabBarItem(title: "Events", image: UIImage(named: "event_twotone"), tag: 0)
+        viewController.tabBarItem = UITabBarItem(title: "Program", image: UIImage(named: "event_twotone"), tag: 0)
         
         let mapController = MapController()
         let mapNavController = UINavigationController(rootViewController: mapController)
@@ -21,7 +21,7 @@ class TabBarController: UITabBarController {
         mapNavController.isNavigationBarHidden = true
         
         let flowLayout = UICollectionViewFlowLayout()
-        flowLayout.itemSize = CGSize(width: view.frame.width-14*2, height: 420 /* ☘️ */) //(view.frame.width-14*2) * 1.18)
+        flowLayout.itemSize = CGSize(width: view.frame.width-14*2, height: 440) //(view.frame.width-14*2) * 1.18)
         flowLayout.minimumLineSpacing = 24
         
         let favouriteController = FavouriteController(collectionViewLayout: flowLayout)
@@ -36,8 +36,7 @@ class TabBarController: UITabBarController {
         let navViewController = UINavigationController(rootViewController: viewController)
         navViewController.view.backgroundColor = .white
         
-        let infoController = UIViewController()
-        infoController.view.backgroundColor = .white
+        let infoController = InfoController()
         infoController.tabBarItem = UITabBarItem(title: "Info", image: UIImage(named: "info"), tag: 3)
         
         viewControllers = [
