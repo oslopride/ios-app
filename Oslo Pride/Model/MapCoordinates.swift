@@ -18,7 +18,8 @@ class MapCoordinates {
 //        
 //    let prideParadeEndAnnotation = PrideAnnotation(title: nil, lat: 59.913132, long: 10.738024)
     
-    
+    let mainStage = CLLocationCoordinate2D(latitude: 59.914009, longitude: 10.736598)
+    let bamseStage = CLLocationCoordinate2D(latitude: 59.913822, longitude: 10.735478)
     
     let paradeCoordinates = [
         CLLocationCoordinate2D(latitude: 59.911959, longitude: 10.766269),
