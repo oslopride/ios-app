@@ -30,6 +30,7 @@ class TabBarController: UITabBarController {
         let favouriteNavController = UINavigationController(rootViewController: favouriteController)
         favouriteNavController.tabBarItem = UITabBarItem(title: "Favoritter", image: UIImage(named: "star_twotone"), tag: 2)
         favouriteNavController.view.backgroundColor = .white
+        favouriteNavController.isNavigationBarHidden = true
         tabBar.tintColor = .prideRed
         
         let navViewController = UINavigationController(rootViewController: viewController)

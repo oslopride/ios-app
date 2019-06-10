@@ -112,14 +112,11 @@ class MapController: UIViewController, MKMapViewDelegate {
         
     }
     
-    var selectedAnnotationView: MKAnnotationView?
+    var selectedAnnotation: PrideAnnotation?
     
     var externalArenaAnnotationsFromFavorites = [ExtenalArenaFavouriteAnnotation]()
     override func viewDidAppear(_ animated: Bool) {
-        //selectedAnnotationView?.setSelected(false, animated: true)
-        selectedAnnotationView?.isSelected = false
-        selectedAnnotationView?.isEnabled = true
-        navigationController?.setNavigationBarHidden(true, animated: true)
+        mapView.deselectAnnotation(selectedAnnotation, animated: true)
         CoreDataManager.shared.getFavourites { (events) in
             for event in events {
                 guard event.category == "0" else { continue }
@@ -171,12 +168,8 @@ class DismissableNavController: UINavigationController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        
         let item = UIBarButtonItem(title: "Lukk", style: .plain, target: self, action: #selector(close))
-        
         navigationItem.setLeftBarButton(item, animated: false)
-        
     }
     
     @objc fileprivate func close() {
@@ -194,9 +187,10 @@ extension MapController {
             eventController.showDismissButton = true
             
             let nav = DismissableNavController(rootViewController: eventController)
+            selectedAnnotation = annotation
             
             present(nav, animated: true) {
-                mapView.deselectAnnotation(annotation, animated: true)
+                //mapView.deselectAnnotation(annotation, animated: true)
             }
         }
     }
