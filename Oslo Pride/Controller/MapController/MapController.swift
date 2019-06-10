@@ -93,6 +93,9 @@ class MapController: UIViewController, MKMapViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)
+        navigationController?.view.backgroundColor = .white
+        
         setupLayout()
         setupAnnotations()
         setupPolygons()
@@ -109,8 +112,14 @@ class MapController: UIViewController, MKMapViewDelegate {
         
     }
     
-    var externalArenaAnnotationsFromFavorites = [PrideAnnotation]()
+    var selectedAnnotationView: MKAnnotationView?
+    
+    var externalArenaAnnotationsFromFavorites = [ExtenalArenaFavouriteAnnotation]()
     override func viewDidAppear(_ animated: Bool) {
+        //selectedAnnotationView?.setSelected(false, animated: true)
+        selectedAnnotationView?.isSelected = false
+        selectedAnnotationView?.isEnabled = true
+        navigationController?.setNavigationBarHidden(true, animated: true)
         CoreDataManager.shared.getFavourites { (events) in
             for event in events {
                 guard event.category == "0" else { continue }
@@ -124,7 +133,8 @@ class MapController: UIViewController, MKMapViewDelegate {
                 
                 if !exists {
                     guard event.latitude > 0 || event.longitude > 0 else { continue }
-                        let annotation = PrideAnnotation(title: event.title, lat: event.latitude, long: event.longitude)
+                        let annotation = ExtenalArenaFavouriteAnnotation(title: event.title, lat: event.latitude, long: event.longitude)
+                        annotation.event = event
                         DispatchQueue.main.async {
                             self.mapView.addAnnotation(annotation)
                         }
@@ -159,6 +169,19 @@ class MapController: UIViewController, MKMapViewDelegate {
 
 // MARK:- Map Delegate
 extension MapController {
+    func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+        if let annotation = view.annotation as? ExtenalArenaFavouriteAnnotation {
+            let eventController = EventController()
+            eventController.event = annotation.event
+            //self.selectedAnnotationView = view
+            navigationController?.setNavigationBarHidden(false, animated: true)
+            navigationController?.pushViewController(eventController, animated: true)
+            //view.setSelected(false, animated: true)
+        }
+    }
+    
+    
+    
     func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
         let threshold: CLLocationDistance = 2500 // in meter
         
@@ -334,6 +357,7 @@ extension MapController {
         } else {
             let view = MKMarkerAnnotationView(annotation: annotation, reuseIdentifier: "id")
             view.glyphImage = UIImage(named: "star_border")
+            view.animatesWhenAdded = true
             return view
         }
         

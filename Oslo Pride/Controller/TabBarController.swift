@@ -16,7 +16,9 @@ class TabBarController: UITabBarController {
         viewController.tabBarItem = UITabBarItem(title: "Events", image: UIImage(named: "event_twotone"), tag: 0)
         
         let mapController = MapController()
-        mapController.tabBarItem = UITabBarItem(title: "Kart", image: UIImage(named: "map_twotone"), tag: 1)
+        let mapNavController = UINavigationController(rootViewController: mapController)
+        mapNavController.tabBarItem = UITabBarItem(title: "Kart", image: UIImage(named: "map_twotone"), tag: 1)
+        mapNavController.isNavigationBarHidden = true
         
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.itemSize = CGSize(width: view.frame.width-14*2, height: 420 /* ☘️ */) //(view.frame.width-14*2) * 1.18)
@@ -40,7 +42,8 @@ class TabBarController: UITabBarController {
         viewControllers = [
             favouriteNavController,
             navViewController,
-            mapController,
+            //mapController,
+            mapNavController,
             infoController
         ]
     }
