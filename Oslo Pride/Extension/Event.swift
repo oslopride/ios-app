@@ -56,7 +56,11 @@ extension Event {
         case "1":
             return MapCoordinates().prideParadeStart
         case "2":
-            return MapCoordinates().pridePark
+            if venue == "Bamsescenen" {
+                return MapCoordinates().bamseStage
+            } else {
+                return MapCoordinates().mainStage
+            }
         case "3", "4":
             return MapCoordinates().prideHouseArt
         default:

@@ -47,6 +47,7 @@ class CoreDataManager {
                 newEvent.ageLimit = event.ageLimit
                 newEvent.locationName = event.location?.name
                 newEvent.locationAddress = event.location?.address
+                newEvent.venue = event.venue
                 newEvent.contactPersonName = event.contactPerson?.name
                 newEvent.contactPersonEmail = event.contactPerson?.epost
                 newEvents.append(newEvent)
@@ -61,36 +62,37 @@ class CoreDataManager {
         }
     }
     
-    func save(event: SanityEvent, completion: @escaping (Event?, Error?) -> ()) {
-        pc.performBackgroundTask { (backgroundContext) in
-            guard let newEvent = NSEntityDescription.insertNewObject(forEntityName: "Event", into: backgroundContext) as? Event else { return }
-            newEvent.id = event.id
-            newEvent.title = event.title
-            newEvent.organizer = event.organizer
-            newEvent.eventDescription = event.description
-            newEvent.startingTime = event.startingTime
-            newEvent.endingTime = event.endingTime
-            if let url = URL(string: event.ticketSaleWebpage ?? "") {
-                newEvent.ticketSaleWebpage = url
-            }
-            if let url = URL(string: event.imageURL ?? "") {
-                newEvent.imageURL = url
-            }
-            newEvent.ageLimit = event.ageLimit
-            newEvent.locationName = event.location?.name
-            newEvent.locationAddress = event.location?.address
-            newEvent.contactPersonName = event.contactPerson?.name
-            newEvent.contactPersonEmail = event.contactPerson?.epost
-            
-            do {
-                try backgroundContext.save()
-                completion(newEvent, nil)
-            } catch let err {
-                completion(nil, err)
-            }
-        }
-
-    }
+//    func save(event: SanityEvent, completion: @escaping (Event?, Error?) -> ()) {
+//        pc.performBackgroundTask { (backgroundContext) in
+//            guard let newEvent = NSEntityDescription.insertNewObject(forEntityName: "Event", into: backgroundContext) as? Event else { return }
+//            newEvent.id = event.id
+//            newEvent.title = event.title
+//            newEvent.organizer = event.organizer
+//            newEvent.eventDescription = event.description
+//            newEvent.startingTime = event.startingTime
+//            newEvent.endingTime = event.endingTime
+//            if let url = URL(string: event.ticketSaleWebpage ?? "") {
+//                newEvent.ticketSaleWebpage = url
+//            }
+//            if let url = URL(string: event.imageURL ?? "") {
+//                newEvent.imageURL = url
+//            }
+//            newEvent.ageLimit = event.ageLimit
+//            newEvent.locationName = event.location?.name
+//            newEvent.locationAddress = event.location?.address
+//            newEvent.venue = event.location?.venue
+//            newEvent.contactPersonName = event.contactPerson?.name
+//            newEvent.contactPersonEmail = event.contactPerson?.epost
+//
+//            do {
+//                try backgroundContext.save()
+//                completion(newEvent, nil)
+//            } catch let err {
+//                completion(nil, err)
+//            }
+//        }
+//
+//    }
     
     func update(local: Event, remote: SanityEvent, completion: @escaping (Error?) -> ()) {
         //pc.performBackgroundTask { (backgroundContext) in
@@ -110,6 +112,7 @@ class CoreDataManager {
             local.ageLimit = remote.ageLimit
             local.locationName = remote.location?.name
             local.locationAddress = remote.location?.address
+            local.venue = remote.venue
             local.contactPersonName = remote.contactPerson?.name
             local.contactPersonEmail = remote.contactPerson?.epost
             do {
@@ -184,6 +187,17 @@ class CoreDataManager {
     
     func toggleFavourite(event: Event, completion: @escaping (Error?) -> ()) {
         event.isFavourite = !event.isFavourite
+        do {
+            try pc.viewContext.save()
+            completion(nil)
+        } catch let err {
+            completion(err)
+        }
+    }
+    
+    func updateCoordinates(event: Event, lat: Double, long: Double, completion: @escaping (Error?) -> ()) {
+        event.latitude = lat
+        event.longitude = long
         do {
             try pc.viewContext.save()
             completion(nil)

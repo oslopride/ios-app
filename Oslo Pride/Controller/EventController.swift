@@ -122,11 +122,14 @@ class EventController: UIViewController {
         return mv
     }()
 
+    var showDismissButton = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         setupNavigationItems()
         setupLayout()
+        print("Event Venue: ", event?.venue)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -146,6 +149,13 @@ class EventController: UIViewController {
         }
         
         navigationItem.rightBarButtonItems = right
+        if showDismissButton {
+            navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Lukk", style: .plain, target: self, action: #selector(handleDismiss))
+        }
+    }
+    
+    @objc fileprivate func handleDismiss() {
+        dismiss(animated: true, completion: nil)
     }
     
     @objc fileprivate func shareEvent() {
@@ -231,6 +241,13 @@ class EventController: UIViewController {
                 if let coordinate = placemark?.first?.location?.coordinate {
                     self.eventLocation = coordinate
                     self.updateDistance(userLocation: self.mapView.userLocation)
+                    CoreDataManager.shared.updateCoordinates(event: event, lat: coordinate.latitude, long: coordinate.longitude) { (err) in
+                        if let err = err {
+                            print("Oh no: ", err)
+                            return
+                        }
+                        print("Did update coordinate")
+                    }
                 }
             }
         }

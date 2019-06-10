@@ -61,44 +61,44 @@ class DownloadController: UIViewController {
     }
     
     fileprivate func downloadEvents() {
-        NetworkAPI.shared.fetchEvents { [unowned self] (sanityEvents) in
-            guard let sanityEvents = sanityEvents else { return }
-            self.total = sanityEvents.count-1
-            let group = DispatchGroup()
-            
-            var eventCache = [Event]()
-            
-            sanityEvents.forEach({ (sanityEvent) in
-                group.enter()
-                    CoreDataManager.shared.save(event: sanityEvent, completion: { (event, err) in
-                        if let err = err {
-                            print("failed to add event to core data: ", err)
-                            return
-                        }
-                        guard let event = event else { return }
-                        eventCache.append(event)
-                        if let url = event.imageURL {
-                            NetworkAPI.shared.fetchImage(from: url, completion: {(data) in
-                                guard let data = data else { return }
-                                
-                                let formatter = ByteCountFormatter()
-                                formatter.allowedUnits = [.useMB]
-                                formatter.countStyle = .file
-                                let string = formatter.string(fromByteCount: Int64(data.count))
-                                print("\(event.title ?? "") : \(string)")
-                                group.leave()
-                            })
-                            
-                        } else {
-                            group.leave()
-                        }
-                    })
-            })
-            group.notify(queue: .main, execute: { [unowned self] in
-                EventsManager.shared.set(events: eventCache)
-                self.dismiss(animated: true, completion: nil)
-            })
-        }
+//        NetworkAPI.shared.fetchEvents { [unowned self] (sanityEvents) in
+//            guard let sanityEvents = sanityEvents else { return }
+//            self.total = sanityEvents.count-1
+//            let group = DispatchGroup()
+//            
+//            var eventCache = [Event]()
+//            
+//            sanityEvents.forEach({ (sanityEvent) in
+//                group.enter()
+//                    CoreDataManager.shared.save(event: sanityEvent, completion: { (event, err) in
+//                        if let err = err {
+//                            print("failed to add event to core data: ", err)
+//                            return
+//                        }
+//                        guard let event = event else { return }
+//                        eventCache.append(event)
+//                        if let url = event.imageURL {
+//                            NetworkAPI.shared.fetchImage(from: url, completion: {(data) in
+//                                guard let data = data else { return }
+//                                
+//                                let formatter = ByteCountFormatter()
+//                                formatter.allowedUnits = [.useMB]
+//                                formatter.countStyle = .file
+//                                let string = formatter.string(fromByteCount: Int64(data.count))
+//                                print("\(event.title ?? "") : \(string)")
+//                                group.leave()
+//                            })
+//                            
+//                        } else {
+//                            group.leave()
+//                        }
+//                    })
+//            })
+//            group.notify(queue: .main, execute: { [unowned self] in
+//                EventsManager.shared.set(events: eventCache)
+//                self.dismiss(animated: true, completion: nil)
+//            })
+//        }
     }
     
     deinit {
