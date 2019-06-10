@@ -21,7 +21,7 @@ class TabBarController: UITabBarController {
         mapNavController.isNavigationBarHidden = true
         
         let flowLayout = UICollectionViewFlowLayout()
-        flowLayout.itemSize = CGSize(width: view.frame.width-14*2, height: 420 /* ☘️ */) //(view.frame.width-14*2) * 1.18)
+        flowLayout.itemSize = CGSize(width: view.frame.width-14*2, height: 440) //(view.frame.width-14*2) * 1.18)
         flowLayout.minimumLineSpacing = 24
         
         let favouriteController = FavouriteController(collectionViewLayout: flowLayout)

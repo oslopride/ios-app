@@ -49,6 +49,16 @@ class EventCell: UITableViewCell {
         return label
     }()
     
+    let favouriteIndicator: UIImageView = {
+        let img = UIImageView(image: UIImage(named: "star_border"))
+        img.translatesAutoresizingMaskIntoConstraints = false
+        img.contentMode = .scaleAspectFit
+        img.tintColor = .graySuit
+        img.isHidden = true
+        
+        return img
+    }()
+    
     var event: Event? {
         didSet {
             setupUI()
@@ -61,20 +71,25 @@ class EventCell: UITableViewCell {
         setupLayout()
         
         NotificationCenter.default.addObserver(self, selector: #selector(imageDownloaded), name: .imageDownloadeddd, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(didToggleFavourite), name: .didToggleFavourite, object: nil)
         
+        
+    }
+    
+    @objc fileprivate func didToggleFavourite(notification: Notification) {
+        guard let id = notification.userInfo?["id"] as? String, id == event?.id else { return }
+        guard let toggle = notification.userInfo?["toggle"] as? Bool else { return }
+        favouriteIndicator.isHidden = !toggle
     }
     
     @objc fileprivate func imageDownloaded(notification: Notification) {
         guard let id = notification.userInfo?["id"] as? String, id == event?.id else { return }
         guard let imageData = notification.object as? Data else { return }
-        print("Yay, my image is here")
         DispatchQueue.main.async {
             guard let image = UIImage(data: imageData) else { return }
             self.eventImageView.contentMode = .scaleAspectFill
             self.eventImageView.image = image
         }
-
-        
     }
     
     fileprivate func setupUI() {
@@ -88,6 +103,10 @@ class EventCell: UITableViewCell {
         } else {
             eventImageView.image = UIImage(named: "trekanter")
             eventImageView.contentMode = .scaleAspectFit
+        }
+        
+        if event.isFavourite {
+            favouriteIndicator.isHidden = false
         }
 
         
@@ -120,6 +139,13 @@ class EventCell: UITableViewCell {
         [
             eventCategoryLabel.leftAnchor.constraint(equalTo: eventTitleLabel.leftAnchor),
             eventCategoryLabel.topAnchor.constraint(equalTo: eventTitleLabel.bottomAnchor, constant: 5),
+            ].forEach { $0.isActive = true }
+        
+        addSubview(favouriteIndicator)
+        [
+            favouriteIndicator.rightAnchor.constraint(equalTo: rightAnchor, constant: -10),
+            favouriteIndicator.centerYAnchor.constraint(equalTo: eventCategoryLabel.centerYAnchor),
+            favouriteIndicator.heightAnchor.constraint(equalToConstant: 18),
             ].forEach { $0.isActive = true }
         
         addSubview(eventOrganizerLabel)
