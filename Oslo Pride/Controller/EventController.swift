@@ -136,10 +136,13 @@ class EventController: UIViewController {
        // navigationController?.setNavigationBarHidden(false, animated: true)
     }
     
+    lazy var favoriteBarButtonItem = UIBarButtonItem(image: (event?.isFavourite ?? false) ? UIImage(named: "star_cross") : UIImage(named: "star_border"), style: .plain, target: self, action: #selector(toggleFavourite))
+    
     fileprivate func setupNavigationItems() {
         var right = [
             UIBarButtonItem(image: UIImage(named: "share"), style: .plain, target: self, action: #selector(shareEvent)),
-            UIBarButtonItem(image: UIImage(named: "star_border"), style: .plain, target: self, action: #selector(toggleFavourite))
+            favoriteBarButtonItem
+            //UIBarButtonItem(image: (event?.isFavourite ?? false) ? UIImage(named: "star_cross") : UIImage(named: "star_border"), style: .plain, target: self, action: #selector(toggleFavourite))
         ]
         
         if let _ = event?.ticketSaleWebpage {
@@ -412,7 +415,7 @@ class EventController: UIViewController {
             }
             DispatchQueue.main.async {
                 feedback.notificationOccurred(.success)
-                // Update icon..
+                self.favoriteBarButtonItem.image = event.isFavourite ? UIImage(named: "star_cross") : UIImage(named: "star_border")
             }
         }
     }
