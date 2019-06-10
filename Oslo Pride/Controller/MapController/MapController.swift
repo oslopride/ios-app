@@ -61,7 +61,7 @@ class MapController: UIViewController, MKMapViewDelegate {
     let parkSceneBarAnnotation = BarAnnotation(title: "Scenebar", lat: 59.914135, long: 10.736146)
     let parkLilleSceneBarAnnotation = BarAnnotation(title: "Lille-Scenebar", lat: 59.914162, long: 10.736713)
     
-    let parkMainBarAnnotation = PrideAnnotation(title: "Hovedbar", lat: 59.913860, long: 10.735983)
+    //let parkMainBarAnnotation = PrideAnnotation(title: "Hovedbar", lat: 59.913860, long: 10.735983)
     let parkPrideBarAnnotation = PrideAnnotation(title: "Pridebar", lat: 59.913486, long: 10.737819)
     let parkEurozoneAnnotation = PrideAnnotation(title: "Eurozone", lat: 59.913712, long: 10.737478)
     let parkTorgetAnnotation = PrideAnnotation(title: "Torget", lat: 59.913586, long: 10.738022)
@@ -324,7 +324,7 @@ extension MapController {
             lbl.textColor = UIColor(red:0.91, green:0.20, blue:0.54, alpha:1.0)
             lbl.text = annotation.title ?? ""
             view.addSubview(lbl)
-        } else if annotation == parkMainBarAnnotation || annotation == parkPrideBarAnnotation {
+        } else if annotation == parkPrideBarAnnotation {
             let img = UIImage(named: "beer")?.withRenderingMode(.alwaysOriginal)
             view.image = img
             
@@ -473,7 +473,7 @@ extension MapController {
             
             parkLilleSceneBarAnnotation,
             parkSceneBarAnnotation,
-            parkMainBarAnnotation,
+            //parkMainBarAnnotation,
             mainStageAnnotation,
             bamseStageAnnotation,
             parkTorgetAnnotation,
