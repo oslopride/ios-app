@@ -36,8 +36,7 @@ class TabBarController: UITabBarController {
         let navViewController = UINavigationController(rootViewController: viewController)
         navViewController.view.backgroundColor = .white
         
-        let infoController = UIViewController()
-        infoController.view.backgroundColor = .white
+        let infoController = InfoController()
         infoController.tabBarItem = UITabBarItem(title: "Info", image: UIImage(named: "info"), tag: 3)
         
         viewControllers = [

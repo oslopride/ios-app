@@ -15,6 +15,7 @@
 		3A29E0C6229AAB0000340770 /* MapCoordinates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A29E0C5229AAB0000340770 /* MapCoordinates.swift */; };
 		3A29E0C9229AAF6B00340770 /* Annotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A29E0C8229AAF6B00340770 /* Annotation.swift */; };
 		3A686CBF2290A2A300F48475 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A686CBE2290A2A300F48475 /* String.swift */; };
+		3A75A06822AECE4600A05988 /* InfoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A75A06722AECE4600A05988 /* InfoController.swift */; };
 		3A9F6045228F2AFD00AF937C /* FavouriteCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9F6044228F2AFD00AF937C /* FavouriteCell.swift */; };
 		3AB6CC74228B26EB0039868E /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB6CC73228B26EB0039868E /* CoreDataManager.swift */; };
 		3AB6CC77228B27880039868E /* PrideDataModels.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 3AB6CC75228B27880039868E /* PrideDataModels.xcdatamodeld */; };
@@ -46,6 +47,7 @@
 		3A29E0C5229AAB0000340770 /* MapCoordinates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapCoordinates.swift; sourceTree = "<group>"; };
 		3A29E0C8229AAF6B00340770 /* Annotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Annotation.swift; sourceTree = "<group>"; };
 		3A686CBE2290A2A300F48475 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
+		3A75A06722AECE4600A05988 /* InfoController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoController.swift; sourceTree = "<group>"; };
 		3A9F6044228F2AFD00AF937C /* FavouriteCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavouriteCell.swift; sourceTree = "<group>"; };
 		3AB6CC73228B26EB0039868E /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		3AB6CC76228B27880039868E /* PrideDataModels.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = PrideDataModels.xcdatamodel; sourceTree = "<group>"; };
@@ -174,6 +176,7 @@
 				3A04D3C1228EE44400AAD8BB /* DownloadController.swift */,
 				3A04D3C3228F061700AAD8BB /* FavouriteController.swift */,
 				3A14A6D122A5772F0086905C /* EventregistrationController.swift */,
+				3A75A06722AECE4600A05988 /* InfoController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -279,6 +282,7 @@
 				3AECE97E22760D9700F9DEF0 /* AppDelegate.swift in Sources */,
 				3AE65381229D9F5F00C6B2CE /* EventsManager.swift in Sources */,
 				3AEE589022884A1C00891790 /* NetworkAPI.swift in Sources */,
+				3A75A06822AECE4600A05988 /* InfoController.swift in Sources */,
 				3AB6CC74228B26EB0039868E /* CoreDataManager.swift in Sources */,
 				3A686CBF2290A2A300F48475 /* String.swift in Sources */,
 				3A14A6D022A2CEDC0086905C /* NotificationCenter.swift in Sources */,
