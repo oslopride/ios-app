@@ -46,13 +46,12 @@ class MapController: UIViewController, MKMapViewDelegate {
     let spikersuppa = CLLocationCoordinate2D(latitude: 59.914518, longitude: 10.734388)
     let youngstroget = CLLocationCoordinate2D(latitude: 59.914809, longitude: 10.749099)
     
-    // MARK:- Distance View Annotations
-    let prideParkAnnotation = PrideAnnotation(title: nil, lat: 59.914252, long: 10.735609)
-    let prideHouseArtAnnotaion = PrideAnnotation(title: nil, lat: 59.914809, long: 10.749099)
-    let prideParadeStartAnnotation = PrideAnnotation(title: nil, lat: 59.911959, long: 10.766269)
-    let prideParadeEndAnnotation = PrideAnnotation(title: nil, lat: 59.913132, long: 10.738024)
+    // MARK:- Annotations 📍
+    let prideParkAnnotation = PrideAnnotation(title: "Pride Park", lat: 59.914252, long: 10.735609)
+    let prideHouseArtAnnotaion = PrideAnnotation(title: "Pride House & Art", lat: 59.914809, long: 10.749099)
+    let prideParadeStartAnnotation = PrideAnnotation(title: "Parade Start", lat: 59.911959, long: 10.766269)
+    let prideParadeEndAnnotation = PrideAnnotation(title: "Parade Slutt", lat: 59.913132, long: 10.738024)
 
-    // MARK: Toilet annotations
     let prideParkToiletAnnotation = PrideToiletAnnotation(title: "Toalett", lat: 59.913728, long: 10.738393)
     let prideParkEurozoneToiletAnnotation = PrideToiletAnnotation(title: "Toalett", lat: 59.914026, long: 10.737402)
     let prideParkSOProdeToiletAnnotation = PrideToiletAnnotation(title: "Toalett", lat: 59.913982, long: 10.735818)
@@ -66,16 +65,15 @@ class MapController: UIViewController, MKMapViewDelegate {
     var parkInfoAnnotation = PrideAnnotation(title: "Info", lat: 59.914009, long: 10.737251)
     let parkKlubbenAnnotation = PrideAnnotation(title: "Klubben", lat: 59.913582, long: 10.737115)
     
-    // MARK: Scene annotations
     let mainStageAnnotation = PrideAnnotation(title: "Hovedscenen", lat: 59.914009, long: 10.736598)
     let bamseStageAnnotation = PrideAnnotation(title: "Bamsescenen", lat: 59.913822, long: 10.735478)
     
+    // MARK: Ploygons ◻️
     var paradePolyLine: MKPolyline!
     var parkPolygon: MKPolygon!
     var waterparkLargePloygon: MKPolygon!
     var waterparkSmallPloygon: MKPolygon!
     
-    // MARK: Forest ploygons
     var parkPrideBarForestPolygon: MKPolygon!
     var parkPrideUngForestPolygon: MKPolygon!
     var parkStandgateStortingetForestPolygon: MKPolygon!
@@ -154,8 +152,9 @@ extension MapController {
         guard let annotation = annotation as? PrideAnnotation else { return nil }
         //let view = mapView.dequeueReusableAnnotationView(withIdentifier: "id", for: annotation) as! MKPinAnnotationView
         let view = MKAnnotationView(annotation: annotation, reuseIdentifier: "id")
+        //let view = MKMarkerAnnotationView(annotation: annotation, reuseIdentifier: "id")
         
-        view.tintColor = .hotPink
+        //view.tintColor = .hotPink
         view.canShowCallout = true
         let calloutView = AnnotationCalloutView()
         
@@ -175,7 +174,6 @@ extension MapController {
             calloutView.mapURL = URL(string:"http://maps.apple.com/?address=Karl+Johans+gate+24")
             calloutView.titleLabel.attributedText = attrText
             view.detailCalloutAccessoryView = calloutView
-            
         } else if annotation == prideHouseArtAnnotaion {
             let attrText = NSMutableAttributedString()
             attrText.append(NSAttributedString(string: "Pride House\n", attributes: [
@@ -198,10 +196,10 @@ extension MapController {
             
             let img = UIImage(named: "pride_art")
             view.image = img
+            //view.glyphImage = img
             calloutView.mapURL = URL(string:"http://maps.apple.com/?address=youngstorget")
             calloutView.titleLabel.attributedText = attrText
             view.detailCalloutAccessoryView = calloutView
-
         } else if annotation == prideParadeStartAnnotation {
             let img = UIImage(named: "trip")?.withRenderingMode(.alwaysTemplate)
             view.image = img
@@ -221,6 +219,7 @@ extension MapController {
         } else if annotation == prideParadeEndAnnotation {
             let img = UIImage(named: "trip")?.withRenderingMode(.alwaysTemplate)
             view.image = img
+            
             
             let attrText = NSMutableAttributedString()
             attrText.append(NSAttributedString(string: "Parade Slutt\n", attributes: [
@@ -300,7 +299,11 @@ extension MapController {
             view.detailCalloutAccessoryView = BeerCalloutView()
             
         } else if annotation is ATMAnnotation {
-            view.image = UIImage(named: "atm")
+            let view = MKMarkerAnnotationView(annotation: annotation, reuseIdentifier: "id")
+            view.glyphImage = UIImage(named: "atm")
+            view.glyphTintColor = .white
+            view.markerTintColor = .graySuit
+            return view
         }
         
         //view.detailCalloutAccessoryView = calloutView
@@ -321,14 +324,6 @@ extension MapController {
             mapView.topAnchor.constraint(equalTo: view.topAnchor),
             mapView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
             ].forEach { $0.isActive = true }
-        
-//        view.addSubview(segmentController)
-//        [
-//            segmentController.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-//            segmentController.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24),
-//            segmentController.heightAnchor.constraint(equalToConstant: 44)
-//            ].forEach { $0.isActive = true }
-        
     }
     
     fileprivate func setupPolygons() {
@@ -367,12 +362,15 @@ extension MapController {
             
             parkEurozonePolygon,
             parkKlubbenPolygon,
-            
-            
             ])
     }
     
     fileprivate func setupAnnotations() {
+        MapCoordinates().atmCoordinates.forEach { (coordinate) in
+            let annotation = ATMAnnotation(title: "Minibank", lat: coordinate.latitude, long: coordinate.longitude)
+            mapView.addAnnotation(annotation)
+        }
+        
         closeViewAnnotations = [
             prideParkBamseToiletAnnotation,
             parkPrideUngToiletAnnotation,
@@ -386,12 +384,7 @@ extension MapController {
             parkInfoAnnotation,
             parkKlubbenAnnotation,
         ]
-        
-        MapCoordinates().atmCoordinates.forEach { (coordinate) in
-            let annotation = ATMAnnotation(title: "Minibank", lat: coordinate.latitude, long: coordinate.longitude)
-            mapView.addAnnotation(annotation)
-        }
-        
+
         distanceViewAnnotations = [
             prideHouseArtAnnotaion,
             prideParkAnnotation,
