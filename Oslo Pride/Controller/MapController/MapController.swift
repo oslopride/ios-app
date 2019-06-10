@@ -58,12 +58,23 @@ class MapController: UIViewController, MKMapViewDelegate {
     let prideParkBamseToiletAnnotation = PrideToiletAnnotation(title: "Toalett", lat: 59.913933, long: 10.735702)
     let parkPrideUngToiletAnnotation = PrideToiletAnnotation(title: "Toalett", lat: 59.913643, long: 10.738309)
 
+    let parkSceneBarAnnotation = BarAnnotation(title: "Scenebar", lat: 59.914135, long: 10.736146)
+    let parkLilleSceneBarAnnotation = BarAnnotation(title: "Lille-Scenebar", lat: 59.914162, long: 10.736713)
+    
     let parkMainBarAnnotation = PrideAnnotation(title: "Hovedbar", lat: 59.913860, long: 10.735983)
     let parkPrideBarAnnotation = PrideAnnotation(title: "Pridebar", lat: 59.913486, long: 10.737819)
     let parkEurozoneAnnotation = PrideAnnotation(title: "Eurozone", lat: 59.913712, long: 10.737478)
     let parkTorgetAnnotation = PrideAnnotation(title: "Torget", lat: 59.913586, long: 10.738022)
     var parkInfoAnnotation = PrideAnnotation(title: "Info", lat: 59.914009, long: 10.737251)
     let parkKlubbenAnnotation = PrideAnnotation(title: "Klubben", lat: 59.913582, long: 10.737115)
+    
+    // Food Annotations
+    let breheimenAnnotation = FoodAnnotation(title: "Breheimen", lat: 59.913658, long: 10.736593)
+    let silkRoadAnnotation = FoodAnnotation(title: "Potetbakern", lat: 59.913696, long: 10.736457)
+    let potetbakernAnnotation = FoodAnnotation(title: "Potetbakern", lat: 59.913853, long: 10.736743)
+    let kainFilipinoRiceBarAnnotation = FoodAnnotation(title: "KAIN Filipino Rice Bar", lat: 59.913708, long: 10.738037)
+    let parkKompassCoAnnotation = FoodAnnotation(title: "Kompass & Co", lat: 59.914146, long: 10.735939)
+    
     
     let mainStageAnnotation = PrideAnnotation(title: "Hovedscenen", lat: 59.914009, long: 10.736598)
     let bamseStageAnnotation = PrideAnnotation(title: "Bamsescenen", lat: 59.913822, long: 10.735478)
@@ -323,7 +334,6 @@ extension MapController {
             lbl.textColor = UIColor(red:0.24, green:0.16, blue:0.47, alpha:1.0)
             lbl.text = annotation.title ?? ""//"Hoved scene"
             view.addSubview(lbl)
-            view.detailCalloutAccessoryView = BeerCalloutView()
 
         } else if annotation == parkTorgetAnnotation {
             let img = UIImage(named: "ute_servering")?.withRenderingMode(.alwaysOriginal)
@@ -335,7 +345,6 @@ extension MapController {
             lbl.textColor = UIColor(red:0.95, green:0.55, blue:0.36, alpha:1.0)
             lbl.text = annotation.title ?? ""
             view.addSubview(lbl)
-            view.detailCalloutAccessoryView = BeerCalloutView()
             
         } else if annotation == parkInfoAnnotation {
             let img = UIImage(named: "info-1")?.withRenderingMode(.alwaysOriginal)
@@ -361,14 +370,30 @@ extension MapController {
             lbl.text = annotation.title ?? ""
             view.addSubview(lbl)
 
-            view.detailCalloutAccessoryView = BeerCalloutView()
-            
         } else if annotation is ATMAnnotation {
             let view = MKMarkerAnnotationView(annotation: annotation, reuseIdentifier: "id")
             view.glyphImage = UIImage(named: "atm")
             view.glyphTintColor = .white
             view.markerTintColor = .graySuit
             //return view
+        } else if annotation is FoodAnnotation {
+            view.image = UIImage(named: "dinner")
+            let lbl = UILabel(frame: CGRect(x: -view.frame.width*2, y: 10, width: 100, height: 30))
+            lbl.textAlignment = .center
+            lbl.font = UIFont.boldSystemFont(ofSize: 12)
+            lbl.textColor = UIColor(red:0.65, green:0.36, blue:0.63, alpha:1.0)
+            lbl.text = annotation.title ?? ""//"Hoved scene"
+            //view.addSubview(lbl)
+            
+        } else if annotation is BarAnnotation {
+            view.image = UIImage(named: "beer")
+            let lbl = UILabel(frame: CGRect(x: -view.frame.width*2, y: 10, width: 100, height: 30))
+            lbl.textAlignment = .center
+            lbl.font = UIFont.boldSystemFont(ofSize: 12)
+            lbl.textColor = .prideDeepPurple //UIColor(red:0.91, green:0.20, blue:0.54, alpha:1.0)
+            lbl.text = annotation.title ?? ""
+            view.addSubview(lbl)
+            
         } else {
             let view = MKMarkerAnnotationView(annotation: annotation, reuseIdentifier: "id")
             view.glyphImage = UIImage(named: "star_border")
@@ -446,6 +471,8 @@ extension MapController {
             parkPrideUngToiletAnnotation,
             parkEurozoneAnnotation,
             
+            parkLilleSceneBarAnnotation,
+            parkSceneBarAnnotation,
             parkMainBarAnnotation,
             mainStageAnnotation,
             bamseStageAnnotation,
@@ -453,6 +480,14 @@ extension MapController {
             parkPrideBarAnnotation,
             parkInfoAnnotation,
             parkKlubbenAnnotation,
+            
+            breheimenAnnotation,
+            silkRoadAnnotation,
+            potetbakernAnnotation,
+            kainFilipinoRiceBarAnnotation,
+            parkKompassCoAnnotation,
+            
+
         ]
 
         distanceViewAnnotations = [

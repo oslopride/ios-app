@@ -184,6 +184,13 @@ class ATMAnnotation: PrideAnnotation {}
 class ExtenalArenaFavouriteAnnotation: PrideAnnotation {
     var event: Event?
 }
+class BarAnnotation: PrideAnnotation {
+    
+}
+
+class FoodAnnotation: PrideAnnotation {
+    
+}
 
 class PrideTentPolygon: MKPolygon {}
 
