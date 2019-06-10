@@ -192,6 +192,17 @@ class CoreDataManager {
         }
     }
     
+    func updateCoordinates(event: Event, lat: Double, long: Double, completion: @escaping (Error?) -> ()) {
+        event.latitude = lat
+        event.longitude = long
+        do {
+            try pc.viewContext.save()
+            completion(nil)
+        } catch let err {
+            completion(err)
+        }
+    }
+    
     // MARK:- Delete
     func delete(events: [Event], completion: @escaping (Error?) -> ()) {
             events.forEach({ (event) in

@@ -104,6 +104,33 @@ class MapController: UIViewController, MKMapViewDelegate {
         
         Location.shared.askPermission { (success) in
             print("Got Permission: ", success)
+            
+        }
+        
+    }
+    
+    var externalArenaAnnotationsFromFavorites = [PrideAnnotation]()
+    override func viewDidAppear(_ animated: Bool) {
+        CoreDataManager.shared.getFavourites { (events) in
+            for event in events {
+                guard event.category == "0" else { continue }
+                var exists = false
+                for annotation in self.externalArenaAnnotationsFromFavorites {
+                    if annotation.title == event.title {
+                        exists = true
+                        break
+                    }
+                }
+                
+                if !exists {
+                    guard event.latitude > 0 || event.longitude > 0 else { continue }
+                        let annotation = PrideAnnotation(title: event.title, lat: event.latitude, long: event.longitude)
+                        DispatchQueue.main.async {
+                            self.mapView.addAnnotation(annotation)
+                        }
+                        self.externalArenaAnnotationsFromFavorites.append(annotation)
+                }
+            }
         }
         
     }
@@ -303,6 +330,10 @@ extension MapController {
             view.glyphImage = UIImage(named: "atm")
             view.glyphTintColor = .white
             view.markerTintColor = .graySuit
+            //return view
+        } else {
+            let view = MKMarkerAnnotationView(annotation: annotation, reuseIdentifier: "id")
+            view.glyphImage = UIImage(named: "star_border")
             return view
         }
         

@@ -231,6 +231,13 @@ class EventController: UIViewController {
                 if let coordinate = placemark?.first?.location?.coordinate {
                     self.eventLocation = coordinate
                     self.updateDistance(userLocation: self.mapView.userLocation)
+                    CoreDataManager.shared.updateCoordinates(event: event, lat: coordinate.latitude, long: coordinate.longitude) { (err) in
+                        if let err = err {
+                            print("Oh no: ", err)
+                            return
+                        }
+                        print("Did update coordinate")
+                    }
                 }
             }
         }

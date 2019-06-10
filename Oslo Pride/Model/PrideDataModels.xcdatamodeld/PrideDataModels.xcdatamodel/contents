@@ -1,29 +1,31 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14490.99" systemVersion="18E226" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14838.16" systemVersion="18F132" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithCloudKit="NO" userDefinedModelVersionIdentifier="">
     <entity name="Event" representedClassName="Event" syncable="YES" codeGenerationType="class">
-        <attribute name="accessible" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="ageLimit" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="category" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="contactPersonEmail" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="contactPersonName" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="deafInterpretation" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="endingTime" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
-        <attribute name="eventDescription" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="eventType" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="free" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="id" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="image" optional="YES" attributeType="Binary" syncable="YES"/>
-        <attribute name="imageURL" optional="YES" attributeType="URI" syncable="YES"/>
-        <attribute name="isFavourite" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="locationAddress" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="locationName" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="official" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="organizer" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="startingTime" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
-        <attribute name="ticketSaleWebpage" optional="YES" attributeType="URI" syncable="YES"/>
-        <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="accessible" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="ageLimit" optional="YES" attributeType="String"/>
+        <attribute name="category" optional="YES" attributeType="String"/>
+        <attribute name="contactPersonEmail" optional="YES" attributeType="String"/>
+        <attribute name="contactPersonName" optional="YES" attributeType="String"/>
+        <attribute name="deafInterpretation" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="endingTime" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="eventDescription" optional="YES" attributeType="String"/>
+        <attribute name="eventType" optional="YES" attributeType="String"/>
+        <attribute name="free" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="id" optional="YES" attributeType="String"/>
+        <attribute name="image" optional="YES" attributeType="Binary"/>
+        <attribute name="imageURL" optional="YES" attributeType="URI"/>
+        <attribute name="isFavourite" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="latitude" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="locationAddress" optional="YES" attributeType="String"/>
+        <attribute name="locationName" optional="YES" attributeType="String"/>
+        <attribute name="longitude" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="official" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="organizer" optional="YES" attributeType="String"/>
+        <attribute name="startingTime" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="ticketSaleWebpage" optional="YES" attributeType="URI"/>
+        <attribute name="title" optional="YES" attributeType="String"/>
     </entity>
     <elements>
-        <element name="Event" positionX="-63" positionY="-18" width="128" height="360"/>
+        <element name="Event" positionX="-63" positionY="-18" width="128" height="388"/>
     </elements>
 </model>
