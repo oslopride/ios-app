@@ -13,7 +13,7 @@ import UserNotificationsUI
 protocol FavouriteCellDelegate {
     func presentDeleteConfirmation(_ event: Event)
     func presentDirections(_ event: Event)
-    func createNotification(_ event: Event)
+    func createNotification(_ event: Event, handler: @escaping (Error?) -> ())
 }
 
 class FavouriteCell: UICollectionViewCell {
@@ -108,7 +108,15 @@ class FavouriteCell: UICollectionViewCell {
     }
     
     @objc fileprivate func createNotification() {
-        delegate?.createNotification(event)
+        delegate?.createNotification(event, handler: { err in
+            if let err = err {
+                print("Failed to create notification: ", err)
+                return
+            }
+            DispatchQueue.main.async {
+                self.reminderButton.isEnabled = false
+            }
+        })
     }
     
     fileprivate func setupLayout() {
@@ -172,7 +180,7 @@ class FavouriteCell: UICollectionViewCell {
         
         guard let start = event?.startingTime, let end = event?.endingTime else { return }
         dateLabel.setupEventDateLabel(start: start, end: end)
-        print(Date())
+        
         let countdown = Calendar.current.dateComponents([.day, .hour, .minute], from: Date(), to: start)
         let day = String(countdown.day ?? 0)
         let hours = String(countdown.hour ?? 0)
@@ -203,6 +211,17 @@ class FavouriteCell: UICollectionViewCell {
 
 
         countdownLabel.attributedText = attrString
+        
+        
+        UNUserNotificationCenter.current().getPendingNotificationRequests { (requests) in
+            requests.forEach { (req) in
+                if req.identifier == self.event.id {
+                    DispatchQueue.main.async {
+                        self.reminderButton.isEnabled = false
+                    }
+                }
+            }
+        }
         
     }
     
