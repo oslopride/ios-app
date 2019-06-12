@@ -185,7 +185,7 @@ class FavouriteCell: UICollectionViewCell {
         let day = String(countdown.day ?? 0)
         let hours = String(countdown.hour ?? 0)
         let minutes = String(countdown.minute ?? 0)
-        let attrString = NSMutableAttributedString()
+        var attrString = NSMutableAttributedString()
         
         attrString.append(NSAttributedString(string: "<- Som Betyr Om\n", attributes: [
             NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 16),
@@ -202,11 +202,16 @@ class FavouriteCell: UICollectionViewCell {
                 NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 16),
                 NSAttributedString.Key.foregroundColor : UIColor.kindaBlack
                 ]))
-        } else {
+        } else if (countdown.minute ?? 0) > 1 {
             attrString.append(NSAttributedString(string: "\(minutes) minutter", attributes: [
                 NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 16),
                 NSAttributedString.Key.foregroundColor : UIColor.kindaBlack
                 ]))
+        } else {
+            attrString = NSMutableAttributedString(string: "Eventet har startet", attributes: [
+                NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 16),
+                NSAttributedString.Key.foregroundColor : UIColor.graySuit
+                ])
         }
 
 
