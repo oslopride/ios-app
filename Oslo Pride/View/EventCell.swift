@@ -117,6 +117,8 @@ class EventCell: UITableViewCell {
         }
         eventCategoryLabel.category = event.category
         
+
+        
     }
     
     fileprivate func setupLayout() {

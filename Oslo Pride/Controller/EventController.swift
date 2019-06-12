@@ -194,7 +194,16 @@ class EventController: UIViewController {
         }
         
         let categoryLabel = UILabel()
-        categoryLabel.attributedText = event.categoryName()
+        categoryLabel.numberOfLines = 2
+        let categoryAttrText = NSMutableAttributedString()
+        categoryAttrText.append(event.categoryName())
+        if let venue = event.venue {
+            categoryAttrText.append(NSAttributedString(string: "\n\(venue)", attributes: [
+                NSAttributedString.Key.foregroundColor : UIColor.graySuit
+                ]))
+        }
+        
+        categoryLabel.attributedText = categoryAttrText//event.categoryName()
         categoryLabel.textAlignment = .right
         categoryLabel.font = UIFont.boldSystemFont(ofSize: 16)
         actionsStackView.addArrangedSubview(categoryLabel)
