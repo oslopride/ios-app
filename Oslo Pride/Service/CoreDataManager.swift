@@ -162,7 +162,7 @@ class CoreDataManager {
     
     func getFavourites(completion: @escaping ([Event]) -> ()) {
         let fetchRequest = NSFetchRequest<Event>(entityName: "Event")
-        fetchRequest.predicate = NSPredicate(format: "isFavourite = true")
+        fetchRequest.predicate = NSPredicate(format: "(endingTime >= %@) AND isFavourite = true", Date() as CVarArg)
         do {
             let favourites = try pc.viewContext.fetch(fetchRequest)
             completion(favourites)
