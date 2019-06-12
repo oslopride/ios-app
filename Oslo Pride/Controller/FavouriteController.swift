@@ -38,6 +38,16 @@ class FavouriteController: UICollectionViewController, UICollectionViewDelegateF
                 guard let t1 = e1.startingTime, let t2 = e2.startingTime else { return false }
                 return t1 < t2
             })
+            
+//            for i in 0..<fav.count {
+//                guard let ending = fav[i].endingTime else { continue }
+//                if ending > Date() {
+//                    if i != 0 {
+//                        fav.removeFirst(i)
+//                    }
+//                    break
+//                }
+//            }
             DispatchQueue.main.async {
                 self.favourites = fav
                 self.collectionView.reloadData()
