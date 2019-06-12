@@ -222,6 +222,9 @@ class EventController: UIViewController {
             dateLabel.setupEventDateLabel(start: start, end: end)
             detailsStackView.addArrangedSubview(dateLabel)
         }
+
+        let freeDetail = createDetail(main: "Gratis", secondary: event.free ? "Ja" : "Nei")
+        descriptionStackView.addArrangedSubview(freeDetail)
         
         let organizerDetail = createDetail(main: "Arrangør", secondary: event.organizer ?? "Ikke Oppgitt")
         descriptionStackView.addArrangedSubview(organizerDetail)
