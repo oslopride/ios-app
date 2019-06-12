@@ -109,7 +109,6 @@ class EventsController: UITableViewController {
 
 extension EventsController {
     override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        print("Count: ", days?.count)
         if days == nil {
             return 70
         }
@@ -124,7 +123,7 @@ extension EventsController {
         return activityIndicator
     }
     override func numberOfSections(in tableView: UITableView) -> Int {
-        if days?.count == 0 || days == nil {
+        if days?.count == 0 || days == nil {
             return 1
         }
         return days?.count ?? 0

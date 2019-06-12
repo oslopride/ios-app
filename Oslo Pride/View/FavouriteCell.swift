@@ -172,7 +172,7 @@ class FavouriteCell: UICollectionViewCell {
         
         guard let start = event?.startingTime, let end = event?.endingTime else { return }
         dateLabel.setupEventDateLabel(start: start, end: end)
-        
+        print(Date())
         let countdown = Calendar.current.dateComponents([.day, .hour, .minute], from: Date(), to: start)
         let day = String(countdown.day ?? 0)
         let hours = String(countdown.hour ?? 0)

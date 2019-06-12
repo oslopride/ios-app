@@ -109,26 +109,26 @@ extension FavouriteController: FavouriteCellDelegate {
         let actionSheet = UIAlertController(title: "Påminnelse", message: "Velg tiden før eventet starter du vil få påminnelsen", preferredStyle: .actionSheet)
         
         actionSheet.addAction(UIAlertAction(title: "En Time", style: .default, handler: { (_) in
-            self.addNotification(after: 3600, title: event.title ?? "", body: "en time", id: event.id ?? "")
+            self.addNotification(on: event.startingTime?.addingTimeInterval(-3600) ?? Date(), title: event.title ?? "", body: "en time", id: event.id ?? "")
         }))
         actionSheet.addAction(UIAlertAction(title: "45 Minutter", style: .default, handler: { (_) in
-            self.addNotification(after: 2700, title: event.title ?? "", body: "45 minutter", id: event.id ?? "")
+            self.addNotification(on: event.startingTime?.addingTimeInterval(-2700) ?? Date(), title: event.title ?? "", body: "45 minutter", id: event.id ?? "")
         }))
         actionSheet.addAction(UIAlertAction(title: "30 Minutter", style: .default, handler: { (_) in
-            self.addNotification(after: 1800, title: event.title ?? "", body: "30 minutter", id: event.id ?? "")
+            self.addNotification(on: event.startingTime?.addingTimeInterval(-1800) ?? Date(), title: event.title ?? "", body: "30 minutter", id: event.id ?? "")
         }))
         actionSheet.addAction(UIAlertAction(title: "15 Minutter", style: .default, handler: { (_) in
-            self.addNotification(after: 900, title: event.title ?? "", body: "15 minutter", id: event.id ?? "")
+            self.addNotification(on: event.startingTime?.addingTimeInterval(-900) ?? Date(), title: event.title ?? "", body: "15 minutter", id: event.id ?? "")
         }))
         actionSheet.addAction(UIAlertAction(title: "10 sekunder", style: .default, handler: { (_) in
-            self.addNotification(after: 10, title: event.title ?? "", body: "10 sekunder", id: event.id ?? "")
+            self.addNotification(on: Date().addingTimeInterval(10), title: event.title ?? "", body: "10 sekunder", id: event.id ?? "")
         }))
         actionSheet.addAction(UIAlertAction(title: "Avbryt", style: .cancel, handler: nil))
 
         present(actionSheet, animated: true, completion: nil)
     }
     
-    fileprivate func addNotification(after time: TimeInterval, title: String, body: String, id: String) {
+    fileprivate func addNotification(on time: Date, title: String, body: String, id: String) {
         let auth = UNAuthorizationOptions(arrayLiteral: [.alert])
         UNUserNotificationCenter.current().requestAuthorization(options: auth) {(didConsent, err) in
             if let err = err {
@@ -144,8 +144,10 @@ extension FavouriteController: FavouriteCellDelegate {
             let content = UNMutableNotificationContent()
             content.title = title
             content.body = "Eventet starter om " + body
+            let interval = time.timeIntervalSinceNow
+            print("Interval: ", interval)
             
-            let trigger = UNTimeIntervalNotificationTrigger(timeInterval: time, repeats: false)
+            let trigger = UNTimeIntervalNotificationTrigger(timeInterval: interval, repeats: false)
             let req = UNNotificationRequest(identifier: id, content: content, trigger: trigger)
             
             UNUserNotificationCenter.current().add(req) { (err) in
