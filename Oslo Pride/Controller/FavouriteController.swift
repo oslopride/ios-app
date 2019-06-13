@@ -16,6 +16,10 @@ class FavouriteController: UICollectionViewController, UICollectionViewDelegateF
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupController()
+    }
+    
+    fileprivate func setupController() {
         collectionView.backgroundColor = UIColor(red:0.93, green:0.93, blue:0.96, alpha:1.0)
         view.backgroundColor = .white
         collectionView.register(FavouriteCell.self, forCellWithReuseIdentifier: "cellid")
@@ -39,15 +43,6 @@ class FavouriteController: UICollectionViewController, UICollectionViewDelegateF
                 return t1 < t2
             })
             
-//            for i in 0..<fav.count {
-//                guard let ending = fav[i].endingTime else { continue }
-//                if ending > Date() {
-//                    if i != 0 {
-//                        fav.removeFirst(i)
-//                    }
-//                    break
-//                }
-//            }
             DispatchQueue.main.async {
                 self.favourites = fav
                 self.collectionView.reloadData()
@@ -85,7 +80,6 @@ class FavouriteController: UICollectionViewController, UICollectionViewDelegateF
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
         return favourites?.count ?? 0 > 0 ? CGSize(width: view.frame.width, height: 0) : CGSize(width: view.frame.width, height: 300)
-        
     }
     
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
@@ -102,15 +96,11 @@ class FavouriteController: UICollectionViewController, UICollectionViewDelegateF
             footer.addSubview(label)
             label.centerXAnchor.constraint(equalTo: footer.centerXAnchor).isActive = true
             label.centerYAnchor.constraint(equalTo: footer.centerYAnchor).isActive = true
-            
-            
             return footer
         }
         
         return UICollectionReusableView()
     }
-    
-    
 }
 
 extension FavouriteController: FavouriteCellDelegate {
@@ -131,9 +121,9 @@ extension FavouriteController: FavouriteCellDelegate {
         actionSheet.addAction(UIAlertAction(title: "15 Minutter", style: .default, handler: { (_) in
             self.addNotification(on: event.startingTime?.addingTimeInterval(-900) ?? Date(), title: event.title ?? "", body: "15 minutter", id: event.id ?? "", handler: handler)
         }))
-        actionSheet.addAction(UIAlertAction(title: "10 sekunder", style: .default, handler: { (_) in
-            self.addNotification(on: Date().addingTimeInterval(10), title: event.title ?? "", body: "10 sekunder", id: event.id ?? "", handler: handler)
-        }))
+//        actionSheet.addAction(UIAlertAction(title: "10 sekunder", style: .default, handler: { (_) in
+//            self.addNotification(on: Date().addingTimeInterval(10), title: event.title ?? "", body: "10 sekunder", id: event.id ?? "", handler: handler)
+//        }))
         actionSheet.addAction(UIAlertAction(title: "Avbryt", style: .cancel, handler: nil))
 
         present(actionSheet, animated: true, completion: nil)
@@ -207,6 +197,5 @@ extension FavouriteController: FavouriteCellDelegate {
         confimationController.addAction(UIAlertAction(title: "Avbryt", style: .cancel, handler: nil))
         present(confimationController, animated: true, completion: nil)
     }
-    
     
 }
