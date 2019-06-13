@@ -192,7 +192,7 @@ class FavouriteCell: UICollectionViewCell {
             NSAttributedString.Key.foregroundColor : UIColor.graySuit
             ]))
         
-        if (countdown.day ?? 0) > 1 {
+        if (countdown.day ?? 0) > 0 {
             attrString.append(NSAttributedString(string: "\(day) dager", attributes: [
                 NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 16),
                 NSAttributedString.Key.foregroundColor : UIColor.kindaBlack
