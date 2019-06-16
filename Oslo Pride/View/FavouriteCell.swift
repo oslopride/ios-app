@@ -229,10 +229,8 @@ class FavouriteCell: UICollectionViewCell {
         
         UNUserNotificationCenter.current().getPendingNotificationRequests { (requests) in
             requests.forEach { (req) in
-                if req.identifier == self.event.id {
-                    DispatchQueue.main.async {
-                        self.reminderButton.isEnabled = false
-                    }
+                DispatchQueue.main.async {
+                    self.reminderButton.isEnabled = !(req.identifier == self.event.id)
                 }
             }
         }
