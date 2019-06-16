@@ -202,6 +202,15 @@ class FavouriteCell: UICollectionViewCell {
                 NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 16),
                 NSAttributedString.Key.foregroundColor : UIColor.kindaBlack
                 ]))
+        } else if (countdown.hour ?? 0) > 0 {
+            attrString.append(NSAttributedString(string: "\(hours) time og ", attributes: [
+                NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 16),
+                NSAttributedString.Key.foregroundColor : UIColor.kindaBlack
+                ]))
+            attrString.append(NSAttributedString(string: "\(minutes) minutter", attributes: [
+                NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 16),
+                NSAttributedString.Key.foregroundColor : UIColor.kindaBlack
+                ]))
         } else if (countdown.minute ?? 0) > 1 {
             attrString.append(NSAttributedString(string: "\(minutes) minutter", attributes: [
                 NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 16),
@@ -220,10 +229,8 @@ class FavouriteCell: UICollectionViewCell {
         
         UNUserNotificationCenter.current().getPendingNotificationRequests { (requests) in
             requests.forEach { (req) in
-                if req.identifier == self.event.id {
-                    DispatchQueue.main.async {
-                        self.reminderButton.isEnabled = false
-                    }
+                DispatchQueue.main.async {
+                    self.reminderButton.isEnabled = !(req.identifier == self.event.id)
                 }
             }
         }
