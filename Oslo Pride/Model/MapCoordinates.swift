@@ -21,32 +21,60 @@ class MapCoordinates {
     let mainStage = CLLocationCoordinate2D(latitude: 59.914009, longitude: 10.736598)
     let bamseStage = CLLocationCoordinate2D(latitude: 59.913822, longitude: 10.735478)
     
-    let paradeCoordinates = [
-        CLLocationCoordinate2D(latitude: 59.911959, longitude: 10.766269),
-        CLLocationCoordinate2D(latitude: 59.912717, longitude: 10.762831),
-        CLLocationCoordinate2D(latitude: 59.913728, longitude: 10.756480),
-        CLLocationCoordinate2D(latitude: 59.913269, longitude: 10.753398),
-        CLLocationCoordinate2D(latitude: 59.912731, longitude: 10.751032),
-        
-        // Jernbanetorget
-        CLLocationCoordinate2D(latitude: 59.912290, longitude: 10.750702),
-        CLLocationCoordinate2D(latitude: 59.912319, longitude: 10.749284),
-        CLLocationCoordinate2D(latitude: 59.912493, longitude: 10.748354),
-        
-        // Kirkeristen
-        CLLocationCoordinate2D(latitude: 59.912824, longitude: 10.747845),
-        CLLocationCoordinate2D(latitude: 59.912977, longitude: 10.746627),
-        
-        // Grensen
-        CLLocationCoordinate2D(latitude: 59.912781, longitude: 10.746136),
-        CLLocationCoordinate2D(latitude: 59.914920, longitude: 10.740041),
-        CLLocationCoordinate2D(latitude: 59.915684, longitude: 10.737576),
-        
-        // Karl Johan
-        CLLocationCoordinate2D(latitude: 59.914562, longitude: 10.736250),
-        CLLocationCoordinate2D(latitude: 59.913780, longitude: 10.738823),
-        CLLocationCoordinate2D(latitude: 59.913132, longitude: 10.738024)
+    
+    fileprivate let paradeGoogleMapsCoordinates = [
+        (10.7656547,59.912134),
+        (10.7569215,59.9136508),
+        (10.7559344,59.9136938),
+        (10.7533595,59.9132635),
+        (10.7538959,59.9121555),
+        (10.7486388,59.9123922),
+        (10.748038,59.9127687),
+        (10.7468149,59.9129623),
+        (10.7461068,59.9127794),
+        (10.7399914,59.9149523),
+        (10.7388219,59.9137798),
+        (10.7363007,59.9145543),
+        (10.7340691,59.9151567),
     ]
+
+    
+    var paradeCoordinates: [CLLocationCoordinate2D] {
+        get {
+            var total = [CLLocationCoordinate2D]()
+            for c in paradeGoogleMapsCoordinates {
+                total.append(CLLocationCoordinate2D(latitude: c.1, longitude: c.0))
+            }
+            return total
+        }
+    }
+    
+//    let paradeCoordinates = [
+//        CLLocationCoordinate2D(latitude: 59.911959, longitude: 10.766269),
+//        CLLocationCoordinate2D(latitude: 59.912717, longitude: 10.762831),
+//        CLLocationCoordinate2D(latitude: 59.913728, longitude: 10.756480),
+//        CLLocationCoordinate2D(latitude: 59.913269, longitude: 10.753398),
+//        CLLocationCoordinate2D(latitude: 59.912731, longitude: 10.751032),
+//
+//        // Jernbanetorget
+//        CLLocationCoordinate2D(latitude: 59.912290, longitude: 10.750702),
+//        CLLocationCoordinate2D(latitude: 59.912319, longitude: 10.749284),
+//        CLLocationCoordinate2D(latitude: 59.912493, longitude: 10.748354),
+//
+//        // Kirkeristen
+//        CLLocationCoordinate2D(latitude: 59.912824, longitude: 10.747845),
+//        CLLocationCoordinate2D(latitude: 59.912977, longitude: 10.746627),
+//
+//        // Grensen
+//        CLLocationCoordinate2D(latitude: 59.912781, longitude: 10.746136),
+//        CLLocationCoordinate2D(latitude: 59.914920, longitude: 10.740041),
+//        CLLocationCoordinate2D(latitude: 59.915684, longitude: 10.737576),
+//
+//        // Karl Johan
+//        CLLocationCoordinate2D(latitude: 59.914562, longitude: 10.736250),
+//        CLLocationCoordinate2D(latitude: 59.913780, longitude: 10.738823),
+//        CLLocationCoordinate2D(latitude: 59.913132, longitude: 10.738024)
+//    ]
     
     let parkCoordinates = [
         CLLocationCoordinate2D(latitude: 59.913771, longitude: 10.738799), // Top Right
