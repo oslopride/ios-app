@@ -43,7 +43,7 @@ class EventsController: UITableViewController {
         tableView.tableHeaderView?.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 100)//70)
         tableView.tableFooterView = UIView()
         
-        //displayEvents()
+        displayEvents()
         updateEvents()
     }
     
@@ -92,7 +92,12 @@ class EventsController: UITableViewController {
         DispatchQueue.main.async {
             CoreDataManager.shared.getAllEvents { (events) in
                 EventsManager.shared.set(events: events)
-                self.days = EventsManager.shared.get()
+                let days = EventsManager.shared.get()
+                if days.count == 0 {
+                    self.days = nil
+                } else {
+                    self.days = EventsManager.shared.get()
+                }
                 self.tableView.reloadData()
                 self.refreshController.endRefreshing()
                 self.right.isEnabled = true
@@ -118,7 +123,10 @@ extension EventsController {
         return activityIndicator
     }
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return days?.count ?? 1
+        if days?.count == 0 || days == nil {
+            return 1
+        }
+        return days?.count ?? 0
     }
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return days?[section].count ?? 0

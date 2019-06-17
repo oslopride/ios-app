@@ -32,6 +32,7 @@ fileprivate struct SanityEventRaw: Decodable {
     var contactPerson: ContactPerson
     var deafInterpretation: Bool?
     var accessible: Bool?
+    var free: Bool?
 }
 
 fileprivate struct SanityBlockDescription: Decodable {
@@ -60,7 +61,8 @@ struct SanityEvent: Decodable {
     var contactPerson: ContactPerson?
     var deafInterpretation: Bool?
     var accessible: Bool?
-    
+    var free: Bool?
+
     init(from decoder: Decoder) {
         do {
             let rawResponse = try SanityEventRaw(from: decoder)
@@ -76,6 +78,7 @@ struct SanityEvent: Decodable {
             self.venue = rawResponse.venue
             self.accessible = rawResponse.accessible
             self.deafInterpretation = rawResponse.deafInterpretation
+            self.free = rawResponse.free
         
             if let urlString = rawResponse.imageURL, urlString.count > 0 {
                 self.imageURL = rawResponse.imageURL! + "?w1024&h=768"

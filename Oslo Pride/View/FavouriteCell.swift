@@ -13,7 +13,7 @@ import UserNotificationsUI
 protocol FavouriteCellDelegate {
     func presentDeleteConfirmation(_ event: Event)
     func presentDirections(_ event: Event)
-    func createNotification(_ event: Event)
+    func createNotification(_ event: Event, handler: @escaping (Error?) -> ())
 }
 
 class FavouriteCell: UICollectionViewCell {
@@ -108,7 +108,15 @@ class FavouriteCell: UICollectionViewCell {
     }
     
     @objc fileprivate func createNotification() {
-        delegate?.createNotification(event)
+        delegate?.createNotification(event, handler: { err in
+            if let err = err {
+                print("Failed to create notification: ", err)
+                return
+            }
+            DispatchQueue.main.async {
+                self.reminderButton.isEnabled = false
+            }
+        })
     }
     
     fileprivate func setupLayout() {
@@ -177,14 +185,14 @@ class FavouriteCell: UICollectionViewCell {
         let day = String(countdown.day ?? 0)
         let hours = String(countdown.hour ?? 0)
         let minutes = String(countdown.minute ?? 0)
-        let attrString = NSMutableAttributedString()
+        var attrString = NSMutableAttributedString()
         
         attrString.append(NSAttributedString(string: "<- Som Betyr Om\n", attributes: [
             NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 16),
             NSAttributedString.Key.foregroundColor : UIColor.graySuit
             ]))
         
-        if (countdown.day ?? 0) > 1 {
+        if (countdown.day ?? 0) > 0 {
             attrString.append(NSAttributedString(string: "\(day) dager", attributes: [
                 NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 16),
                 NSAttributedString.Key.foregroundColor : UIColor.kindaBlack
@@ -194,15 +202,38 @@ class FavouriteCell: UICollectionViewCell {
                 NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 16),
                 NSAttributedString.Key.foregroundColor : UIColor.kindaBlack
                 ]))
-        } else {
+        } else if (countdown.hour ?? 0) > 0 {
+            attrString.append(NSAttributedString(string: "\(hours) time og ", attributes: [
+                NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 16),
+                NSAttributedString.Key.foregroundColor : UIColor.kindaBlack
+                ]))
             attrString.append(NSAttributedString(string: "\(minutes) minutter", attributes: [
                 NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 16),
                 NSAttributedString.Key.foregroundColor : UIColor.kindaBlack
                 ]))
+        } else if (countdown.minute ?? 0) > 1 {
+            attrString.append(NSAttributedString(string: "\(minutes) minutter", attributes: [
+                NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 16),
+                NSAttributedString.Key.foregroundColor : UIColor.kindaBlack
+                ]))
+        } else {
+            attrString = NSMutableAttributedString(string: "Eventet har startet", attributes: [
+                NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 16),
+                NSAttributedString.Key.foregroundColor : UIColor.graySuit
+                ])
         }
 
 
         countdownLabel.attributedText = attrString
+        
+        
+        UNUserNotificationCenter.current().getPendingNotificationRequests { (requests) in
+            requests.forEach { (req) in
+                DispatchQueue.main.async {
+                    self.reminderButton.isEnabled = !(req.identifier == self.event.id)
+                }
+            }
+        }
         
     }
     

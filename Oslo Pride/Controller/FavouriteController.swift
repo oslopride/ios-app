@@ -16,6 +16,10 @@ class FavouriteController: UICollectionViewController, UICollectionViewDelegateF
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupController()
+    }
+    
+    fileprivate func setupController() {
         collectionView.backgroundColor = UIColor(red:0.93, green:0.93, blue:0.96, alpha:1.0)
         view.backgroundColor = .white
         collectionView.register(FavouriteCell.self, forCellWithReuseIdentifier: "cellid")
@@ -38,6 +42,7 @@ class FavouriteController: UICollectionViewController, UICollectionViewDelegateF
                 guard let t1 = e1.startingTime, let t2 = e2.startingTime else { return false }
                 return t1 < t2
             })
+            
             DispatchQueue.main.async {
                 self.favourites = fav
                 self.collectionView.reloadData()
@@ -75,7 +80,6 @@ class FavouriteController: UICollectionViewController, UICollectionViewDelegateF
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
         return favourites?.count ?? 0 > 0 ? CGSize(width: view.frame.width, height: 0) : CGSize(width: view.frame.width, height: 300)
-        
     }
     
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
@@ -92,47 +96,45 @@ class FavouriteController: UICollectionViewController, UICollectionViewDelegateF
             footer.addSubview(label)
             label.centerXAnchor.constraint(equalTo: footer.centerXAnchor).isActive = true
             label.centerYAnchor.constraint(equalTo: footer.centerYAnchor).isActive = true
-            
-            
             return footer
         }
         
         return UICollectionReusableView()
     }
-    
-    
 }
 
 extension FavouriteController: FavouriteCellDelegate {
-    func createNotification(_ event: Event) {
+    
+    func createNotification(_ event: Event, handler: @escaping (Error?) -> ()) {
         
         let actionSheet = UIAlertController(title: "Påminnelse", message: "Velg tiden før eventet starter du vil få påminnelsen", preferredStyle: .actionSheet)
         
         actionSheet.addAction(UIAlertAction(title: "En Time", style: .default, handler: { (_) in
-            self.addNotification(after: 3600, title: event.title ?? "", body: "en time", id: event.id ?? "")
+            self.addNotification(on: event.startingTime?.addingTimeInterval(-3600) ?? Date(), title: event.title ?? "", body: "en time", id: event.id ?? "", handler: handler)
         }))
         actionSheet.addAction(UIAlertAction(title: "45 Minutter", style: .default, handler: { (_) in
-            self.addNotification(after: 2700, title: event.title ?? "", body: "45 minutter", id: event.id ?? "")
+            self.addNotification(on: event.startingTime?.addingTimeInterval(-2700) ?? Date(), title: event.title ?? "", body: "45 minutter", id: event.id ?? "", handler: handler)
         }))
         actionSheet.addAction(UIAlertAction(title: "30 Minutter", style: .default, handler: { (_) in
-            self.addNotification(after: 1800, title: event.title ?? "", body: "30 minutter", id: event.id ?? "")
+            self.addNotification(on: event.startingTime?.addingTimeInterval(-1800) ?? Date(), title: event.title ?? "", body: "30 minutter", id: event.id ?? "", handler: handler)
         }))
         actionSheet.addAction(UIAlertAction(title: "15 Minutter", style: .default, handler: { (_) in
-            self.addNotification(after: 900, title: event.title ?? "", body: "15 minutter", id: event.id ?? "")
+            self.addNotification(on: event.startingTime?.addingTimeInterval(-900) ?? Date(), title: event.title ?? "", body: "15 minutter", id: event.id ?? "", handler: handler)
         }))
-        actionSheet.addAction(UIAlertAction(title: "10 sekunder", style: .default, handler: { (_) in
-            self.addNotification(after: 10, title: event.title ?? "", body: "10 sekunder", id: event.id ?? "")
-        }))
+//        actionSheet.addAction(UIAlertAction(title: "10 sekunder", style: .default, handler: { (_) in
+//            self.addNotification(on: Date().addingTimeInterval(10), title: event.title ?? "", body: "10 sekunder", id: event.id ?? "", handler: handler)
+//        }))
         actionSheet.addAction(UIAlertAction(title: "Avbryt", style: .cancel, handler: nil))
 
         present(actionSheet, animated: true, completion: nil)
     }
     
-    fileprivate func addNotification(after time: TimeInterval, title: String, body: String, id: String) {
+    fileprivate func addNotification(on time: Date, title: String, body: String, id: String, handler: @escaping (Error?) -> ()) {
         let auth = UNAuthorizationOptions(arrayLiteral: [.alert])
         UNUserNotificationCenter.current().requestAuthorization(options: auth) {(didConsent, err) in
             if let err = err {
                 print("failed to ask for consent: ", err)
+                handler(err)
                 return
             }
             
@@ -144,16 +146,20 @@ extension FavouriteController: FavouriteCellDelegate {
             let content = UNMutableNotificationContent()
             content.title = title
             content.body = "Eventet starter om " + body
+            let interval = time.timeIntervalSinceNow
+            print("Interval: ", interval)
             
-            let trigger = UNTimeIntervalNotificationTrigger(timeInterval: time, repeats: false)
+            let trigger = UNTimeIntervalNotificationTrigger(timeInterval: interval, repeats: false)
             let req = UNNotificationRequest(identifier: id, content: content, trigger: trigger)
             
             UNUserNotificationCenter.current().add(req) { (err) in
                 if let err = err {
                     print("failed to create notification: ", err)
+                    handler(err)
                     return
                 }
                 print("all good")
+                handler(nil)
             }
         }
     }
@@ -191,6 +197,5 @@ extension FavouriteController: FavouriteCellDelegate {
         confimationController.addAction(UIAlertAction(title: "Avbryt", style: .cancel, handler: nil))
         present(confimationController, animated: true, completion: nil)
     }
-    
     
 }

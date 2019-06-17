@@ -50,6 +50,8 @@ class CoreDataManager {
                 newEvent.venue = event.venue
                 newEvent.contactPersonName = event.contactPerson?.name
                 newEvent.contactPersonEmail = event.contactPerson?.epost
+                newEvent.free = event.free ?? false
+
                 newEvents.append(newEvent)
             }
             
@@ -115,6 +117,7 @@ class CoreDataManager {
             local.venue = remote.venue
             local.contactPersonName = remote.contactPerson?.name
             local.contactPersonEmail = remote.contactPerson?.epost
+            local.free = remote.free ?? false
             do {
                 if pc.viewContext.hasChanges {
                     try pc.viewContext.save()
@@ -162,7 +165,7 @@ class CoreDataManager {
     
     func getFavourites(completion: @escaping ([Event]) -> ()) {
         let fetchRequest = NSFetchRequest<Event>(entityName: "Event")
-        fetchRequest.predicate = NSPredicate(format: "isFavourite = true")
+        fetchRequest.predicate = NSPredicate(format: "(endingTime >= %@) AND isFavourite = true", Date() as CVarArg)
         do {
             let favourites = try pc.viewContext.fetch(fetchRequest)
             completion(favourites)

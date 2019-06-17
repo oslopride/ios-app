@@ -27,12 +27,12 @@ class EventregistrationController: UIViewController {
         label.numberOfLines = 0
     
         let attrText = NSMutableAttributedString()
-        attrText.append(NSAttributedString(string: "Legg til Event\n\n", attributes: [
+        attrText.append(NSAttributedString(string: "Legg til Event\n", attributes: [
             NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 20),
             NSAttributedString.Key.foregroundColor : UIColor.kindaBlack
             ]))
         
-        attrText.append(NSAttributedString(string: "Alle eventer på lista er lagt til fra tredje part eller Oslo Pride AS gjennom Eventregistration", attributes: [
+        attrText.append(NSAttributedString(string: "Alle eventer på lista er lagt til fra tredje part eller Oslo Pride gjennom Eventregistration", attributes: [
             NSAttributedString.Key.font : UIFont.systemFont(ofSize: 18),
             NSAttributedString.Key.foregroundColor : UIColor.graySuit
             ]))
@@ -65,7 +65,7 @@ class EventregistrationController: UIViewController {
     }
     
     @objc fileprivate func presentEventregistration() {
-        guard let url = URL(string: "https://eventregistration.oslopride.no") else { return }
+        guard let url = URL(string: "https://www.oslopride.no/a/registrering-av-arrangement") else { return }
         let sf = SFSafariViewController(url: url)
         present(sf, animated: true) {
             //self.dismiss(animated: true, completion: nil)
