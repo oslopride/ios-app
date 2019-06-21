@@ -8,10 +8,10 @@
 
 import Foundation
 
-struct SanityResponse: Decodable {
+struct SanityResponse<T: Decodable>: Decodable {
     var ms: Int?
     var query: String?
-    var result: [SanityEvent]?
+    var result: T?
 }
 
 fileprivate struct SanityEventRaw: Decodable {

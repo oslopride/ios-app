@@ -30,6 +30,9 @@ extension UIColor {
     static let prideYellow = UIColor(red:0.99, green:0.75, blue:0.18, alpha:1.0)
     static let prideOrange = UIColor(red:0.93, green:0.37, blue:0.21, alpha:1.0)
     
+    static let prideFrivilligDarkGreen = UIColor(red:0.28, green:0.55, blue:0.38, alpha:1.00)
+    static let prideFrivilligLightGreen = UIColor(red:0.79, green:0.87, blue:0.84, alpha:1.00)
+    
     static let appleMapGreen = UIColor(red:0.78, green:0.90, blue:0.72, alpha:1.00)
     static let mapForestGreen = UIColor(red:0.47, green:0.76, blue:0.40, alpha:1.00)
 }
