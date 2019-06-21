@@ -49,8 +49,8 @@ class MapController: UIViewController, MKMapViewDelegate {
     // MARK:- Annotations 📍
     let prideParkAnnotation = PrideAnnotation(title: "Pride Park", lat: 59.914252, long: 10.735609)
     let prideHouseArtAnnotaion = PrideAnnotation(title: "Pride House & Art", lat: 59.914809, long: 10.749099)
-    let prideParadeStartAnnotation = PrideAnnotation(title: "Parade Start", lat: 59.911959, long: 10.766269)
-    let prideParadeEndAnnotation = PrideAnnotation(title: "Parade Slutt", lat: 59.913132, long: 10.738024)
+    let prideParadeStartAnnotation = PrideAnnotation(title: "Parade Start", lat: 59.912134, long: 10.7656547)
+    let prideParadeEndAnnotation = PrideAnnotation(title: "Parade Slutt", lat: 59.9151567, long: 10.7340691)
 
     let prideParkToiletAnnotation = PrideToiletAnnotation(title: "Toalett", lat: 59.913728, long: 10.738393)
     let prideParkEurozoneToiletAnnotation = PrideToiletAnnotation(title: "Toalett", lat: 59.914026, long: 10.737402)
