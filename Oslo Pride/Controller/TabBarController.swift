@@ -1,11 +1,3 @@
-//
-//  TabBarController.swift
-//  Oslo Pride
-//
-//  Created by Adrian Evensen on 12/05/2019.
-//  Copyright © 2019 Adrian Evensen. All rights reserved.
-//
-
 import UIKit
 
 class TabBarController: UITabBarController {
@@ -21,12 +13,12 @@ class TabBarController: UITabBarController {
         mapNavController.isNavigationBarHidden = true
         
         let flowLayout = UICollectionViewFlowLayout()
-        flowLayout.itemSize = CGSize(width: view.frame.width-14*2, height: 440) //(view.frame.width-14*2) * 1.18)
+        flowLayout.itemSize = CGSize(width: view.frame.width-14*2, height: 440)
         flowLayout.minimumLineSpacing = 24
         
         let favouriteController = FavouriteController(collectionViewLayout: flowLayout)
         favouriteController.collectionView.contentInset = .init(top: 24, left: 0, bottom: 24, right: 0)
-        //favouriteController.tabBarItem = UITabBarItem(title: "Favoritter", image: UIImage(named: "star_twotone"), tag: 2)
+
         let favouriteNavController = UINavigationController(rootViewController: favouriteController)
         favouriteNavController.tabBarItem = UITabBarItem(title: "Favoritter", image: UIImage(named: "star_twotone"), tag: 2)
         favouriteNavController.view.backgroundColor = .white
@@ -42,7 +34,6 @@ class TabBarController: UITabBarController {
         viewControllers = [
             favouriteNavController,
             navViewController,
-            //mapController,
             mapNavController,
             infoController
         ]
