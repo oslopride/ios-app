@@ -6,7 +6,7 @@ class TabBarController: UITabBarController {
         
         let viewController = EventsController()
         viewController.tabBarItem = UITabBarItem(title: "Program", image: UIImage(named: "event_twotone"), tag: 0)
-        
+
         let mapController = MapController()
         let mapNavController = UINavigationController(rootViewController: mapController)
         mapNavController.tabBarItem = UITabBarItem(title: "Kart", image: UIImage(named: "map_twotone"), tag: 1)
