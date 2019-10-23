@@ -6,51 +6,50 @@
 //  Copyright © 2019 Adrian Evensen. All rights reserved.
 //
 
+import CoreLocation
 import Foundation
 import UIKit
-import CoreLocation
 
 extension Event {
-    
     func categoryName() -> NSAttributedString {
-        switch self.category {
+        switch category {
         case "0":
             return NSAttributedString(string: "Ekstern Arena", attributes: [
-                NSAttributedString.Key.foregroundColor : UIColor.prideYellow
-                ])
+                NSAttributedString.Key.foregroundColor: UIColor.prideYellow
+            ])
         case "1":
             return NSAttributedString(string: "Pride Parade", attributes: [
-                NSAttributedString.Key.foregroundColor : UIColor.prideRed
-                ])
+                NSAttributedString.Key.foregroundColor: UIColor.prideRed
+            ])
         case "2":
             return NSAttributedString(string: "Pride Park", attributes: [
-                NSAttributedString.Key.foregroundColor : UIColor.prideGreen
-                ])
+                NSAttributedString.Key.foregroundColor: UIColor.prideGreen
+            ])
         case "3":
             return NSAttributedString(string: "Pride House", attributes: [
-                NSAttributedString.Key.foregroundColor : UIColor.prideBlue
-                ])
+                NSAttributedString.Key.foregroundColor: UIColor.prideBlue
+            ])
         case "4":
             return NSAttributedString(string: "Pride Art", attributes: [
-                NSAttributedString.Key.foregroundColor : UIColor.pridePurple
-                ])
+                NSAttributedString.Key.foregroundColor: UIColor.pridePurple
+            ])
         default:
             return NSAttributedString(string: "Annet", attributes: [
-                NSAttributedString.Key.foregroundColor : UIColor.graySuit
-                ])
+                NSAttributedString.Key.foregroundColor: UIColor.graySuit
+            ])
         }
     }
     
     func ageLimitString() -> String {
-        switch self.ageLimit {
-        case "0":   return "For Alle"
-        case "99":  return "Annet"
-        default:    return "\(self.ageLimit ?? "") år"
+        switch ageLimit {
+        case "0": return "For Alle"
+        case "99": return "Annet"
+        default: return "\(ageLimit ?? "") år"
         }
     }
     
     func coordinates() -> CLLocationCoordinate2D? {
-        switch self.category {
+        switch category {
         case "0":
             return nil
         case "1":
@@ -67,5 +66,4 @@ extension Event {
             return nil
         }
     }
-    
 }

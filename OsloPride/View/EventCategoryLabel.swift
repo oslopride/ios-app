@@ -9,7 +9,6 @@
 import UIKit
 
 class EventCategoryLabel: UILabel {
-    
     var category: String? {
         didSet {
             setupUI()
@@ -20,7 +19,6 @@ class EventCategoryLabel: UILabel {
         super.init(frame: frame)
         translatesAutoresizingMaskIntoConstraints = false
         font = UIFont.boldSystemFont(ofSize: 16)
-        
     }
     
     fileprivate func setupUI() {
@@ -43,14 +41,10 @@ class EventCategoryLabel: UILabel {
             textColor = .pridePurple
         default:
             text = "Event"
-            break
         }
     }
-    
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    
 }

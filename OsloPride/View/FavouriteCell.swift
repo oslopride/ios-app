@@ -17,7 +17,6 @@ protocol FavouriteCellDelegate {
 }
 
 class FavouriteCell: UICollectionViewCell {
-    
     var event: Event! {
         didSet {
             setupUI()
@@ -125,34 +124,34 @@ class FavouriteCell: UICollectionViewCell {
             eventImageView.leftAnchor.constraint(equalTo: leftAnchor),
             eventImageView.topAnchor.constraint(equalTo: topAnchor),
             eventImageView.rightAnchor.constraint(equalTo: rightAnchor),
-            eventImageView.heightAnchor.constraint(equalToConstant: (frame.width-14*2)*0.68)
-            ].forEach { $0.isActive = true }
+            eventImageView.heightAnchor.constraint(equalToConstant: (frame.width - 14 * 2) * 0.68)
+        ].forEach { $0.isActive = true }
         
         addSubview(eventTitleLabel)
         [
             eventTitleLabel.leftAnchor.constraint(equalTo: leftAnchor, constant: 14),
             eventTitleLabel.rightAnchor.constraint(equalTo: rightAnchor, constant: -14),
             eventTitleLabel.topAnchor.constraint(equalTo: eventImageView.bottomAnchor, constant: 10)
-            ].forEach { $0.isActive = true }
+        ].forEach { $0.isActive = true }
         addSubview(eventCategoryLabel)
         [
             eventCategoryLabel.leftAnchor.constraint(lessThanOrEqualTo: eventTitleLabel.leftAnchor),
-            eventCategoryLabel.topAnchor.constraint(equalTo: eventTitleLabel.bottomAnchor, constant: 10),
-            ].forEach { $0.isActive = true }
+            eventCategoryLabel.topAnchor.constraint(equalTo: eventTitleLabel.bottomAnchor, constant: 10)
+        ].forEach { $0.isActive = true }
         
         addSubview(dateLabel)
         [
             dateLabel.leftAnchor.constraint(equalTo: leftAnchor, constant: 14),
             dateLabel.rightAnchor.constraint(equalTo: rightAnchor, constant: -14),
             dateLabel.topAnchor.constraint(equalTo: eventCategoryLabel.bottomAnchor, constant: 10)
-            ].forEach { $0.isActive = true }
+        ].forEach { $0.isActive = true }
         
         addSubview(countdownLabel)
         [
             countdownLabel.rightAnchor.constraint(equalTo: rightAnchor, constant: -14),
             countdownLabel.topAnchor.constraint(equalTo: dateLabel.topAnchor),
             countdownLabel.leftAnchor.constraint(equalTo: centerXAnchor)
-            ].forEach { $0.isActive = true }
+        ].forEach { $0.isActive = true }
         
         let actionsStack = UIStackView(arrangedSubviews: [deleteButton, reminderButton, directionsButton])
         actionsStack.translatesAutoresizingMaskIntoConstraints = false
@@ -162,10 +161,8 @@ class FavouriteCell: UICollectionViewCell {
             actionsStack.leftAnchor.constraint(equalTo: leftAnchor, constant: 14),
             actionsStack.rightAnchor.constraint(equalTo: rightAnchor, constant: -14),
             actionsStack.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -14)
-            ].forEach { $0.isActive = true }
-        
+        ].forEach { $0.isActive = true }
     }
-    
     
     fileprivate func setupUI() {
         if let imageData = event.image {
@@ -188,58 +185,53 @@ class FavouriteCell: UICollectionViewCell {
         var attrString = NSMutableAttributedString()
         
         attrString.append(NSAttributedString(string: "<- Som Betyr Om\n", attributes: [
-            NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 16),
-            NSAttributedString.Key.foregroundColor : UIColor.graySuit
-            ]))
+            NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 16),
+            NSAttributedString.Key.foregroundColor: UIColor.graySuit
+        ]))
         
         if (countdown.day ?? 0) > 0 {
             attrString.append(NSAttributedString(string: "\(day) dager", attributes: [
-                NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 16),
-                NSAttributedString.Key.foregroundColor : UIColor.kindaBlack
-                ]))
+                NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 16),
+                NSAttributedString.Key.foregroundColor: UIColor.kindaBlack
+            ]))
         } else if (countdown.hour ?? 0) > 1 {
             attrString.append(NSAttributedString(string: "\(hours) timer", attributes: [
-                NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 16),
-                NSAttributedString.Key.foregroundColor : UIColor.kindaBlack
-                ]))
+                NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 16),
+                NSAttributedString.Key.foregroundColor: UIColor.kindaBlack
+            ]))
         } else if (countdown.hour ?? 0) > 0 {
             attrString.append(NSAttributedString(string: "\(hours) time og ", attributes: [
-                NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 16),
-                NSAttributedString.Key.foregroundColor : UIColor.kindaBlack
-                ]))
+                NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 16),
+                NSAttributedString.Key.foregroundColor: UIColor.kindaBlack
+            ]))
             attrString.append(NSAttributedString(string: "\(minutes) minutter", attributes: [
-                NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 16),
-                NSAttributedString.Key.foregroundColor : UIColor.kindaBlack
-                ]))
+                NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 16),
+                NSAttributedString.Key.foregroundColor: UIColor.kindaBlack
+            ]))
         } else if (countdown.minute ?? 0) > 1 {
             attrString.append(NSAttributedString(string: "\(minutes) minutter", attributes: [
-                NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 16),
-                NSAttributedString.Key.foregroundColor : UIColor.kindaBlack
-                ]))
+                NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 16),
+                NSAttributedString.Key.foregroundColor: UIColor.kindaBlack
+            ]))
         } else {
             attrString = NSMutableAttributedString(string: "Eventet har startet", attributes: [
-                NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 16),
-                NSAttributedString.Key.foregroundColor : UIColor.graySuit
-                ])
+                NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 16),
+                NSAttributedString.Key.foregroundColor: UIColor.graySuit
+            ])
         }
-
-
+        
         countdownLabel.attributedText = attrString
         
-        
-        UNUserNotificationCenter.current().getPendingNotificationRequests { (requests) in
-            requests.forEach { (req) in
+        UNUserNotificationCenter.current().getPendingNotificationRequests { requests in
+            requests.forEach { req in
                 DispatchQueue.main.async {
                     self.reminderButton.isEnabled = !(req.identifier == self.event.id)
                 }
             }
         }
-        
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    
 }

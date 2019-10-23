@@ -9,17 +9,16 @@
 import UIKit
 
 class TableViewHeaderLabel: UILabel {
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
         translatesAutoresizingMaskIntoConstraints = false
-        backgroundColor = .white //.primaryBlue
+        backgroundColor = .white // .primaryBlue
         textAlignment = .center
-        //font = UIFont.monospacedDigitSystemFont(ofSize: 16, weight: UIFont.Weight.black)
+        // font = UIFont.monospacedDigitSystemFont(ofSize: 16, weight: UIFont.Weight.black)
         font = UIFont.systemFont(ofSize: 18, weight: UIFont.Weight.black)
         
-        textColor = .prideDeepPurple//.prideYellow//.graySuit//.white//.prideGreen
-        backgroundColor = .white//.prideDeepPurple
+        textColor = .prideDeepPurple // .prideYellow//.graySuit//.white//.prideGreen
+        backgroundColor = .white // .prideDeepPurple
         clipsToBounds = true
     }
     
@@ -32,9 +31,8 @@ class TableViewHeaderLabel: UILabel {
         let height = originalSize.height + 10
         let width = originalSize.width + 16
         
-        layer.cornerRadius = height/2.2
+        layer.cornerRadius = height / 2.2
         
         return CGSize(width: width, height: height)
     }
 }
-

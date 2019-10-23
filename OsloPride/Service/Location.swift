@@ -6,8 +6,8 @@
 //  Copyright © 2019 Adrian Evensen. All rights reserved.
 //
 
-import Foundation
 import CoreLocation
+import Foundation
 
 class Location: NSObject {
     static let shared = Location()
@@ -29,7 +29,6 @@ class Location: NSObject {
         manager.delegate = self
         permissionHandler = handler
         manager.requestAlwaysAuthorization()
-        
     }
 }
 
@@ -38,9 +37,7 @@ extension Location: CLLocationManagerDelegate {
         if status == .authorizedAlways || status == .authorizedWhenInUse {
             permissionHandler?(true)
         } else {
-            //permissionHandler?(false)
+            // permissionHandler?(false)
         }
     }
-    
 }
-

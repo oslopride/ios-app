@@ -9,14 +9,13 @@
 import UIKit
 
 class EventCell: UITableViewCell {
-    
     let eventImageView: UIImageView = {
         let imv = UIImageView()
         imv.translatesAutoresizingMaskIntoConstraints = false
         imv.contentMode = .scaleAspectFill
         imv.clipsToBounds = true
         imv.layer.cornerRadius = 5
-        //imv.backgroundColor = .hotYellow //UIColor(white: 0, alpha: 0.2)
+        // imv.backgroundColor = .hotYellow //UIColor(white: 0, alpha: 0.2)
         imv.tintColor = .hotYellow
         return imv
     }()
@@ -44,7 +43,7 @@ class EventCell: UITableViewCell {
         label.textColor = .graySuit
         label.layer.cornerRadius = 5
         label.clipsToBounds = true
-        //label.textColor = .white
+        // label.textColor = .white
         
         return label
     }()
@@ -67,13 +66,11 @@ class EventCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        //eventImageView.image = nil
+        // eventImageView.image = nil
         setupLayout()
         
         NotificationCenter.default.addObserver(self, selector: #selector(imageDownloaded), name: .imageDownloadeddd, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(didToggleFavourite), name: .didToggleFavourite, object: nil)
-        
-        
     }
     
     @objc fileprivate func didToggleFavourite(notification: Notification) {
@@ -94,9 +91,9 @@ class EventCell: UITableViewCell {
     
     fileprivate func setupUI() {
         guard let event = event else { return }
-
+        
         eventTitleLabel.text = event.title ?? "whap"
-
+        
         if let imageData = event.image {
             eventImageView.image = UIImage(data: imageData)
             eventImageView.contentMode = .scaleAspectFill
@@ -108,7 +105,6 @@ class EventCell: UITableViewCell {
         if event.isFavourite {
             favouriteIndicator.isHidden = false
         }
-
         
         if let startingTime = event.startingTime, let endingTime = event.endingTime {
             let formatter = DateFormatter()
@@ -116,9 +112,6 @@ class EventCell: UITableViewCell {
             eventOrganizerLabel.text = "\(formatter.string(from: startingTime)) - \(formatter.string(from: endingTime))"
         }
         eventCategoryLabel.category = event.category
-        
-
-        
     }
     
     fileprivate func setupLayout() {
@@ -129,26 +122,25 @@ class EventCell: UITableViewCell {
             eventImageView.widthAnchor.constraint(equalToConstant: 100),
             eventImageView.heightAnchor.constraint(equalToConstant: 100),
             eventImageView.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor, constant: -10)
-            ].forEach { $0.isActive = true }
+        ].forEach { $0.isActive = true }
         
-
         addSubview(eventTitleLabel)
         eventTitleLabel.leftAnchor.constraint(equalTo: eventImageView.rightAnchor, constant: 10).isActive = true
         eventTitleLabel.rightAnchor.constraint(equalTo: rightAnchor, constant: -10).isActive = true
         eventTitleLabel.topAnchor.constraint(equalTo: eventImageView.topAnchor).isActive = true
-
+        
         addSubview(eventCategoryLabel)
         [
             eventCategoryLabel.leftAnchor.constraint(equalTo: eventTitleLabel.leftAnchor),
-            eventCategoryLabel.topAnchor.constraint(equalTo: eventTitleLabel.bottomAnchor, constant: 5),
-            ].forEach { $0.isActive = true }
+            eventCategoryLabel.topAnchor.constraint(equalTo: eventTitleLabel.bottomAnchor, constant: 5)
+        ].forEach { $0.isActive = true }
         
         addSubview(favouriteIndicator)
         [
             favouriteIndicator.rightAnchor.constraint(equalTo: rightAnchor, constant: -10),
             favouriteIndicator.centerYAnchor.constraint(equalTo: eventCategoryLabel.centerYAnchor),
-            favouriteIndicator.heightAnchor.constraint(equalToConstant: 18),
-            ].forEach { $0.isActive = true }
+            favouriteIndicator.heightAnchor.constraint(equalToConstant: 18)
+        ].forEach { $0.isActive = true }
         
         addSubview(eventOrganizerLabel)
         [
@@ -156,12 +148,10 @@ class EventCell: UITableViewCell {
             eventOrganizerLabel.rightAnchor.constraint(equalTo: eventTitleLabel.rightAnchor),
             eventOrganizerLabel.topAnchor.constraint(equalTo: eventCategoryLabel.bottomAnchor, constant: 5),
             eventOrganizerLabel.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor, constant: -20)
-            ].forEach { $0.isActive = true }
-        
+        ].forEach { $0.isActive = true }
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
 }

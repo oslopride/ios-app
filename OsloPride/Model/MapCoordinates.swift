@@ -10,43 +10,38 @@ import Foundation
 import MapKit
 
 class MapCoordinates {
-    
     let pridePark = CLLocationCoordinate2D(latitude: 59.914252, longitude: 10.735609)
     let prideHouseArt = CLLocationCoordinate2D(latitude: 59.914809, longitude: 10.749099)
-        
+    
     let prideParadeStart = CLLocationCoordinate2D(latitude: 59.911959, longitude: 10.766269)
-//        
+//
 //    let prideParadeEndAnnotation = PrideAnnotation(title: nil, lat: 59.913132, long: 10.738024)
     
     let mainStage = CLLocationCoordinate2D(latitude: 59.914009, longitude: 10.736598)
     let bamseStage = CLLocationCoordinate2D(latitude: 59.913822, longitude: 10.735478)
     
-    
     fileprivate let paradeGoogleMapsCoordinates = [
-        (10.7656547,59.912134),
-        (10.7569215,59.9136508),
-        (10.7559344,59.9136938),
-        (10.7533595,59.9132635),
-        (10.7538959,59.9121555),
-        (10.7486388,59.9123922),
-        (10.748038,59.9127687),
-        (10.7468149,59.9129623),
-        (10.7461068,59.9127794),
-        (10.7399914,59.9149523),
-        (10.7388219,59.9137798),
-        (10.7363007,59.9145543),
-        (10.7340691,59.9151567),
+        (10.7656547, 59.912134),
+        (10.7569215, 59.9136508),
+        (10.7559344, 59.9136938),
+        (10.7533595, 59.9132635),
+        (10.7538959, 59.9121555),
+        (10.7486388, 59.9123922),
+        (10.748038, 59.9127687),
+        (10.7468149, 59.9129623),
+        (10.7461068, 59.9127794),
+        (10.7399914, 59.9149523),
+        (10.7388219, 59.9137798),
+        (10.7363007, 59.9145543),
+        (10.7340691, 59.9151567)
     ]
-
     
     var paradeCoordinates: [CLLocationCoordinate2D] {
-        get {
-            var total = [CLLocationCoordinate2D]()
-            for c in paradeGoogleMapsCoordinates {
-                total.append(CLLocationCoordinate2D(latitude: c.1, longitude: c.0))
-            }
-            return total
+        var total = [CLLocationCoordinate2D]()
+        for c in paradeGoogleMapsCoordinates {
+            total.append(CLLocationCoordinate2D(latitude: c.1, longitude: c.0))
         }
+        return total
     }
     
 //    let paradeCoordinates = [
@@ -84,9 +79,8 @@ class MapCoordinates {
         CLLocationCoordinate2D(latitude: 59.914361, longitude: 10.735804), // Mid Left
         CLLocationCoordinate2D(latitude: 59.914299, longitude: 10.736034), // Mid Right
         CLLocationCoordinate2D(latitude: 59.914529, longitude: 10.736252), // Top left
-        CLLocationCoordinate2D(latitude: 59.913771, longitude: 10.738799),
-        
-        ]
+        CLLocationCoordinate2D(latitude: 59.913771, longitude: 10.738799)
+    ]
     
     let atmCoordinates = [
         // Nordea Olav Vs gate 7
@@ -95,7 +89,7 @@ class MapCoordinates {
         CLLocationCoordinate2D(latitude: 59.912903, longitude: 10.744246),
         CLLocationCoordinate2D(latitude: 59.913266, longitude: 10.744509),
         // Munchs Gate 1
-        CLLocationCoordinate2D(latitude: 59.916993, longitude: 10.741921),
+        CLLocationCoordinate2D(latitude: 59.916993, longitude: 10.741921)
         //
     ]
     
@@ -112,10 +106,11 @@ class MapCoordinates {
         CLLocationCoordinate2D(latitude: 59.913921, longitude: 10.736561),
         CLLocationCoordinate2D(latitude: 59.914059, longitude: 10.736721),
         CLLocationCoordinate2D(latitude: 59.913860, longitude: 10.737407),
-        CLLocationCoordinate2D(latitude: 59.913724, longitude: 10.737256),
+        CLLocationCoordinate2D(latitude: 59.913724, longitude: 10.737256)
     ]
     
-    // MARK:- Forests
+    // MARK: - Forests
+    
     let spikersuppaPrideBarForestCoordinates = [
         CLLocationCoordinate2D(latitude: 59.913506, longitude: 10.738153),
         CLLocationCoordinate2D(latitude: 59.913372, longitude: 10.738004),
@@ -126,7 +121,7 @@ class MapCoordinates {
         CLLocationCoordinate2D(latitude: 59.913443, longitude: 10.737164),
         
         CLLocationCoordinate2D(latitude: 59.913200, longitude: 10.737986),
-        CLLocationCoordinate2D(latitude: 59.913467, longitude: 10.738290),
+        CLLocationCoordinate2D(latitude: 59.913467, longitude: 10.738290)
     ]
     
     // Start: Mid park, closest to the parliment
@@ -164,14 +159,14 @@ class MapCoordinates {
         CLLocationCoordinate2D(latitude: 59.914104, longitude: 10.735879)
     ]
     
+    // MARK: - Bars
     
-    // MARK:- Bars
     let parkMainBarCoordinates = [
         CLLocationCoordinate2D(latitude: 59.913883, longitude: 10.735662),
         CLLocationCoordinate2D(latitude: 59.913742, longitude: 10.736230),
         CLLocationCoordinate2D(latitude: 59.913834, longitude: 10.736319),
         CLLocationCoordinate2D(latitude: 59.913975, longitude: 10.735741),
-        CLLocationCoordinate2D(latitude: 59.913883, longitude: 10.735662),
+        CLLocationCoordinate2D(latitude: 59.913883, longitude: 10.735662)
     ]
     
     let parkPrideBarCoordinates = [
@@ -179,7 +174,7 @@ class MapCoordinates {
         CLLocationCoordinate2D(latitude: 59.913380, longitude: 10.738023),
         CLLocationCoordinate2D(latitude: 59.913452, longitude: 10.738101),
         CLLocationCoordinate2D(latitude: 59.913589, longitude: 10.737601),
-        CLLocationCoordinate2D(latitude: 59.913521, longitude: 10.737523),
+        CLLocationCoordinate2D(latitude: 59.913521, longitude: 10.737523)
     ]
     
     let parkEurozone = [
@@ -195,9 +190,6 @@ class MapCoordinates {
         CLLocationCoordinate2D(latitude: 59.913651, longitude: 10.737316),
         CLLocationCoordinate2D(latitude: 59.913475, longitude: 10.737108)
     ]
-    
-    
 }
-
 
 class ForestPolygon: MKPolygon {}

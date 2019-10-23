@@ -13,12 +13,12 @@ class TabBarController: UITabBarController {
         mapNavController.isNavigationBarHidden = true
         
         let flowLayout = UICollectionViewFlowLayout()
-        flowLayout.itemSize = CGSize(width: view.frame.width-14*2, height: 440)
+        flowLayout.itemSize = CGSize(width: view.frame.width - 14 * 2, height: 440)
         flowLayout.minimumLineSpacing = 24
         
         let favouriteController = FavouriteController(collectionViewLayout: flowLayout)
         favouriteController.collectionView.contentInset = .init(top: 24, left: 0, bottom: 24, right: 0)
-
+        
         let favouriteNavController = UINavigationController(rootViewController: favouriteController)
         favouriteNavController.tabBarItem = UITabBarItem(title: "Favoritter", image: UIImage(named: "star_twotone"), tag: 2)
         favouriteNavController.view.backgroundColor = .white

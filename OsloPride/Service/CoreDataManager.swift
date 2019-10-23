@@ -6,15 +6,15 @@
 //  Copyright © 2019 Adrian Evensen. All rights reserved.
 //
 
-import Foundation
 import CoreData
+import Foundation
 
 class CoreDataManager {
     static let shared = CoreDataManager()
     
     let pc: NSPersistentContainer = {
         let persistentContainer = NSPersistentContainer(name: "PrideDataModels")
-        persistentContainer.loadPersistentStores(completionHandler: { (_, err) in
+        persistentContainer.loadPersistentStores(completionHandler: { _, err in
             if let err = err {
                 fatalError("failed to load PrideDataModels")
             }
@@ -22,13 +22,14 @@ class CoreDataManager {
         return persistentContainer
     }()
     
-    // MARK:- Create
+    // MARK: - Create
+    
     func save(events: [SanityEvent], completion: @escaping ([Event]?, Error?) -> ()) {
-        pc.performBackgroundTask { (backgroundContext) in
+        pc.performBackgroundTask { backgroundContext in
             var newEvents = [Event]()
-            events.forEach { (event) in
+            events.forEach { event in
                 guard let newEvent = NSEntityDescription.insertNewObject(forEntityName: "Event", into: backgroundContext) as? Event else { return }
-                //self.populate(event: &newEvent, from: event)
+                // self.populate(event: &newEvent, from: event)
                 newEvent.id = event.id
                 newEvent.title = event.title
                 newEvent.organizer = event.organizer
@@ -51,7 +52,7 @@ class CoreDataManager {
                 newEvent.contactPersonName = event.contactPerson?.name
                 newEvent.contactPersonEmail = event.contactPerson?.epost
                 newEvent.free = event.free ?? false
-
+                
                 newEvents.append(newEvent)
             }
             
@@ -97,37 +98,37 @@ class CoreDataManager {
 //    }
     
     func update(local: Event, remote: SanityEvent, completion: @escaping (Error?) -> ()) {
-        //pc.performBackgroundTask { (backgroundContext) in
-            local.id = remote.id
-            local.title = remote.title
-            local.organizer = remote.organizer
-            local.category = remote.category
-            local.eventDescription = remote.description
-            local.startingTime = remote.startingTime
-            local.endingTime = remote.endingTime
-            if let url = URL(string: remote.ticketSaleWebpage ?? "") {
-                local.ticketSaleWebpage = url
+        // pc.performBackgroundTask { (backgroundContext) in
+        local.id = remote.id
+        local.title = remote.title
+        local.organizer = remote.organizer
+        local.category = remote.category
+        local.eventDescription = remote.description
+        local.startingTime = remote.startingTime
+        local.endingTime = remote.endingTime
+        if let url = URL(string: remote.ticketSaleWebpage ?? "") {
+            local.ticketSaleWebpage = url
+        }
+        if let url = URL(string: remote.imageURL ?? "") {
+            local.imageURL = url
+        }
+        local.ageLimit = remote.ageLimit
+        local.locationName = remote.location?.name
+        local.locationAddress = remote.location?.address
+        local.venue = remote.venue
+        local.contactPersonName = remote.contactPerson?.name
+        local.contactPersonEmail = remote.contactPerson?.epost
+        local.free = remote.free ?? false
+        do {
+            if pc.viewContext.hasChanges {
+                try pc.viewContext.save()
             }
-            if let url = URL(string: remote.imageURL ?? "") {
-                local.imageURL = url
-            }
-            local.ageLimit = remote.ageLimit
-            local.locationName = remote.location?.name
-            local.locationAddress = remote.location?.address
-            local.venue = remote.venue
-            local.contactPersonName = remote.contactPerson?.name
-            local.contactPersonEmail = remote.contactPerson?.epost
-            local.free = remote.free ?? false
-            do {
-                if pc.viewContext.hasChanges {
-                    try pc.viewContext.save()
-                }
-                completion(nil)
-            } catch let err {
-                print("failed to update event: ", err)
-                completion(err)
-            }
-        //}
+            completion(nil)
+        } catch let err {
+            print("failed to update event: ", err)
+            completion(err)
+        }
+        // }
     }
     
     // TODO: Why doesn't this work?
@@ -152,7 +153,8 @@ class CoreDataManager {
         }
     }
     
-    // MARK:- Read
+    // MARK: - Read
+    
     func getAllEvents(completionHandler: @escaping ([Event]) -> ()) {
         let fetchRequest = NSFetchRequest<Event>(entityName: "Event")
         do {
@@ -174,18 +176,19 @@ class CoreDataManager {
         }
     }
     
-    // MARK:- Update
+    // MARK: - Update
+    
     func updateEventImage(_ event: Event, image: Data, completion: @escaping (Error?) -> ()) {
-            event.image = image
-            do {
-                if !pc.viewContext.hasChanges {
-                    print("No changes to save")
-                }
-                try pc.viewContext.save()
-                completion(nil)
-            } catch let err {
-                completion(err)
+        event.image = image
+        do {
+            if !pc.viewContext.hasChanges {
+                print("No changes to save")
             }
+            try pc.viewContext.save()
+            completion(nil)
+        } catch let err {
+            completion(err)
+        }
     }
     
     func toggleFavourite(event: Event, completion: @escaping (Error?) -> ()) {
@@ -209,17 +212,17 @@ class CoreDataManager {
         }
     }
     
-    // MARK:- Delete
-    func delete(events: [Event], completion: @escaping (Error?) -> ()) {
-            events.forEach({ (event) in
-                pc.viewContext.delete(event)
-            })
-            do {
-                try pc.viewContext.save()
-                completion(nil)
-            } catch let err {
-                completion(err)
-            }
-    }
+    // MARK: - Delete
     
+    func delete(events: [Event], completion: @escaping (Error?) -> ()) {
+        events.forEach { event in
+            pc.viewContext.delete(event)
+        }
+        do {
+            try pc.viewContext.save()
+            completion(nil)
+        } catch let err {
+            completion(err)
+        }
+    }
 }

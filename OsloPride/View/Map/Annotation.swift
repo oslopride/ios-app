@@ -23,7 +23,7 @@ class BeerCalloutView: UIView {
         ("Cider", 79),
         ("SOL", 83),
         ("Glutenfritt Øl", 89),
-        ("Alkoholfritt Øl", 48),
+        ("Alkoholfritt Øl", 48)
         
 //        ("Mineralvann", 40),
 //        ("Flaskevann", 35),
@@ -37,45 +37,43 @@ class BeerCalloutView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        
         let attrText = NSMutableAttributedString()
         attrText.append(NSAttributedString(string: "ØL 🍻\n", attributes: [
-            NSAttributedString.Key.foregroundColor : UIColor.kindaBlack,
-            NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 16)
-            ]))
+            NSAttributedString.Key.foregroundColor: UIColor.kindaBlack,
+            NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 16)
+        ]))
         attrText.append(NSAttributedString(string: " 75 - 89 kr\n", attributes: [
-            NSAttributedString.Key.foregroundColor : UIColor.graySuit
-            ]))
+            NSAttributedString.Key.foregroundColor: UIColor.graySuit
+        ]))
         attrText.append(NSAttributedString(string: "Alkoholfritt ", attributes: [
-            NSAttributedString.Key.foregroundColor : UIColor.graySuit
-            ]))
+            NSAttributedString.Key.foregroundColor: UIColor.graySuit
+        ]))
         attrText.append(NSAttributedString(string: " 48 kr\n\n", attributes: [
-            NSAttributedString.Key.foregroundColor : UIColor.graySuit
-            ]))
-
+            NSAttributedString.Key.foregroundColor: UIColor.graySuit
+        ]))
         
         attrText.append(NSAttributedString(string: "Hvit, rød og Rosevin 🍷\n", attributes: [
-            NSAttributedString.Key.foregroundColor : UIColor.kindaBlack,
-            NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 16)
-            ]))
+            NSAttributedString.Key.foregroundColor: UIColor.kindaBlack,
+            NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 16)
+        ]))
         attrText.append(NSAttributedString(string: "Glass 80 kr\n", attributes: [
-            NSAttributedString.Key.foregroundColor : UIColor.graySuit
-            ]))
+            NSAttributedString.Key.foregroundColor: UIColor.graySuit
+        ]))
         attrText.append(NSAttributedString(string: "Flaske 395 kr\n\n", attributes: [
-            NSAttributedString.Key.foregroundColor : UIColor.graySuit
-            ]))
+            NSAttributedString.Key.foregroundColor: UIColor.graySuit
+        ]))
         
         attrText.append(NSAttributedString(string: "BOBLER 🍾\n", attributes: [
-            NSAttributedString.Key.foregroundColor : UIColor.kindaBlack,
-            NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 16)
-            ]))
+            NSAttributedString.Key.foregroundColor: UIColor.kindaBlack,
+            NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 16)
+        ]))
         attrText.append(NSAttributedString(string: "Glass 80 kr\n", attributes: [
-            NSAttributedString.Key.foregroundColor : UIColor.graySuit
-            ]))
+            NSAttributedString.Key.foregroundColor: UIColor.graySuit
+        ]))
         attrText.append(NSAttributedString(string: "Flaske 410 kr\n", attributes: [
-            NSAttributedString.Key.foregroundColor : UIColor.graySuit
-            ]))
-
+            NSAttributedString.Key.foregroundColor: UIColor.graySuit
+        ]))
+        
         titleLabel.attributedText = attrText
         
         addSubview(titleLabel)
@@ -84,18 +82,15 @@ class BeerCalloutView: UIView {
             titleLabel.leftAnchor.constraint(equalTo: leftAnchor, constant: 0),
             titleLabel.bottomAnchor.constraint(equalTo: bottomAnchor),
             titleLabel.rightAnchor.constraint(equalTo: rightAnchor, constant: 0)
-            ].forEach { $0.isActive = true }
-        
+        ].forEach { $0.isActive = true }
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
 }
 
 class AnnotationCalloutView: UIView {
-    
     let titleLabel: UILabel = {
         let lbl = UILabel()
         lbl.translatesAutoresizingMaskIntoConstraints = false
@@ -126,17 +121,15 @@ class AnnotationCalloutView: UIView {
             titleLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
             titleLabel.leftAnchor.constraint(equalTo: leftAnchor, constant: 3),
             titleLabel.rightAnchor.constraint(equalTo: rightAnchor, constant: -3)
-            ].forEach { $0.isActive = true }
+        ].forEach { $0.isActive = true }
         
         addSubview(mapsButton)
         [
             mapsButton.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 10),
             mapsButton.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor, constant: -10),
             mapsButton.leftAnchor.constraint(equalTo: leftAnchor, constant: 3),
-            mapsButton.heightAnchor.constraint(equalToConstant: 44),
-            ].forEach { $0.isActive = true }
-        
-        
+            mapsButton.heightAnchor.constraint(equalToConstant: 44)
+        ].forEach { $0.isActive = true }
     }
     
     @objc fileprivate func presentMaps() {
@@ -150,12 +143,9 @@ class AnnotationCalloutView: UIView {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
 }
 
-
 class PrideAnnotation: NSObject, MKAnnotation {
-    
     var lat: Double
     var long: Double
     
@@ -174,9 +164,8 @@ class PrideAnnotation: NSObject, MKAnnotation {
         if let title = title {
             self.title = NSLocalizedString(title, comment: "PRIDE")
         }
-        //self.subtitle = ""
+        // self.subtitle = ""
     }
-    
 }
 
 class PrideToiletAnnotation: PrideAnnotation {}
@@ -184,13 +173,9 @@ class ATMAnnotation: PrideAnnotation {}
 class ExtenalArenaFavouriteAnnotation: PrideAnnotation {
     var event: Event?
 }
-class BarAnnotation: PrideAnnotation {
-    
-}
 
-class FoodAnnotation: PrideAnnotation {
-    
-}
+class BarAnnotation: PrideAnnotation {}
+
+class FoodAnnotation: PrideAnnotation {}
 
 class PrideTentPolygon: MKPolygon {}
-

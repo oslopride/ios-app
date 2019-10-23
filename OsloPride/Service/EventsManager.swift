@@ -21,7 +21,7 @@ class EventsManager {
         days = standardSortByDay(filtered: events)
         DispatchQueue.global(qos: .background).async {
             for event in events {
-                if event.image == nil && event.imageURL != nil {
+                if event.image == nil, event.imageURL != nil {
                     var exists = false
                     for i in self.downloadStack {
                         if i.id == event.id {
@@ -69,20 +69,20 @@ class EventsManager {
     
     fileprivate func filterByCategory(days: [[Event]]) -> [[Event]] {
         var categoryFilter = [[Event]]()
-        days.forEach({ (events) in
+        days.forEach { events in
             var cache = [Event]()
-            events.forEach({ (event) in
+            events.forEach { event in
                 for f in categories {
                     if event.category == f {
                         return
                     }
                 }
                 cache.append(event)
-            })
+            }
             if cache.count > 0 {
                 categoryFilter.append(cache)
             }
-        })
+        }
         return categoryFilter
     }
     
@@ -97,15 +97,14 @@ class EventsManager {
         }
         var dateFilter = [[Event]]()
         let now = Date()
-        days.forEach { (events) in
+        days.forEach { events in
             var cache = [Event]()
-            events.forEach({ (event) in
+            events.forEach { event in
                 if event.endingTime ?? Date() < now {
                     return
                 }
                 cache.append(event)
-
-            })
+            }
             if cache.count > 0 {
                 dateFilter.append(cache)
             }
@@ -119,10 +118,10 @@ class EventsManager {
         
         newFilter = filterFromToday(days: days)
         newFilter = filterByCategory(days: newFilter)
-
+        
         return newFilter
     }
-
+    
     // Sorting alg in this function is a hack for Pride 2019.
     // It does not work if pride events overlaps month bondary
     // UPDATE: Not longer a hack, checks for months and year aswell
@@ -155,20 +154,18 @@ class EventsManager {
                 if currentDay > lastDay || currentMonth > lastMonth || currentYear > lastYear {
                     days.append([filtered[i]])
                 } else {
-                    days[days.count-1].append(filtered[i])
+                    days[days.count - 1].append(filtered[i])
                 }
             }
         }
         return days
     }
-    
 }
 
 extension EventsManager {
-    
     func compare(local: [Event], remote: [SanityEvent]) -> [SanityEvent] {
         var unsyncedEvents = [SanityEvent]()
-        remote.forEach { (remoteEvent) in
+        remote.forEach { remoteEvent in
             var exists = false
             for i in 0..<local.count {
                 guard let remoteID = remoteEvent.id, let localID = local[i].id else { continue }
@@ -189,31 +186,31 @@ extension EventsManager {
                 self.processDownloadStack()
             }
         }
-
+        
         return unsyncedEvents
     }
     
     fileprivate func processDownloadStack() {
         print("starting..")
-        guard self.downloadStack.count > 0 && !isDownloading else { return }
+        guard downloadStack.count > 0, !isDownloading else { return }
         isDownloading = true
         for i in (0..<downloadStack.count).reversed() {
             let event = downloadStack.remove(at: i)
             guard let imageURL = event.imageURL else { continue }
             let semaphore = DispatchSemaphore(value: 0)
             
-            NetworkAPI.shared.fetchImage(from: imageURL, completion: { (imageData) in
+            NetworkAPI.shared.fetchImage(from: imageURL, completion: { imageData in
                 guard let imageData = imageData, let img = UIImage(data: imageData)?.jpegData(compressionQuality: 0.3) else {
                     print("failed to download image")
                     semaphore.signal()
                     return
                 }
                 DispatchQueue.main.async {
-                    CoreDataManager.shared.updateEventImage(event, image: img, completion: { (err) in
+                    CoreDataManager.shared.updateEventImage(event, image: img, completion: { err in
                         if let err = err {
                             print("failed to save image: ", err)
                         }
-                        NotificationCenter.default.post(name: .imageDownloadeddd, object: img, userInfo: ["id":event.id as Any])
+                        NotificationCenter.default.post(name: .imageDownloadeddd, object: img, userInfo: ["id": event.id as Any])
                         semaphore.signal()
                         print("did download image for event: ", event.title ?? "")
                         
@@ -225,12 +222,11 @@ extension EventsManager {
         }
         print("Done")
         isDownloading = false
-        self.downloadStack = [Event]()
+        downloadStack = [Event]()
     }
     
     fileprivate func updateIfNecessary(local: Event, remote: SanityEvent) {
         if (local.image == nil && local.imageURL != nil) || (local.imageURL?.absoluteString != remote.imageURL) {
-            
             var exists = false
             for i in downloadStack {
                 if i.id == local.id {
@@ -242,7 +238,6 @@ extension EventsManager {
             if !exists {
                 downloadStack.append(local)
             }
-            
         }
         DispatchQueue.main.async {
             CoreDataManager.shared.update(local: local, remote: remote, completion: { err in

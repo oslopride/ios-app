@@ -6,12 +6,11 @@
 //  Copyright © 2019 Adrian Evensen. All rights reserved.
 //
 
-import UIKit
 import MapKit
+import UIKit
 import UserNotifications
 
 class FavouriteController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
-    
     var favourites: [Event]?
     
     override func viewDidLoad() {
@@ -20,7 +19,7 @@ class FavouriteController: UICollectionViewController, UICollectionViewDelegateF
     }
     
     fileprivate func setupController() {
-        collectionView.backgroundColor = UIColor(red:0.93, green:0.93, blue:0.96, alpha:1.0)
+        collectionView.backgroundColor = UIColor(red: 0.93, green: 0.93, blue: 0.96, alpha: 1.0)
         view.backgroundColor = .white
         collectionView.register(FavouriteCell.self, forCellWithReuseIdentifier: "cellid")
         collectionView.register(UICollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: "bottom")
@@ -35,8 +34,8 @@ class FavouriteController: UICollectionViewController, UICollectionViewDelegateF
     
     override func viewDidAppear(_ animated: Bool) {
         navigationController?.setNavigationBarHidden(true, animated: true)
-
-        CoreDataManager.shared.getFavourites { (fav) in
+        
+        CoreDataManager.shared.getFavourites { fav in
             var fav = fav
             fav.sort(by: { (e1, e2) -> Bool in
                 guard let t1 = e1.startingTime, let t2 = e2.startingTime else { return false }
@@ -83,7 +82,6 @@ class FavouriteController: UICollectionViewController, UICollectionViewDelegateF
     }
     
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        
         if kind == UICollectionView.elementKindSectionFooter {
             let footer = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: "bottom", for: indexPath)
             let label = UILabel()
@@ -104,34 +102,32 @@ class FavouriteController: UICollectionViewController, UICollectionViewDelegateF
 }
 
 extension FavouriteController: FavouriteCellDelegate {
-    
     func createNotification(_ event: Event, handler: @escaping (Error?) -> ()) {
-        
         let actionSheet = UIAlertController(title: "Påminnelse", message: "Velg tiden før eventet starter du vil få påminnelsen", preferredStyle: .actionSheet)
         
-        actionSheet.addAction(UIAlertAction(title: "En Time", style: .default, handler: { (_) in
+        actionSheet.addAction(UIAlertAction(title: "En Time", style: .default, handler: { _ in
             self.addNotification(on: event.startingTime?.addingTimeInterval(-3600) ?? Date(), title: event.title ?? "", body: "en time", id: event.id ?? "", handler: handler)
         }))
-        actionSheet.addAction(UIAlertAction(title: "45 Minutter", style: .default, handler: { (_) in
+        actionSheet.addAction(UIAlertAction(title: "45 Minutter", style: .default, handler: { _ in
             self.addNotification(on: event.startingTime?.addingTimeInterval(-2700) ?? Date(), title: event.title ?? "", body: "45 minutter", id: event.id ?? "", handler: handler)
         }))
-        actionSheet.addAction(UIAlertAction(title: "30 Minutter", style: .default, handler: { (_) in
+        actionSheet.addAction(UIAlertAction(title: "30 Minutter", style: .default, handler: { _ in
             self.addNotification(on: event.startingTime?.addingTimeInterval(-1800) ?? Date(), title: event.title ?? "", body: "30 minutter", id: event.id ?? "", handler: handler)
         }))
-        actionSheet.addAction(UIAlertAction(title: "15 Minutter", style: .default, handler: { (_) in
+        actionSheet.addAction(UIAlertAction(title: "15 Minutter", style: .default, handler: { _ in
             self.addNotification(on: event.startingTime?.addingTimeInterval(-900) ?? Date(), title: event.title ?? "", body: "15 minutter", id: event.id ?? "", handler: handler)
         }))
 //        actionSheet.addAction(UIAlertAction(title: "10 sekunder", style: .default, handler: { (_) in
 //            self.addNotification(on: Date().addingTimeInterval(10), title: event.title ?? "", body: "10 sekunder", id: event.id ?? "", handler: handler)
 //        }))
         actionSheet.addAction(UIAlertAction(title: "Avbryt", style: .cancel, handler: nil))
-
+        
         present(actionSheet, animated: true, completion: nil)
     }
     
     fileprivate func addNotification(on time: Date, title: String, body: String, id: String, handler: @escaping (Error?) -> ()) {
         let auth = UNAuthorizationOptions(arrayLiteral: [.alert])
-        UNUserNotificationCenter.current().requestAuthorization(options: auth) {(didConsent, err) in
+        UNUserNotificationCenter.current().requestAuthorization(options: auth) { didConsent, err in
             if let err = err {
                 print("failed to ask for consent: ", err)
                 handler(err)
@@ -152,7 +148,7 @@ extension FavouriteController: FavouriteCellDelegate {
             let trigger = UNTimeIntervalNotificationTrigger(timeInterval: interval, repeats: false)
             let req = UNNotificationRequest(identifier: id, content: content, trigger: trigger)
             
-            UNUserNotificationCenter.current().add(req) { (err) in
+            UNUserNotificationCenter.current().add(req) { err in
                 if let err = err {
                     print("failed to create notification: ", err)
                     handler(err)
@@ -166,15 +162,15 @@ extension FavouriteController: FavouriteCellDelegate {
     
     func presentDirections(_ event: Event) {
         let address = event.locationAddress?.replacingOccurrences(of: " ", with: "+")
-        guard let url = URL(string:"http://maps.apple.com/?address=\(address ?? "")") else { return }
+        guard let url = URL(string: "http://maps.apple.com/?address=\(address ?? "")") else { return }
         print("yay")
         UIApplication.shared.open(url)
     }
     
     func presentDeleteConfirmation(_ event: Event) {
         let confimationController = UIAlertController(title: "Fjern Event", message: "Du kan finne det igjen under Events", preferredStyle: .actionSheet)
-        confimationController.addAction(UIAlertAction(title: "Fjern", style: .destructive, handler: { (_) in
-            CoreDataManager.shared.toggleFavourite(event: event, completion: { (err) in
+        confimationController.addAction(UIAlertAction(title: "Fjern", style: .destructive, handler: { _ in
+            CoreDataManager.shared.toggleFavourite(event: event, completion: { err in
                 if let err = err {
                     print("failed to toggle favorite: ", err)
                 }
@@ -187,7 +183,7 @@ extension FavouriteController: FavouriteCellDelegate {
                     }
                 }
                 guard index >= 0 else { return }
-
+                
                 DispatchQueue.main.async {
                     self.favourites?.remove(at: index)
                     self.collectionView.deleteItems(at: [IndexPath(row: index, section: 0)])
@@ -197,5 +193,4 @@ extension FavouriteController: FavouriteCellDelegate {
         confimationController.addAction(UIAlertAction(title: "Avbryt", style: .cancel, handler: nil))
         present(confimationController, animated: true, completion: nil)
     }
-    
 }

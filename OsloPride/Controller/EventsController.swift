@@ -6,11 +6,10 @@
 //  Copyright © 2019 Adrian Evensen. All rights reserved.
 //
 
-import UIKit
 import SafariServices
+import UIKit
 
 class EventsController: UITableViewController {
-
     var events: [Event]?
     var days: [[Event]]?
     
@@ -25,7 +24,7 @@ class EventsController: UITableViewController {
         title = "Program"
         view.backgroundColor = .white
         tableView.register(EventCell.self, forCellReuseIdentifier: cellID)
-        navigationController?.navigationBar.tintColor = .prideDeepPurple//.prideYellow
+        navigationController?.navigationBar.tintColor = .prideDeepPurple // .prideYellow
         setupNavItems()
 //        navigationController?.navigationBar.prefersLargeTitles = true
 //        navigationController?.navigationBar.largeTitleTextAttributes = [
@@ -40,7 +39,7 @@ class EventsController: UITableViewController {
         
         headerView.delegate = self
         tableView.tableHeaderView = headerView
-        tableView.tableHeaderView?.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 100)//70)
+        tableView.tableHeaderView?.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 100) // 70)
         tableView.tableFooterView = UIView()
         
         displayEvents()
@@ -55,8 +54,8 @@ class EventsController: UITableViewController {
     
     fileprivate func setupNavItems() {
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)
-        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add
-            , target: self, action: #selector(presentEventsregistration))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add,
+                                                           target: self, action: #selector(presentEventsregistration))
         navigationItem.rightBarButtonItem = right
     }
     
@@ -67,15 +66,15 @@ class EventsController: UITableViewController {
     @objc fileprivate func updateEvents() {
         right.isEnabled = false
         
-        CoreDataManager.shared.getAllEvents { (local) in
-            NetworkAPI.shared.fetchEvents { (remote) in
+        CoreDataManager.shared.getAllEvents { local in
+            NetworkAPI.shared.fetchEvents { remote in
                 
                 guard let remote = remote else { return }
                 let newEvents = EventsManager.shared.compare(local: local, remote: remote)
                 print("We have \(newEvents.count) unsynced events")
                 
                 DispatchQueue.main.async {
-                    CoreDataManager.shared.save(events: newEvents, completion: { (newLocalEvents, err) in
+                    CoreDataManager.shared.save(events: newEvents, completion: { newLocalEvents, err in
                         if let err = err {
                             print("failed to batch save: ", err)
                         }
@@ -90,7 +89,7 @@ class EventsController: UITableViewController {
     
     @objc fileprivate func displayEvents() {
         DispatchQueue.main.async {
-            CoreDataManager.shared.getAllEvents { (events) in
+            CoreDataManager.shared.getAllEvents { events in
                 EventsManager.shared.set(events: events)
                 let days = EventsManager.shared.get()
                 if days.count == 0 {
@@ -104,7 +103,6 @@ class EventsController: UITableViewController {
             }
         }
     }
-
 }
 
 extension EventsController {
@@ -122,15 +120,18 @@ extension EventsController {
         
         return activityIndicator
     }
+    
     override func numberOfSections(in tableView: UITableView) -> Int {
         if days?.count == 0 || days == nil {
             return 1
         }
         return days?.count ?? 0
     }
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return days?[section].count ?? 0
     }
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellID, for: indexPath) as! EventCell
         cell.eventImageView.image = nil
@@ -159,9 +160,9 @@ extension EventsController {
         
         let attrText = NSMutableAttributedString(string: txt, attributes: nil)
         attrText.append(NSAttributedString(string: "\nDag \(day - 13)", attributes: [
-            NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 16),
-            NSAttributedString.Key.foregroundColor : UIColor.graySuit
-            ]))
+            NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 16),
+            NSAttributedString.Key.foregroundColor: UIColor.graySuit
+        ]))
         
         headerLabel.attributedText = attrText
         
@@ -184,11 +185,9 @@ extension EventsController {
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 65
     }
-    
 }
 
 extension EventsController: EventsFilterHeaderViewDelegte {
-    
     func updateFilter(_ filter: Filter, remove: Bool) {
         EventsManager.shared.addCategoryFilter(filter.category, remove: remove)
         self.days = EventsManager.shared.get()
@@ -198,9 +197,5 @@ extension EventsController: EventsFilterHeaderViewDelegte {
     func reloadTableview() {
         self.days = EventsManager.shared.get()
         self.tableView.reloadData()
-
     }
-    
-    
-    
 }

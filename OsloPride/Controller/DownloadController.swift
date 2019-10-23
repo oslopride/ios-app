@@ -9,7 +9,6 @@
 import UIKit
 
 class DownloadController: UIViewController {
-    
     let progressBar: UIProgressView = {
         let pb = UIProgressView(progressViewStyle: .bar)
         pb.translatesAutoresizingMaskIntoConstraints = false
@@ -49,15 +48,15 @@ class DownloadController: UIViewController {
             progressBar.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -24),
             progressBar.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -24),
             progressBar.heightAnchor.constraint(equalToConstant: 10)
-            ].forEach { $0.isActive = true }
+        ].forEach { $0.isActive = true }
         
         view.addSubview(titleLabel)
         [
             //titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 32),
             titleLabel.bottomAnchor.constraint(equalTo: progressBar.topAnchor, constant: -24),
             titleLabel.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 24),
-            titleLabel.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -24),
-            ].forEach { $0.isActive = true }
+            titleLabel.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -24)
+        ].forEach { $0.isActive = true }
     }
     
     fileprivate func downloadEvents() {
@@ -65,9 +64,9 @@ class DownloadController: UIViewController {
 //            guard let sanityEvents = sanityEvents else { return }
 //            self.total = sanityEvents.count-1
 //            let group = DispatchGroup()
-//            
+//
 //            var eventCache = [Event]()
-//            
+//
 //            sanityEvents.forEach({ (sanityEvent) in
 //                group.enter()
 //                    CoreDataManager.shared.save(event: sanityEvent, completion: { (event, err) in
@@ -80,7 +79,7 @@ class DownloadController: UIViewController {
 //                        if let url = event.imageURL {
 //                            NetworkAPI.shared.fetchImage(from: url, completion: {(data) in
 //                                guard let data = data else { return }
-//                                
+//
 //                                let formatter = ByteCountFormatter()
 //                                formatter.allowedUnits = [.useMB]
 //                                formatter.countStyle = .file
@@ -88,7 +87,7 @@ class DownloadController: UIViewController {
 //                                print("\(event.title ?? "") : \(string)")
 //                                group.leave()
 //                            })
-//                            
+//
 //                        } else {
 //                            group.leave()
 //                        }
@@ -104,5 +103,4 @@ class DownloadController: UIViewController {
     deinit {
         print("goodbye download controller")
     }
-    
 }

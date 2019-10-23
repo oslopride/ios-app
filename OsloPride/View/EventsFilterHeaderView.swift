@@ -9,13 +9,9 @@
 import UIKit
 
 class FilterStackView: UIStackView {
-    
     override var intrinsicContentSize: CGSize {
         return CGSize(width: frame.width + 20, height: frame.height + 20)
-
     }
-    
-    
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -28,7 +24,6 @@ class FilterStackView: UIStackView {
     required init(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
 }
 
 protocol EventsFilterHeaderViewDelegte {
@@ -37,16 +32,14 @@ protocol EventsFilterHeaderViewDelegte {
 }
 
 class EventsFilterHeaderView: UIView {
-    
     let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
-        //scrollView.backgroundColor = .prideBlue
+        // scrollView.backgroundColor = .prideBlue
         scrollView.scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
         
         return scrollView
     }()
-    
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -59,12 +52,12 @@ class EventsFilterHeaderView: UIView {
     fileprivate func setupLayout() {
         addSubview(scrollView)
         [
-         scrollView.leftAnchor.constraint(equalTo: leftAnchor),
-         scrollView.rightAnchor.constraint(equalTo: rightAnchor),
-         scrollView.topAnchor.constraint(equalTo: topAnchor),
-         scrollView.heightAnchor.constraint(equalToConstant: 60)
-         //scrollView.bottomAnchor.constraint(equalTo: bottomAnchor)
-            ].forEach { $0.isActive = true }
+            scrollView.leftAnchor.constraint(equalTo: leftAnchor),
+            scrollView.rightAnchor.constraint(equalTo: rightAnchor),
+            scrollView.topAnchor.constraint(equalTo: topAnchor),
+            scrollView.heightAnchor.constraint(equalToConstant: 60)
+            // scrollView.bottomAnchor.constraint(equalTo: bottomAnchor)
+        ].forEach { $0.isActive = true }
         
         let categoryStack = FilterStackView()
         
@@ -74,36 +67,34 @@ class EventsFilterHeaderView: UIView {
         categoryStack.axis = .horizontal
         categoryStack.spacing = 10
         
-        //stackView.distribution = .fillEqually
+        // stackView.distribution = .fillEqually
         
         scrollView.addSubview(categoryStack)
         [
-            
             categoryStack.leftAnchor.constraint(equalTo: scrollView.leftAnchor),
             categoryStack.rightAnchor.constraint(equalTo: scrollView.rightAnchor),
             categoryStack.topAnchor.constraint(equalTo: topAnchor),
-            categoryStack.heightAnchor.constraint(equalToConstant: 60),
-            //categoryStack.bottomAnchor.constraint(equalTo: bottomAnchor),
-            //stackView.heightAnchor.constraint(equalToConstant: 50)
-            ].forEach { $0.isActive = true }
+            categoryStack.heightAnchor.constraint(equalToConstant: 60)
+            // categoryStack.bottomAnchor.constraint(equalTo: bottomAnchor),
+            // stackView.heightAnchor.constraint(equalToConstant: 50)
+        ].forEach { $0.isActive = true }
         
         [
-          Filter(name: "Pride House", category: "3", color: .prideBlue),
-          Filter(name: "Pride Park", category: "2", color: .prideGreen),
-          Filter(name: "Pride Art", category: "4", color: .pridePurple),
-          Filter(name: "Ekstern Arena", category: "0", color: .prideYellow)
-        ].forEach { (filter) in
+            Filter(name: "Pride House", category: "3", color: .prideBlue),
+            Filter(name: "Pride Park", category: "2", color: .prideGreen),
+            Filter(name: "Pride Art", category: "4", color: .pridePurple),
+            Filter(name: "Ekstern Arena", category: "0", color: .prideYellow)
+        ].forEach { filter in
             let butt = FilterButton(type: .system)
             butt.setTitle(" \(filter.name) ", for: .normal)
             
             butt.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
-
+            
             butt.addTarget(self, action: #selector(updateFilter), for: .touchUpInside)
             butt.filter = filter
             
             categoryStack.addArrangedSubview(butt)
         }
-        
         
         let miscFilterActions = FilterStackView()
         miscFilterActions.translatesAutoresizingMaskIntoConstraints = false
@@ -116,8 +107,8 @@ class EventsFilterHeaderView: UIView {
             miscFilterActions.topAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: 0),
             miscFilterActions.leftAnchor.constraint(equalTo: leftAnchor),
             miscFilterActions.rightAnchor.constraint(lessThanOrEqualTo: scrollView.rightAnchor, constant: -10),
-            miscFilterActions.heightAnchor.constraint(equalToConstant: 50),
-            ].forEach { $0.isActive = true }
+            miscFilterActions.heightAnchor.constraint(equalToConstant: 50)
+        ].forEach { $0.isActive = true }
         
         let todayButton = UIButton(type: .system)
         todayButton.setTitle(" ✓ Skjul Historikk  ", for: .normal)
@@ -127,7 +118,6 @@ class EventsFilterHeaderView: UIView {
         todayButton.widthAnchor.constraint(equalToConstant: 150).isActive = true
         
         miscFilterActions.addArrangedSubview(todayButton)
-        
     }
     
     @objc fileprivate func fromTodayButtonDidPress(sender: UIButton) {
@@ -154,7 +144,6 @@ class EventsFilterHeaderView: UIView {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
 }
 
 struct Filter {
@@ -168,7 +157,6 @@ class FilterButton: UIButton {
         didSet {
             backgroundColor = filter.color
             titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
-
         }
     }
     
@@ -179,11 +167,11 @@ class FilterButton: UIButton {
         didSet {
             UIView.animate(withDuration: 0.1, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.8, options: .curveEaseInOut, animations: {
                 if self.isActivated {
-                    self.backgroundColor = self.filter.color //self.bc
+                    self.backgroundColor = self.filter.color // self.bc
                     self.tintColor = self.tc
                 } else {
                     self.backgroundColor = self.tc
-                    self.tintColor = .graySuit //self.bc
+                    self.tintColor = .graySuit // self.bc
                 }
             }, completion: nil)
         }
@@ -194,12 +182,9 @@ class FilterButton: UIButton {
         tintColor = .white
         layer.cornerRadius = 5
         clipsToBounds = true
-
-
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
 }

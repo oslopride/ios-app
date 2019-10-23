@@ -14,7 +14,7 @@ struct SanityResponse<T: Decodable>: Decodable {
     var result: T?
 }
 
-fileprivate struct SanityEventRaw: Decodable {
+private struct SanityEventRaw: Decodable {
     var _id: String
     var title: String
     var organizer: String
@@ -35,11 +35,11 @@ fileprivate struct SanityEventRaw: Decodable {
     var free: Bool?
 }
 
-fileprivate struct SanityBlockDescription: Decodable {
+private struct SanityBlockDescription: Decodable {
     var children: [SanityBlock]?
 }
 
-fileprivate struct SanityBlock: Decodable {
+private struct SanityBlock: Decodable {
     var text: String?
 }
 
@@ -62,60 +62,57 @@ struct SanityEvent: Decodable {
     var deafInterpretation: Bool?
     var accessible: Bool?
     var free: Bool?
-
+    
     init(from decoder: Decoder) {
         do {
             let rawResponse = try SanityEventRaw(from: decoder)
-            self.id = rawResponse._id
-            self.title = rawResponse.title
-            self.organizer = rawResponse.organizer
-            self.category = rawResponse.category
-            self.ingress = rawResponse.ingress
-            self.ticketSaleWebpage = rawResponse.ticketSaleWebpage
-            self.prices = rawResponse.prices
-            self.ageLimit = rawResponse.ageLimit
-            self.location = rawResponse.location
-            self.venue = rawResponse.venue
-            self.accessible = rawResponse.accessible
-            self.deafInterpretation = rawResponse.deafInterpretation
-            self.free = rawResponse.free
-        
+            id = rawResponse._id
+            title = rawResponse.title
+            organizer = rawResponse.organizer
+            category = rawResponse.category
+            ingress = rawResponse.ingress
+            ticketSaleWebpage = rawResponse.ticketSaleWebpage
+            prices = rawResponse.prices
+            ageLimit = rawResponse.ageLimit
+            location = rawResponse.location
+            venue = rawResponse.venue
+            accessible = rawResponse.accessible
+            deafInterpretation = rawResponse.deafInterpretation
+            free = rawResponse.free
+            
             if let urlString = rawResponse.imageURL, urlString.count > 0 {
-                self.imageURL = rawResponse.imageURL! + "?w1024&h=768"
+                imageURL = rawResponse.imageURL! + "?w1024&h=768"
             } else {
-                self.imageURL = ""
+                imageURL = ""
             }
             
-            self.contactPerson = rawResponse.contactPerson
+            contactPerson = rawResponse.contactPerson
             
             let dateFormatter = ISO8601DateFormatter()
             dateFormatter.formatOptions.update(with: .withInternetDateTime)
             dateFormatter.formatOptions.insert(.withFractionalSeconds)
-            self.startingTime = dateFormatter.date(from: rawResponse.startingTime)
-            self.endingTime = dateFormatter.date(from: rawResponse.endingTime)
+            startingTime = dateFormatter.date(from: rawResponse.startingTime)
+            endingTime = dateFormatter.date(from: rawResponse.endingTime)
             
             var description = ""
-            rawResponse.description?.forEach({ (block) in
-                block.children?.forEach({ (b) in
+            rawResponse.description?.forEach { block in
+                block.children?.forEach { b in
                     description += b.text ?? ""
-                })
+                }
                 description += "\n\n"
-            })
+            }
             self.description = description
             
         } catch let err {
             print("failed to decode event: ", err)
         }
-        
     }
-
-    
 }
 
 struct SanityLocation: Decodable {
     var name: String?
     var address: String?
-    //var venue: String?
+    // var venue: String?
 }
 
 struct SanityPrice: Decodable {

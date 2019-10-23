@@ -9,9 +9,7 @@
 import UIKit
 
 extension UILabel {
-    
     func setupEventDateLabel(start: Date, end: Date) {
-        
         let formatter = DateFormatter()
         formatter.locale = Locale(identifier: "no_BM_POSIX")
         formatter.dateFormat = "EEEE dd MMMM"
@@ -22,18 +20,13 @@ extension UILabel {
         
         let attrText = NSMutableAttributedString()
         attrText.append(NSAttributedString(string: (dayString.first?.uppercased() ?? "") + dayString.dropFirst().lowercased() + "\n", attributes: [
-            NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 16),
-            NSAttributedString.Key.foregroundColor : UIColor.graySuit
-            ]))
+            NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 16),
+            NSAttributedString.Key.foregroundColor: UIColor.graySuit
+        ]))
         attrText.append(NSAttributedString(string: "\(startTime) - \(endTime)", attributes: [
             NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 16),
-            NSAttributedString.Key.foregroundColor : UIColor.kindaBlack
-            ]))
-        self.attributedText = attrText
+            NSAttributedString.Key.foregroundColor: UIColor.kindaBlack
+        ]))
+        attributedText = attrText
     }
-    
-    
 }
-
-
-
