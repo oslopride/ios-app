@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:Oslo Pride.xcodeproj">
+      location = "self:/Users/elvisnunez/Projects/oslopride/app-ios/OsloPride.xcodeproj">
    </FileRef>
 </Workspace>

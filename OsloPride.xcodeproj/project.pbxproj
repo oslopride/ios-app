@@ -57,7 +57,7 @@
 		3ACE450222AC024000CC3097 /* Event.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
 		3AE6537E229D9A5D00C6B2CE /* EventsFilterHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsFilterHeaderView.swift; sourceTree = "<group>"; };
 		3AE65380229D9F5F00C6B2CE /* EventsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsManager.swift; sourceTree = "<group>"; };
-		3AECE97A22760D9700F9DEF0 /* Oslo Pride.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Oslo Pride.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		3AECE97A22760D9700F9DEF0 /* OsloPride.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OsloPride.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3AECE97D22760D9700F9DEF0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3AECE97F22760D9700F9DEF0 /* EventsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsController.swift; sourceTree = "<group>"; };
 		3AECE98422760D9900F9DEF0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -105,7 +105,7 @@
 		3AECE97122760D9700F9DEF0 = {
 			isa = PBXGroup;
 			children = (
-				3AECE97C22760D9700F9DEF0 /* Oslo Pride */,
+				3AECE97C22760D9700F9DEF0 /* OsloPride */,
 				3AECE97B22760D9700F9DEF0 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -113,12 +113,12 @@
 		3AECE97B22760D9700F9DEF0 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				3AECE97A22760D9700F9DEF0 /* Oslo Pride.app */,
+				3AECE97A22760D9700F9DEF0 /* OsloPride.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		3AECE97C22760D9700F9DEF0 /* Oslo Pride */ = {
+		3AECE97C22760D9700F9DEF0 /* OsloPride */ = {
 			isa = PBXGroup;
 			children = (
 				3AEE589E22887E3F00891790 /* Extension */,
@@ -131,7 +131,7 @@
 				3AECE98622760D9900F9DEF0 /* LaunchScreen.storyboard */,
 				3AECE98922760D9900F9DEF0 /* Info.plist */,
 			);
-			path = "Oslo Pride";
+			path = OsloPride;
 			sourceTree = "<group>";
 		};
 		3AEE588E22884A1000891790 /* Service */ = {
@@ -198,9 +198,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		3AECE97922760D9700F9DEF0 /* Oslo Pride */ = {
+		3AECE97922760D9700F9DEF0 /* OsloPride */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 3AECE98C22760D9900F9DEF0 /* Build configuration list for PBXNativeTarget "Oslo Pride" */;
+			buildConfigurationList = 3AECE98C22760D9900F9DEF0 /* Build configuration list for PBXNativeTarget "OsloPride" */;
 			buildPhases = (
 				3AECE97622760D9700F9DEF0 /* Sources */,
 				3AECE97722760D9700F9DEF0 /* Frameworks */,
@@ -210,9 +210,9 @@
 			);
 			dependencies = (
 			);
-			name = "Oslo Pride";
+			name = OsloPride;
 			productName = "Oslo Pride";
-			productReference = 3AECE97A22760D9700F9DEF0 /* Oslo Pride.app */;
+			productReference = 3AECE97A22760D9700F9DEF0 /* OsloPride.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -230,7 +230,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 3AECE97522760D9700F9DEF0 /* Build configuration list for PBXProject "Oslo Pride" */;
+			buildConfigurationList = 3AECE97522760D9700F9DEF0 /* Build configuration list for PBXProject "OsloPride" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -243,7 +243,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				3AECE97922760D9700F9DEF0 /* Oslo Pride */,
+				3AECE97922760D9700F9DEF0 /* OsloPride */,
 			);
 		};
 /* End PBXProject section */
@@ -433,7 +433,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = F3374ZPSHE;
-				INFOPLIST_FILE = "Oslo Pride/Info.plist";
+				INFOPLIST_FILE = "OsloPride/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -453,7 +453,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = F3374ZPSHE;
-				INFOPLIST_FILE = "Oslo Pride/Info.plist";
+				INFOPLIST_FILE = "OsloPride/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -469,7 +469,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		3AECE97522760D9700F9DEF0 /* Build configuration list for PBXProject "Oslo Pride" */ = {
+		3AECE97522760D9700F9DEF0 /* Build configuration list for PBXProject "OsloPride" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				3AECE98A22760D9900F9DEF0 /* Debug */,
@@ -478,7 +478,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		3AECE98C22760D9900F9DEF0 /* Build configuration list for PBXNativeTarget "Oslo Pride" */ = {
+		3AECE98C22760D9900F9DEF0 /* Build configuration list for PBXNativeTarget "OsloPride" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				3AECE98D22760D9900F9DEF0 /* Debug */,
