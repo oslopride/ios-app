@@ -16,4 +16,4 @@
 
 **Oslo Pride for iOS** is available under the GNU General Public License v3.0. See the [LICENSE file](/LICENSE.md) for more info.
 
-The **Oslo Pride** branding, icons, images, assets, sounds and others are solely reserved for usage within **Oslo Pride**, the main purpose of this library is for internal use and to be used as reference for other teams in how we do things inside **Oslo Pride** but we are considering opening third party usage in the future.
+The **Oslo Pride** branding, icons, images, assets, sounds and others are solely reserved for usage within **Oslo Pride**, the main purpose of this library is for internal use and to be used as reference for other teams in how we do things inside **Oslo Pride** but we are considering opening third party usage in the future if this is interesting for you please open an issue.
