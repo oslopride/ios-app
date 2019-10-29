@@ -1,11 +1,3 @@
-//
-//  CoreDataManager.swift
-//  Oslo Pride
-//
-//  Created by Adrian Evensen on 14/05/2019.
-//  Copyright © 2019 Adrian Evensen. All rights reserved.
-//
-
 import CoreData
 import Foundation
 

@@ -1,11 +1,3 @@
-//
-//  MapController+Overlay.swift
-//  Oslo Pride
-//
-//  Created by Adrian Evensen on 21/05/2019.
-//  Copyright © 2019 Adrian Evensen. All rights reserved.
-//
-
 import MapKit
 import UIKit
 

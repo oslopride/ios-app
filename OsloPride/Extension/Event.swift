@@ -1,11 +1,3 @@
-//
-//  Event.swift
-//  Oslo Pride
-//
-//  Created by Adrian Evensen on 08/06/2019.
-//  Copyright © 2019 Adrian Evensen. All rights reserved.
-//
-
 import CoreLocation
 import Foundation
 import UIKit

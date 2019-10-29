@@ -1,11 +1,3 @@
-//
-//  TableViewHeaderLabel.swift
-//  Oslo Pride
-//
-//  Created by Adrian Evensen on 19/05/2019.
-//  Copyright © 2019 Adrian Evensen. All rights reserved.
-//
-
 import UIKit
 
 class TableViewHeaderLabel: UILabel {

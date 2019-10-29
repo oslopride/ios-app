@@ -1,11 +1,3 @@
-//
-//  EventsManager.swift
-//  Oslo Pride
-//
-//  Created by Adrian Evensen on 28/05/2019.
-//  Copyright © 2019 Adrian Evensen. All rights reserved.
-//
-
 import Foundation
 import UIKit
 

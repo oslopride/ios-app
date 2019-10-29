@@ -1,11 +1,3 @@
-//
-//  InfoController.swift
-//  Oslo Pride
-//
-//  Created by Adrian Evensen on 10/06/2019.
-//  Copyright © 2019 Adrian Evensen. All rights reserved.
-//
-
 import SafariServices
 import UIKit
 
