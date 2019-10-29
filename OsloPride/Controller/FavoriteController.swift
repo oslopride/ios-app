@@ -2,9 +2,9 @@ import MapKit
 import UIKit
 import UserNotifications
 
-class FavouriteController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
-    var favourites: [Event]?
-    
+class FavoriteController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
+    var favorites: [Event]?
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setupController()
@@ -13,7 +13,7 @@ class FavouriteController: UICollectionViewController, UICollectionViewDelegateF
     fileprivate func setupController() {
         collectionView.backgroundColor = UIColor(red: 0.93, green: 0.93, blue: 0.96, alpha: 1.0)
         view.backgroundColor = .white
-        collectionView.register(FavouriteCell.self, forCellWithReuseIdentifier: "cellid")
+        collectionView.register(FavoriteCell.self, forCellWithReuseIdentifier: "cellid")
         collectionView.register(UICollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: "bottom")
         navigationController?.isNavigationBarHidden = true
         
@@ -27,7 +27,7 @@ class FavouriteController: UICollectionViewController, UICollectionViewDelegateF
     override func viewDidAppear(_ animated: Bool) {
         navigationController?.setNavigationBarHidden(true, animated: true)
         
-        CoreDataManager.shared.getFavourites { fav in
+        CoreDataManager.shared.getFavorites { fav in
             var fav = fav
             fav.sort(by: { (e1, e2) -> Bool in
                 guard let t1 = e1.startingTime, let t2 = e2.startingTime else { return false }
@@ -35,14 +35,14 @@ class FavouriteController: UICollectionViewController, UICollectionViewDelegateF
             })
             
             DispatchQueue.main.async {
-                self.favourites = fav
+                self.favorites = fav
                 self.collectionView.reloadData()
             }
         }
     }
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let event = favourites?[indexPath.row] else { return }
+        guard let event = favorites?[indexPath.row] else { return }
         let eventController = EventController()
         eventController.event = event
         navigationController?.setNavigationBarHidden(false, animated: true)
@@ -54,23 +54,23 @@ class FavouriteController: UICollectionViewController, UICollectionViewDelegateF
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return favourites?.count ?? 0
+        return favorites?.count ?? 0
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cellid", for: indexPath) as! FavouriteCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cellid", for: indexPath) as! FavoriteCell
         cell.layer.cornerRadius = 15
         cell.clipsToBounds = true
         
         cell.backgroundColor = .white
-        cell.event = favourites![indexPath.row]
+        cell.event = favorites![indexPath.row]
         cell.delegate = self
         
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
-        return favourites?.count ?? 0 > 0 ? CGSize(width: view.frame.width, height: 0) : CGSize(width: view.frame.width, height: 300)
+        return favorites?.count ?? 0 > 0 ? CGSize(width: view.frame.width, height: 0) : CGSize(width: view.frame.width, height: 300)
     }
     
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
@@ -93,7 +93,7 @@ class FavouriteController: UICollectionViewController, UICollectionViewDelegateF
     }
 }
 
-extension FavouriteController: FavouriteCellDelegate {
+extension FavoriteController: FavoriteCellDelegate {
     func createNotification(_ event: Event, handler: @escaping (Error?) -> ()) {
         let actionSheet = UIAlertController(title: "Påminnelse", message: "Velg tiden før eventet starter du vil få påminnelsen", preferredStyle: .actionSheet)
         
@@ -162,14 +162,14 @@ extension FavouriteController: FavouriteCellDelegate {
     func presentDeleteConfirmation(_ event: Event) {
         let confimationController = UIAlertController(title: "Fjern Event", message: "Du kan finne det igjen under Events", preferredStyle: .actionSheet)
         confimationController.addAction(UIAlertAction(title: "Fjern", style: .destructive, handler: { _ in
-            CoreDataManager.shared.toggleFavourite(event: event, completion: { err in
+            CoreDataManager.shared.toggleFavorite(event: event, completion: { err in
                 if let err = err {
                     print("failed to toggle favorite: ", err)
                 }
                 
                 var index = -1
-                for i in 0..<(self.favourites?.count ?? 0) {
-                    if self.favourites?[i].id == event.id {
+                for i in 0..<(self.favorites?.count ?? 0) {
+                    if self.favorites?[i].id == event.id {
                         index = i
                         break
                     }
@@ -177,7 +177,7 @@ extension FavouriteController: FavouriteCellDelegate {
                 guard index >= 0 else { return }
                 
                 DispatchQueue.main.async {
-                    self.favourites?.remove(at: index)
+                    self.favorites?.remove(at: index)
                     self.collectionView.deleteItems(at: [IndexPath(row: index, section: 0)])
                 }
             })

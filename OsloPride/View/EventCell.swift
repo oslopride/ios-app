@@ -40,7 +40,7 @@ class EventCell: UITableViewCell {
         return label
     }()
     
-    let favouriteIndicator: UIImageView = {
+    let favoriteIndicator: UIImageView = {
         let img = UIImageView(image: UIImage(named: "star_border"))
         img.translatesAutoresizingMaskIntoConstraints = false
         img.contentMode = .scaleAspectFit
@@ -62,13 +62,13 @@ class EventCell: UITableViewCell {
         setupLayout()
         
         NotificationCenter.default.addObserver(self, selector: #selector(imageDownloaded), name: .imageDownloadeddd, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(didToggleFavourite), name: .didToggleFavourite, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(didToggleFavorite), name: .didToggleFavorite, object: nil)
     }
     
-    @objc fileprivate func didToggleFavourite(notification: Notification) {
+    @objc fileprivate func didToggleFavorite(notification: Notification) {
         guard let id = notification.userInfo?["id"] as? String, id == event?.id else { return }
         guard let toggle = notification.userInfo?["toggle"] as? Bool else { return }
-        favouriteIndicator.isHidden = !toggle
+        favoriteIndicator.isHidden = !toggle
     }
     
     @objc fileprivate func imageDownloaded(notification: Notification) {
@@ -94,8 +94,8 @@ class EventCell: UITableViewCell {
             eventImageView.contentMode = .scaleAspectFit
         }
         
-        if event.isFavourite {
-            favouriteIndicator.isHidden = false
+        if event.isFavorite {
+            favoriteIndicator.isHidden = false
         }
         
         if let startingTime = event.startingTime, let endingTime = event.endingTime {
@@ -127,11 +127,11 @@ class EventCell: UITableViewCell {
             eventCategoryLabel.topAnchor.constraint(equalTo: eventTitleLabel.bottomAnchor, constant: 5)
         ].forEach { $0.isActive = true }
         
-        addSubview(favouriteIndicator)
+        addSubview(favoriteIndicator)
         [
-            favouriteIndicator.rightAnchor.constraint(equalTo: rightAnchor, constant: -10),
-            favouriteIndicator.centerYAnchor.constraint(equalTo: eventCategoryLabel.centerYAnchor),
-            favouriteIndicator.heightAnchor.constraint(equalToConstant: 18)
+            favoriteIndicator.rightAnchor.constraint(equalTo: rightAnchor, constant: -10),
+            favoriteIndicator.centerYAnchor.constraint(equalTo: eventCategoryLabel.centerYAnchor),
+            favoriteIndicator.heightAnchor.constraint(equalToConstant: 18)
         ].forEach { $0.isActive = true }
         
         addSubview(eventOrganizerLabel)

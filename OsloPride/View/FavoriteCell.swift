@@ -2,20 +2,20 @@ import UIKit
 import UserNotifications
 import UserNotificationsUI
 
-protocol FavouriteCellDelegate {
+protocol FavoriteCellDelegate {
     func presentDeleteConfirmation(_ event: Event)
     func presentDirections(_ event: Event)
     func createNotification(_ event: Event, handler: @escaping (Error?) -> ())
 }
 
-class FavouriteCell: UICollectionViewCell {
+class FavoriteCell: UICollectionViewCell {
     var event: Event! {
         didSet {
             setupUI()
         }
     }
     
-    var delegate: FavouriteCellDelegate?
+    var delegate: FavoriteCellDelegate?
     
     let eventImageView: UIImageView = {
         let imv = UIImageView()

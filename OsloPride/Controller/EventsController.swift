@@ -103,7 +103,7 @@ extension EventsController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellID, for: indexPath) as! EventCell
         cell.eventImageView.image = nil
-        cell.favouriteIndicator.isHidden = true
+        cell.favoriteIndicator.isHidden = true
         guard let event = days?[indexPath.section][indexPath.row] else { return cell }
         cell.event = event
         return cell

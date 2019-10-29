@@ -10,22 +10,22 @@ class TabBarController: UITabBarController {
         let eventsNavigationController = UINavigationController(rootViewController: eventsController)
         eventsNavigationController.view.backgroundColor = .white
 
+        let flowLayout = UICollectionViewFlowLayout()
+        flowLayout.itemSize = CGSize(width: view.frame.width - 14 * 2, height: 440)
+        flowLayout.minimumLineSpacing = 24
+
+        let favoriteController = FavoriteController(collectionViewLayout: flowLayout)
+        favoriteController.collectionView.contentInset = .init(top: 24, left: 0, bottom: 24, right: 0)
+
+        let favoriteNavigationController = UINavigationController(rootViewController: favoriteController)
+        favoriteNavigationController.tabBarItem = UITabBarItem(title: "Favoritter", image: UIImage(named: "star_twotone"), tag: 2)
+        favoriteNavigationController.view.backgroundColor = .white
+        favoriteNavigationController.isNavigationBarHidden = true
+
         let mapController = MapController()
         let mapNavigationController = UINavigationController(rootViewController: mapController)
         mapNavigationController.tabBarItem = UITabBarItem(title: "Kart", image: UIImage(named: "map_twotone"), tag: 1)
         mapNavigationController.isNavigationBarHidden = true
-        
-        let flowLayout = UICollectionViewFlowLayout()
-        flowLayout.itemSize = CGSize(width: view.frame.width - 14 * 2, height: 440)
-        flowLayout.minimumLineSpacing = 24
-        
-        let favouriteController = FavouriteController(collectionViewLayout: flowLayout)
-        favouriteController.collectionView.contentInset = .init(top: 24, left: 0, bottom: 24, right: 0)
-        
-        let favouriteNavigationController = UINavigationController(rootViewController: favouriteController)
-        favouriteNavigationController.tabBarItem = UITabBarItem(title: "Favoritter", image: UIImage(named: "star_twotone"), tag: 2)
-        favouriteNavigationController.view.backgroundColor = .white
-        favouriteNavigationController.isNavigationBarHidden = true
 
         let infoController = InfoController()
         infoController.tabBarItem = UITabBarItem(title: "Info", image: UIImage(named: "info"), tag: 3)
@@ -34,7 +34,7 @@ class TabBarController: UITabBarController {
 
         viewControllers = [
             eventsNavigationController,
-            favouriteNavigationController,
+            favoriteNavigationController,
             mapNavigationController,
             infoController
         ]

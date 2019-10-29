@@ -157,14 +157,14 @@ class CoreDataManager {
         }
     }
     
-    func getFavourites(completion: @escaping ([Event]) -> ()) {
+    func getFavorites(completion: @escaping ([Event]) -> ()) {
         let fetchRequest = NSFetchRequest<Event>(entityName: "Event")
-        fetchRequest.predicate = NSPredicate(format: "(endingTime >= %@) AND isFavourite = true", Date() as CVarArg)
+        fetchRequest.predicate = NSPredicate(format: "(endingTime >= %@) AND isFavorite = true", Date() as CVarArg)
         do {
-            let favourites = try pc.viewContext.fetch(fetchRequest)
-            completion(favourites)
+            let favorites = try pc.viewContext.fetch(fetchRequest)
+            completion(favorites)
         } catch let err {
-            print("Failed to fetch favourites: ", err)
+            print("Failed to fetch favorites: ", err)
         }
     }
     
@@ -183,8 +183,8 @@ class CoreDataManager {
         }
     }
     
-    func toggleFavourite(event: Event, completion: @escaping (Error?) -> ()) {
-        event.isFavourite = !event.isFavourite
+    func toggleFavorite(event: Event, completion: @escaping (Error?) -> ()) {
+        event.isFavorite = !event.isFavorite
         do {
             try pc.viewContext.save()
             completion(nil)

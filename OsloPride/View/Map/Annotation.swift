@@ -162,7 +162,7 @@ class PrideAnnotation: NSObject, MKAnnotation {
 
 class PrideToiletAnnotation: PrideAnnotation {}
 class ATMAnnotation: PrideAnnotation {}
-class ExtenalArenaFavouriteAnnotation: PrideAnnotation {
+class ExtenalArenaFavoriteAnnotation: PrideAnnotation {
     var event: Event?
 }
 

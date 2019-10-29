@@ -115,10 +115,10 @@ class MapController: UIViewController, MKMapViewDelegate {
     
     var selectedAnnotation: PrideAnnotation?
     
-    var externalArenaAnnotationsFromFavorites = [ExtenalArenaFavouriteAnnotation]()
+    var externalArenaAnnotationsFromFavorites = [ExtenalArenaFavoriteAnnotation]()
     override func viewDidAppear(_ animated: Bool) {
         mapView.deselectAnnotation(selectedAnnotation, animated: true)
-        CoreDataManager.shared.getFavourites { events in
+        CoreDataManager.shared.getFavorites { events in
             for event in events {
                 guard event.category == "0" else { continue }
                 var exists = false
@@ -131,7 +131,7 @@ class MapController: UIViewController, MKMapViewDelegate {
                 
                 if !exists {
                     guard event.latitude > 0 || event.longitude > 0 else { continue }
-                    let annotation = ExtenalArenaFavouriteAnnotation(title: event.title, lat: event.latitude, long: event.longitude)
+                    let annotation = ExtenalArenaFavoriteAnnotation(title: event.title, lat: event.latitude, long: event.longitude)
                     annotation.event = event
                     DispatchQueue.main.async {
                         self.mapView.addAnnotation(annotation)
@@ -178,7 +178,7 @@ class DismissableNavController: UINavigationController {
 
 extension MapController {
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
-        if let annotation = view.annotation as? ExtenalArenaFavouriteAnnotation {
+        if let annotation = view.annotation as? ExtenalArenaFavoriteAnnotation {
             let eventController = EventController()
             eventController.event = annotation.event
             eventController.showDismissButton = true

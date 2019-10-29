@@ -50,14 +50,14 @@ class EventController: UIViewController {
         return descriptionLabel
     }()
     
-    let toggleFavouriteButton: UIButton = {
-        let toggleFavouriteButton = UIButton(type: .system)
-        toggleFavouriteButton.setImage(UIImage(named: "star_twotone_large"), for: .normal)
-        toggleFavouriteButton.translatesAutoresizingMaskIntoConstraints = false
-        toggleFavouriteButton.addTarget(self, action: #selector(toggleFavourite), for: .touchUpInside)
-        toggleFavouriteButton.tintColor = .prideGreen
+    let toggleFavoriteButton: UIButton = {
+        let toggleFavoriteButton = UIButton(type: .system)
+        toggleFavoriteButton.setImage(UIImage(named: "star_twotone_large"), for: .normal)
+        toggleFavoriteButton.translatesAutoresizingMaskIntoConstraints = false
+        toggleFavoriteButton.addTarget(self, action: #selector(toggleFavorite), for: .touchUpInside)
+        toggleFavoriteButton.tintColor = .prideGreen
         
-        return toggleFavouriteButton
+        return toggleFavoriteButton
     }()
     
     let presentSalesWebpageButton: UIButton = {
@@ -125,13 +125,13 @@ class EventController: UIViewController {
         // navigationController?.setNavigationBarHidden(false, animated: true)
     }
     
-    lazy var favoriteBarButtonItem = UIBarButtonItem(image: (event?.isFavourite ?? false) ? UIImage(named: "star_cross") : UIImage(named: "star_border"), style: .plain, target: self, action: #selector(toggleFavourite))
+    lazy var favoriteBarButtonItem = UIBarButtonItem(image: (event?.isFavorite ?? false) ? UIImage(named: "star_cross") : UIImage(named: "star_border"), style: .plain, target: self, action: #selector(toggleFavorite))
     
     fileprivate func setupNavigationItems() {
         var right = [
             UIBarButtonItem(image: UIImage(named: "share"), style: .plain, target: self, action: #selector(shareEvent)),
             favoriteBarButtonItem
-            // UIBarButtonItem(image: (event?.isFavourite ?? false) ? UIImage(named: "star_cross") : UIImage(named: "star_border"), style: .plain, target: self, action: #selector(toggleFavourite))
+            // UIBarButtonItem(image: (event?.isFavorite ?? false) ? UIImage(named: "star_cross") : UIImage(named: "star_border"), style: .plain, target: self, action: #selector(toggleFavorite))
         ]
         
         if let _ = event?.ticketSaleWebpage {
@@ -398,11 +398,11 @@ class EventController: UIViewController {
         present(controller, animated: true, completion: nil)
     }
     
-    @objc fileprivate func toggleFavourite() {
+    @objc fileprivate func toggleFavorite() {
         guard let event = event else { return }
         let feedback = UINotificationFeedbackGenerator()
         feedback.prepare()
-        CoreDataManager.shared.toggleFavourite(event: event) { err in
+        CoreDataManager.shared.toggleFavorite(event: event) { err in
             if let err = err {
                 print("failed to save event: ", err)
                 feedback.notificationOccurred(.error)
@@ -410,10 +410,10 @@ class EventController: UIViewController {
             }
             DispatchQueue.main.async {
                 feedback.notificationOccurred(.success)
-                self.favoriteBarButtonItem.image = event.isFavourite ? UIImage(named: "star_cross") : UIImage(named: "star_border")
-                NotificationCenter.default.post(name: .didToggleFavourite, object: nil, userInfo: [
+                self.favoriteBarButtonItem.image = event.isFavorite ? UIImage(named: "star_cross") : UIImage(named: "star_border")
+                NotificationCenter.default.post(name: .didToggleFavorite, object: nil, userInfo: [
                     "id": event.id ?? "",
-                    "toggle": event.isFavourite
+                    "toggle": event.isFavorite
                 ])
             }
         }
