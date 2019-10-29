@@ -127,7 +127,6 @@ class EventController: UIViewController {
         view.backgroundColor = .white
         setupNavigationItems()
         setupLayout()
-        print("Event Venue: ", event?.venue)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -421,7 +420,7 @@ class EventController: UIViewController {
                 feedback.notificationOccurred(.success)
                 self.favoriteBarButtonItem.image = event.isFavourite ? UIImage(named: "star_cross") : UIImage(named: "star_border")
                 NotificationCenter.default.post(name: .didToggleFavourite, object: nil, userInfo: [
-                    "id": event.id,
+                    "id": event.id ?? "",
                     "toggle": event.isFavourite
                 ])
             }

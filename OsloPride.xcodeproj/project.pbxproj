@@ -10,7 +10,6 @@
 		3A04D3C2228EE44400AAD8BB /* DownloadController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A04D3C1228EE44400AAD8BB /* DownloadController.swift */; };
 		3A04D3C4228F061700AAD8BB /* FavouriteController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A04D3C3228F061700AAD8BB /* FavouriteController.swift */; };
 		3A14A6D022A2CEDC0086905C /* NotificationCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A14A6CF22A2CEDC0086905C /* NotificationCenter.swift */; };
-		3A14A6D222A5772F0086905C /* EventregistrationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A14A6D122A5772F0086905C /* EventregistrationController.swift */; };
 		3A192C5222917D3A0040EB73 /* TableViewHeaderLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A192C5122917D3A0040EB73 /* TableViewHeaderLabel.swift */; };
 		3A29E0C6229AAB0000340770 /* MapCoordinates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A29E0C5229AAB0000340770 /* MapCoordinates.swift */; };
 		3A29E0C9229AAF6B00340770 /* Annotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A29E0C8229AAF6B00340770 /* Annotation.swift */; };
@@ -43,7 +42,6 @@
 		3A04D3C1228EE44400AAD8BB /* DownloadController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadController.swift; sourceTree = "<group>"; };
 		3A04D3C3228F061700AAD8BB /* FavouriteController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavouriteController.swift; sourceTree = "<group>"; };
 		3A14A6CF22A2CEDC0086905C /* NotificationCenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationCenter.swift; sourceTree = "<group>"; };
-		3A14A6D122A5772F0086905C /* EventregistrationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventregistrationController.swift; sourceTree = "<group>"; };
 		3A192C5122917D3A0040EB73 /* TableViewHeaderLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewHeaderLabel.swift; sourceTree = "<group>"; };
 		3A29E0C5229AAB0000340770 /* MapCoordinates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapCoordinates.swift; sourceTree = "<group>"; };
 		3A29E0C8229AAF6B00340770 /* Annotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Annotation.swift; sourceTree = "<group>"; };
@@ -178,7 +176,6 @@
 				3AEE58982288739000891790 /* TabBarController.swift */,
 				3A04D3C1228EE44400AAD8BB /* DownloadController.swift */,
 				3A04D3C3228F061700AAD8BB /* FavouriteController.swift */,
-				3A14A6D122A5772F0086905C /* EventregistrationController.swift */,
 				3A75A06722AECE4600A05988 /* InfoController.swift */,
 			);
 			path = Controller;
@@ -292,7 +289,6 @@
 				3A14A6D022A2CEDC0086905C /* NotificationCenter.swift in Sources */,
 				3A29E0C6229AAB0000340770 /* MapCoordinates.swift in Sources */,
 				3A04D3C4228F061700AAD8BB /* FavouriteController.swift in Sources */,
-				3A14A6D222A5772F0086905C /* EventregistrationController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -433,7 +429,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = F3374ZPSHE;
-				INFOPLIST_FILE = "OsloPride/Info.plist";
+				INFOPLIST_FILE = OsloPride/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -453,7 +449,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = F3374ZPSHE;
-				INFOPLIST_FILE = "OsloPride/Info.plist";
+				INFOPLIST_FILE = OsloPride/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

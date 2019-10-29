@@ -24,16 +24,9 @@ class EventsController: UITableViewController {
         title = "Program"
         view.backgroundColor = .white
         tableView.register(EventCell.self, forCellReuseIdentifier: cellID)
-        navigationController?.navigationBar.tintColor = .prideDeepPurple // .prideYellow
+        navigationController?.navigationBar.tintColor = .prideDeepPurple
         setupNavItems()
-//        navigationController?.navigationBar.prefersLargeTitles = true
-//        navigationController?.navigationBar.largeTitleTextAttributes = [
-//            NSAttributedString.Key.foregroundColor : UIColor.prideDeepPurple
-//        ]
-//        navigationController?.navigationBar.titleTextAttributes = [
-//            NSAttributedString.Key.foregroundColor : UIColor.prideDeepPurple
-//        ]
-        
+
         refreshController.addTarget(self, action: #selector(updateEvents), for: .valueChanged)
         tableView.refreshControl = refreshController
         
@@ -49,23 +42,12 @@ class EventsController: UITableViewController {
     override func viewDidAppear(_ animated: Bool) {
         headerView.scrollView.flashScrollIndicators()
     }
-    
-    lazy var right = UIBarButtonItem(image: UIImage(named: "refresh"), style: .plain, target: self, action: #selector(updateEvents))
-    
+
     fileprivate func setupNavItems() {
-        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)
-        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add,
-                                                           target: self, action: #selector(presentEventsregistration))
-        navigationItem.rightBarButtonItem = right
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)        
     }
-    
-    @objc fileprivate func presentEventsregistration() {
-        present(UINavigationController(rootViewController: EventregistrationController()), animated: true, completion: nil)
-    }
-    
+
     @objc fileprivate func updateEvents() {
-        right.isEnabled = false
-        
         CoreDataManager.shared.getAllEvents { local in
             NetworkAPI.shared.fetchEvents { remote in
                 
@@ -99,7 +81,6 @@ class EventsController: UITableViewController {
                 }
                 self.tableView.reloadData()
                 self.refreshController.endRefreshing()
-                self.right.isEnabled = true
             }
         }
     }
