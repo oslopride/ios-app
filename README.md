@@ -1,23 +1,19 @@
-## Pitch/Beskrivelse
+<p align="center"><img width=100% src="/GitHub/cover1.jpg"></p>
 
-1. Tilby et slags minimums produkt i 2019, for å komme i gang og lære hva som funker / ikke funker til 2020.
-2. Utvikle location-monitoring til 2020.
+## Current Features
+- List events from our backend
+  - Allows filtering of events
+  - Allows to the event details
+  - Allows to share event
+  - Allows to favorite certain events
+- Favorite tab to see your events
+  - Allows to remove from favorites
+  - Allows to get a notification when the event is close to start
+- Map tab to see where the parade will be happening
+- Info tab to get more information about the festival
 
-#### 2019
-Tilby oversikt over Oslo Pride som:
-- Kart - vise hvor de ulike arrangementete skjer
-- Liste/kalender over alle arrangementene
-- Mulighet til å skreddersy sitt eget program og få oppdateringer på det
+## License
 
-#### 2020
-Med [iBeacon](https://developer.apple.com/ibeacon/) kan vi spore hvor folk er, hvor lenge de er der og hvor de gikk etterpå.
-Kan brukes til planlegging og dødskule features som: 
-- Live oversikt over hvor folk er
-- Brukstatistikk
-- etc
+**Oslo Pride for iOS** is available under the GNU General Public License v3.0. See the [LICENSE file](/LICENSE.md) for more info.
 
-#### iBeacon vs GPS, Glonass etc
-- iBeacon sporer kun der vi legger ut iBeacons.
-- iBeacon har bedre oppløsning.
-- iBeacon er upåvirket av bygg og vær.
-
+The **Oslo Pride** branding, icons, images, assets, sounds and others are solely reserved for usage within **Oslo Pride**, the main purpose of this library is for internal use and to be used as reference for other teams in how we do things inside **Oslo Pride** but we are considering opening third party usage in the future.
