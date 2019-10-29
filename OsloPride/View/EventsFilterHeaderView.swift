@@ -91,28 +91,6 @@ class EventsFilterHeaderView: UIView {
             miscFilterActions.rightAnchor.constraint(lessThanOrEqualTo: scrollView.rightAnchor, constant: -10),
             miscFilterActions.heightAnchor.constraint(equalToConstant: 50)
         ].forEach { $0.isActive = true }
-        
-        let todayButton = UIButton(type: .system)
-        todayButton.setTitle(" ✓ Skjul Historikk  ", for: .normal)
-        todayButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
-        todayButton.tintColor = .graySuit
-        todayButton.addTarget(self, action: #selector(fromTodayButtonDidPress), for: .touchUpInside)
-        todayButton.widthAnchor.constraint(equalToConstant: 150).isActive = true
-        
-        miscFilterActions.addArrangedSubview(todayButton)
-    }
-    
-    @objc fileprivate func fromTodayButtonDidPress(sender: UIButton) {
-        let feedback = UISelectionFeedbackGenerator()
-        feedback.prepare()
-        if sender.titleLabel?.text == " ✓ Skjul Historikk  " {
-            sender.setTitle("  Skjul Historikk  ", for: .normal)
-        } else {
-            sender.setTitle(" ✓ Skjul Historikk  ", for: .normal)
-        }
-        EventsManager.shared.toggleFilterFromToday()
-        delegate?.reloadTableview()
-        feedback.selectionChanged()
     }
     
     @objc fileprivate func updateFilter(sender: FilterButton) {
