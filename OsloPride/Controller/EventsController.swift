@@ -6,37 +6,32 @@ class EventsController: UITableViewController {
     var days: [[Event]]?
     
     let cellID = "cellID"
-    
     var refreshController = UIRefreshControl()
-    
+
     let headerView = EventsFilterHeaderView()
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Program"
         view.backgroundColor = .white
         tableView.register(EventCell.self, forCellReuseIdentifier: cellID)
         navigationController?.navigationBar.tintColor = .prideDeepPurple
-        setupNavItems()
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)
 
         refreshController.addTarget(self, action: #selector(updateEvents), for: .valueChanged)
         tableView.refreshControl = refreshController
-        
+
         headerView.delegate = self
         tableView.tableHeaderView = headerView
         tableView.tableHeaderView?.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 100) // 70)
         tableView.tableFooterView = UIView()
-        
+
         displayEvents()
         updateEvents()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         headerView.scrollView.flashScrollIndicators()
-    }
-
-    fileprivate func setupNavItems() {
-        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)        
     }
 
     @objc fileprivate func updateEvents() {
