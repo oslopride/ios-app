@@ -4,7 +4,11 @@ class TabBarController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let eventsController = EventsController()
+        let eventsFlowLayout = UICollectionViewFlowLayout()
+        eventsFlowLayout.itemSize = CGSize(width: view.frame.width - 14, height: 200)
+        eventsFlowLayout.minimumLineSpacing = 24
+        
+        let eventsController = EventsCollectionController(collectionViewLayout: eventsFlowLayout)
         eventsController.tabBarItem = UITabBarItem(title: "Program", image: UIImage(named: "event_twotone"), tag: 0)
 
         let eventsNavigationController = UINavigationController(rootViewController: eventsController)
