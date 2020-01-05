@@ -40,7 +40,7 @@ class TabBarController: UITabBarController {
         tabBar.tintColor = .prideRed
 
         viewControllers = [
-            eventsNavigationController,
+            eventsRootController,
             favoriteNavigationController,
             mapNavigationController,
             infoController
