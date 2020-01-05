@@ -11,10 +11,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow()
         window?.makeKeyAndVisible()
         window?.rootViewController = TabBarController()
+
         
-        UINavigationBar.appearance().isTranslucent = false
-        UINavigationBar.appearance().shadowImage = UIImage()
-        UINavigationBar.appearance().tintColor = .prideDeepPurple
+//        UINavigationBar.appearance().isTranslucent = false
+//        UINavigationBar.appearance().shadowImage = UIImage()
+//        UINavigationBar.appearance().tintColor = .prideDeepPurple
         
         return true
     }
