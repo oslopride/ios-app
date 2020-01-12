@@ -51,16 +51,6 @@ struct ProgramView: View {
     
 }
 
-struct ProgramDetail: View {
-    var text: String
-    
-    var body: some View {
-        VStack {
-            Text(text)
-        }
-    }
-}
-
 struct ProgramRow: View {
     
     let text: String
@@ -71,6 +61,7 @@ struct ProgramRow: View {
         }
     }
 }
+
 struct ProgramView_Preview: PreviewProvider {
     static var previews: some View {
         ProgramView(showFav: true)
