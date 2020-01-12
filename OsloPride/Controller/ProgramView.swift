@@ -11,25 +11,40 @@ import SwiftUI
 struct ProgramEvent: Identifiable {
     var id: Int
     var text: String
+    var favourite: Bool
 }
 
 struct ProgramView: View {
-
+    @State var showFav: Bool = false
+    
+    @State var events: [Event] = []
+    
     let data = [
-        ProgramEvent(id: 0, text: "hei"),
-        ProgramEvent(id: 1, text: "på"),
-        ProgramEvent(id: 2, text: "deg"),
+        ProgramEvent(id: 0, text: "hei", favourite: true),
+        ProgramEvent(id: 1, text: "på", favourite: false),
+        ProgramEvent(id: 2, text: "deg", favourite: true),
     ]
-
+    
+    func loadEvents() {
+        CoreDataManager.shared.getAllEvents { (e) in
+            self.events = e
+        }
+    }
+    
     var body: some View {
         NavigationView {
-            List(data) { d in
-                NavigationLink(destination: ProgramDetail(text: d.text)) {
-                    ProgramRow(text: d.text)
+            VStack {
+            List {
+                Toggle(isOn: $showFav) {
+                    Text("Favourites Only")
+                }
+                ForEach(events, id: \.id) { event in
+                    Text(event.title ?? "")
                 }
             }
             .navigationBarTitle(Text("Program"))
-        }
+            }
+        }.onAppear(perform: loadEvents)
     }
     
 }
@@ -56,6 +71,6 @@ struct ProgramRow: View {
 }
 struct ProgramView_Preview: PreviewProvider {
     static var previews: some View {
-        ProgramView()
+        ProgramView(showFav: true)
     }
 }

@@ -9,7 +9,7 @@ class TabBarController: UITabBarController {
         eventsFlowLayout.itemSize = CGSize(width: view.frame.width - 14, height: 200)
         eventsFlowLayout.minimumLineSpacing = 24
         
-        let eventsController = ProgramView()
+        let eventsController = ProgramView(showFav: true)
         let eventsRootController = UIHostingController(rootView: eventsController)
         
         eventsRootController.tabBarItem = UITabBarItem(title: "Program", image: UIImage(named: "event_twotone"), tag: 0)
