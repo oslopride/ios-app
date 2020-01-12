@@ -39,7 +39,9 @@ struct ProgramView: View {
                     Text("Favourites Only")
                 }
                 ForEach(events, id: \.id) { event in
-                    Text(event.title ?? "")
+                    NavigationLink(destination: ProgramDetail(text: event.title ?? "")) {
+                        Text(event.title ?? "")
+                    }
                 }
             }
             .navigationBarTitle(Text("Program"))
