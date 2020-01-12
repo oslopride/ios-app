@@ -40,7 +40,7 @@ struct ProgramView: View {
                 }
                 ForEach(events, id: \.id) { event in
                     NavigationLink(destination: ProgramDetail(text: event.title ?? "")) {
-                        Text(event.title ?? "")
+                        ProgramRow(event: event)
                     }
                 }
             }
@@ -52,12 +52,24 @@ struct ProgramView: View {
 }
 
 struct ProgramRow: View {
-    
-    let text: String
+    var event: Event
     
     var body: some View {
         HStack {
-            Text(text).font(.title)
+//            event.image.map { (imageData) in
+//                UIImage(data: imageData).map { (img) in
+//                    Image(uiImage: img).resizable().frame(width: 100, height: 100)
+//                }
+//            }
+//
+            Image(uiImage: UIImage(data: event.image ?? Data()) ?? UIImage(named: "trekanter")!)
+                .resizable()
+                .scaledToFill()
+                .frame(width: 50, height: 50)
+                .clipped()
+
+            
+            Text(event.title ?? "")
         }
     }
 }
